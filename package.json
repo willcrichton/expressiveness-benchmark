@@ -1,0 +1,30 @@
+{
+  "name": "expressiveness-benchmark",
+  "version": "0.1.0",
+  "description": "## Setup",
+  "main": "index.js",
+  "scripts": {
+    "watch": "parcel index.html & tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willcrichton/expressiveness-benchmark.git"
+  },
+  "author": "Will Crichton",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/willcrichton/expressiveness-benchmark/issues"
+  },
+  "homepage": "https://github.com/willcrichton/expressiveness-benchmark#readme",
+  "devDependencies": {
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "parcel": "^1.12.4",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}

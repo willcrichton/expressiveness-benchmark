@@ -7,7 +7,7 @@ import { Widget } from '@phosphor/widgets';
 
 import { IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 
-import * as widgetExports from './widget';
+import {CodeModel, CodeView} from './widget';
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
@@ -37,6 +37,6 @@ function activateWidgetExtension(
   registry.registerWidget({
     name: MODULE_NAME,
     version: MODULE_VERSION,
-    exports: widgetExports,
+    exports: {CodeModel, CodeView}
   });
 }

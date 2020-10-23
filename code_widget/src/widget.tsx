@@ -5,12 +5,17 @@
 import * as ace from 'ace-builds';
 import _ from 'lodash';
 
-window.ace.require = (window.ace as any).acequire;
+let _window: any = window;
+if (_window.ace) {
+  _window.ace.require = _window.ace.acequire;
+}
 
 import React, {useState, useEffect} from "react";
 import { render } from "react-dom";
 import AceEditor from "react-ace";
 
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sql";
 
 import {
   DOMWidgetModel,
@@ -55,25 +60,40 @@ export class CodeModel extends DOMWidgetModel {
 // [[round(r*255), round(g*255), round(b*255)] for (r, g, b) in seaborn.color_palette('pastel')]
 const PALETTE = [[161, 201, 244], [255, 180, 130], [141, 229, 161], [255, 159, 155], [208, 187, 255], [222, 187, 155], [250, 176, 228], [207, 207, 207], [255, 254, 163], [185, 242, 240]]
 
-interface Task {
+export interface Task {
   id: string
   description: string
   plan: {id: string, description: string}[]
 }
 
-type Plans = {[id: string]: {line: number, start: number, end: number}[]};
+export type Plans = {[id: string]: {line: number, start: number, end: number}[]};
 
-interface Program {
+export interface Program {
+  task: string
   language: string
   source: string
+  prelude: string
   plan: Plans
 }
 
-let Editor = ({task, program, on_update}: {task: Task, program: Program, on_update: (plans: Plans) => void}) => {
+export interface Language {
+  id: string
+  name: string
+}
+
+export interface EditorProps {
+  task: Task
+  program: Program
+  on_update?: (plans: Plans) => void
+}
+
+export let Editor = ({task, program, on_update}: EditorProps) => {
   let [plans, set_plans] = useState(program.plan);
   let [editor, set_editor] = useState<any|null>(null);
 
-  useEffect(() => on_update(plans));
+  if (on_update) {
+    useEffect(() => on_update(plans));
+  }
 
   let plan_index: {[key: string]: number} = {};
   task.plan.forEach((plan: any, i: any) => {
@@ -124,7 +144,7 @@ let Editor = ({task, program, on_update}: {task: Task, program: Program, on_upda
     </div>
     <div>
       <AceEditor
-        mode="python"
+        mode={program.language}
         defaultValue={program.source}
         onLoad={(editor) => set_editor(editor)}
         markers={compute_markers()}
