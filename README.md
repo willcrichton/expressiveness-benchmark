@@ -12,5 +12,6 @@ jupyter nbextension enable --sys-prefix --py code_widget
 npm link
 popd
 npm install
+npm link code_widget
 npm run watch
 ```
