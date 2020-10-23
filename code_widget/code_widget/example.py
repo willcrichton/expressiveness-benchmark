@@ -25,4 +25,4 @@ class CodeWidget(DOMWidget):
 
     program = Unicode('{}').tag(sync=True)
     task = Unicode('{}').tag(sync=True)
-    plans = Unicode('[]').tag(sync=True)
+    plans = Unicode('{}').tag(sync=True)

@@ -35,7 +35,7 @@ export class CodeModel extends DOMWidgetModel {
       _view_module_version: CodeModel.view_module_version,
       data: '{}',
       task: '{}',
-      plans: '[]'
+      plans: '{}'
     };
   }
 
@@ -94,6 +94,17 @@ let Editor = ({task, program, on_update}: {task: Task, program: Program, on_upda
 
   return <div className='code-widget'>
     <div>
+      <button onClick={() => {
+        let range = editor!.getSelectionRange();
+        Object.keys(plans).forEach((key) => {
+          plans[key] = plans[key].filter((plan) => {
+            return !(plan.line == range.start.row &&
+                plan.start <= range.start.column &&
+              plan.end >= range.end.column);
+          });
+        });
+        set_plans(_.cloneDeep(plans));
+      }}>Delete</button>
       {task.plan.map((plan: any, i: any) => {
         let background = `rgb(${PALETTE[i].join(', ')})`;
         let on_click = () => {

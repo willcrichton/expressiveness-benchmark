@@ -1,6 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 from typing import List, Dict
+import os
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
 
 @dataclass_json
 @dataclass
@@ -33,8 +36,19 @@ class SourceRange:
 class Program:
     task: str
     language: str
-    plan: Dict[str, List[SourceRange]]
-    source: str
+    plan: Dict[str, List[SourceRange]] = field(default_factory=dict)
+    prelude: str = ''
+    source: str = ''
+
+    def fname(self):
+        return os.path.join(DATA_DIR, f'{self.language}_{self.task}.json')
+
+    def save(self):
+        with open(self.fname(), 'w') as f:
+            f.write(self.to_json())
+
+    def load(self):
+        return self.from_json(open(self.fname(), 'r').read())
 
 LANGUAGES = [
     Language(id='python', name='Python')

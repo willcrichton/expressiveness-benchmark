@@ -145,7 +145,7 @@ $RECYCLE.BIN/
 # ----
 
 **/node_modules/
-code_widget/nbextension/static/*.index.*
+code_widget/nbextension/static/*index.*
 *.js.map
 *.worker.js
 *.embed-bundle.js
