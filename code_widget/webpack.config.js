@@ -1,11 +1,15 @@
 const path = require('path');
 const version = require('./package.json').version;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // Custom webpack rules
-const rules = [
-  { test: /\.tsx?$/, loader: 'ts-loader' },
+const rules = (ts_dir) => [
+  { test: /\.tsx?$/, use: [{
+    loader: 'ts-loader', options: {compilerOptions: {outDir: ts_dir}}}]},
   { test: /\.js$/, loader: 'source-map-loader' },
-  { test: /\.css$/, use: ['style-loader', 'css-loader']},
+  { test: /\.css$/, use:
+    ts_dir != 'lib' ? [MiniCssExtractPlugin.loader, 'css-loader']
+      : ['style-loader', 'css-loader']},
   { test: /\.ttf$/, use: ['file-loader'] }
 ];
 
@@ -32,12 +36,29 @@ module.exports = [
       libraryTarget: 'amd'
     },
     module: {
-      rules: rules
+      rules: rules('lib')
     },
     devtool: 'source-map',
     externals,
     resolve,
   },
+
+  {
+    entry: './src/editor.tsx',
+    output: {
+      filename: 'editor.js',
+      path: path.resolve(__dirname, '..', 'js', 'editor'),
+      libraryTarget: 'commonjs'
+    },
+    module: { rules: rules('../js/editor') },
+    devtool: 'source-map',
+    externals: {
+      'react': 'react',
+      'lodash': 'lodash',
+    },
+    plugins: [new MiniCssExtractPlugin()],
+    resolve
+  }
 
   /**
    * Embeddable code_widget bundle

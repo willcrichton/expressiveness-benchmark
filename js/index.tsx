@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import {Program, Task, Language, Editor} from 'code_widget';
+import {Program, Task, Language, CodeViewer} from './editor/editor';
+import './editor/main.css';
 
 //@ts-ignore
 import _TASKS from '../data/tasks/*.json';
@@ -21,8 +22,7 @@ let TaskView = ({task}: {task: Task}) => {
     {programs.map((program, i) =>
       <div key={i}>
         <div><strong>Language:</strong> {program.language}</div>
-        {/* <Editor task={task} program={program} /> */}
-        <pre>{program.source}</pre>
+        <CodeViewer task={task} program={program} />
       </div>
     )}
   </div>

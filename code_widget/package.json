@@ -85,6 +85,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-typescript": "^5.0.3",
     "karma-typescript-es6-transform": "^5.0.3",
+    "mini-css-extract-plugin": "^1.2.0",
     "mkdirp": "^0.5.1",
     "mocha": "^5.2.0",
     "npm-run-all": "^4.1.3",

@@ -9,9 +9,7 @@ pushd code_widget
 pip3 install -e .
 jupyter nbextension install --sys-prefix --symlink --overwrite --py code_widget
 jupyter nbextension enable --sys-prefix --py code_widget
-npm link
 popd
 npm install
-npm link code_widget
 npm run watch
 ```
