@@ -28,6 +28,7 @@ export interface Program {
   source: string
   prelude: string
   plan: Plans
+  author: string
 }
 
 export interface Language {

@@ -55,9 +55,10 @@ class Program(Base):
     plan: Dict[str, List[SourceRange]] = field(default_factory=dict)
     prelude: str = ''
     source: str = ''
+    author: str = ''
 
     def fname(self):
-        return os.path.join(DATA_DIR, 'programs', f'{self.language}_{self.task}.json')
+        return os.path.join(DATA_DIR, 'programs', f'{self.language}_{self.task}_{self.author}.json')
 
 def load_all_programs():
     programs = glob(os.path.join(DATA_DIR, 'programs', '*.json'))
