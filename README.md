@@ -3,6 +3,8 @@
 ## Setup
 
 ```
+cd expressiveness_benchmark
+ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
 python3 -m venv .env && source .env/bin/activate
 pip3 install -e .
 pushd code_widget
