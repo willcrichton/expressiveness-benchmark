@@ -7,3 +7,5 @@ dist
 node_modules
 js/editor
 js/index.js
+.eggs
+.tox
