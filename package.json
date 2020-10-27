@@ -4,7 +4,9 @@
   "description": "## Setup",
   "main": "index.js",
   "scripts": {
-    "watch": "parcel index.html & tsc --watch"
+    "watch": "parcel serve index.html --open & tsc --watch",
+    "build": "tsc && parcel build index.html",
+    "build-all": "cd code_widget && npm run build && cd .. && npm run build"
   },
   "repository": {
     "type": "git",
