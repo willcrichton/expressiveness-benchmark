@@ -22,6 +22,7 @@ let TaskView = ({task}: {task: Task}) => {
     {programs.map((program, i) =>
       <div key={i}>
         <div><strong>Language:</strong> {program.language}</div>
+        <div><strong>Author:</strong> {program.author}</div>
         <CodeViewer task={task} program={program} />
       </div>
     )}

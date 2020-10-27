@@ -60,9 +60,10 @@ class Program(Base):
     language: str
     plan: Dict[str, List[SourceRange]] = field(default_factory=dict)
     source: str = ''
+    author: str = ''
 
     def fname(self):
-        return os.path.join(DATA_DIR, 'programs', f'{self.language}_{self.task}.json')
+        return os.path.join(DATA_DIR, 'programs', f'{self.language}_{self.task}_{self.author}.json')
 
     def execute(self, task):
         dataframes = {}

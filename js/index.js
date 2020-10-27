@@ -25,6 +25,7 @@ exports.__esModule = true;
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 var editor_1 = require("./editor/editor");
+require("./editor/main.css");
 //@ts-ignore
 var __json_1 = __importDefault(require("../data/tasks/*.json"));
 //@ts-ignore
@@ -47,7 +48,11 @@ var TaskView = function (_a) {
                     react_1["default"].createElement("strong", null, "Language:"),
                     " ",
                     program.language),
-                react_1["default"].createElement(editor_1.Editor, { task: task, program: program }));
+                react_1["default"].createElement("div", null,
+                    react_1["default"].createElement("strong", null, "Author:"),
+                    " ",
+                    program.author),
+                react_1["default"].createElement(editor_1.CodeViewer, { task: task, program: program }));
         }));
 };
 var App = function () {
