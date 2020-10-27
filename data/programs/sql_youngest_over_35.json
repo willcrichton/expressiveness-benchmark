@@ -1,1 +1,1 @@
-{"task": "youngest_over_35", "language": "sql", "plan": {"name": [{"line": 0, "start": 0, "end": 11}], "min": [{"line": 3, "start": 2, "end": 17}, {"line": 2, "start": 0, "end": 13}], "filter": [{"line": 5, "start": 2, "end": 16}]}, "prelude": "", "source": "SELECT name\nFROM people\nWHERE age = (\n  SELECT MIN(age)\n  FROM people\n  WHERE age > 18)\nLIMIT 1"}
+{"task": "youngest_over_35", "language": "sql", "plan": {}, "source": "SELECT name\nFROM people\nWHERE age = (\n  SELECT MIN(age)\n  FROM people\n  WHERE age > 35)\nLIMIT 1"}

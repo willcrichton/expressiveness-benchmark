@@ -1,13 +1,15 @@
 import * as ace from 'ace-builds';
 import _ from 'lodash';
 
+//(window as any).ace.require = (window as any).ace.acequire;
+
 // Import the CSS
 import '../css/widget.css';
 
 import React, {useState, useEffect} from "react";
 import AceEditor from "react-ace";
 
-import "ace-builds/src-min-noconflict/theme-github";
+import "ace-builds/src-min-noconflict/theme-textmate";
 import "ace-builds/src-min-noconflict/mode-python";
 import "ace-builds/src-min-noconflict/mode-sql";
 
@@ -71,7 +73,7 @@ export let CodeViewer = ({task, program, on_load, width, height}: CodeViewerProp
       markers={markers}
       width={width || '100%'}
       height={height || '300px'}
-      theme='github'
+      theme='textmate'
     />
   </div>);
 };
@@ -104,7 +106,7 @@ export let Editor = ({task, program, on_update}: EditorProps) => {
           });
         });
         set_plans(_.cloneDeep(plans));
-      }}>Delete</button>
+      }}>Delete</button> &nbsp;
       {task.plan.map((plan: any, i: any) => {
         let background = `rgb(${PALETTE[i].join(', ')})`;
         let on_click = () => {
