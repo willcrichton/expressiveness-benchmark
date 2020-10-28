@@ -1,7 +1,7 @@
 import * as ace from 'ace-builds';
 import _ from 'lodash';
 
-//(window as any).ace.require = (window as any).ace.acequire;
+(window as any).ace.require = (window as any).ace.acequire;
 
 // Import the CSS
 import '../css/widget.css';

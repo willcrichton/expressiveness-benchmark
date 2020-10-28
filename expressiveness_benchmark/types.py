@@ -89,20 +89,17 @@ class Program(Base):
         target = self.to_dataframe(target)
         actual = self.to_dataframe(actual)
 
-        if len(target) != len(actual):
+        try:
+            target = target.sort_values(by=target.columns[0], ignore_index=True)
+            actual = actual.sort_values(by=target.columns[0], ignore_index=True)
+
+            if not target.equals(actual):
+                assert False
+        except Exception:
             print("Mismatch between target and actual output.")
             print("Target: ", target)
             print("Actual: ", actual)
-            assert False
-
-        target = target.sort_values(by=target.columns[0], ignore_index=True)
-        actual = actual.sort_values(by=target.columns[0], ignore_index=True)
-
-        if not target.equals(actual):
-            print("Mismatch between target and actual output.")
-            print("Target: ", target)
-            print("Actual: ", actual)
-            assert False
+            raise
 
     def execute(self, task):
         dataframes = {}
@@ -119,28 +116,55 @@ class Program(Base):
 
         elif self.language == "sql":
             conn = sqlite3.connect(":memory:")
+
+            # https://stackoverflow.com/questions/3300464/how-can-i-get-dict-from-sqlite-query
+            def dict_factory(cursor, row):
+                d = {}
+                for idx, col in enumerate(cursor.description):
+                    d[col[0]] = row[idx]
+                return d
+
+            conn.row_factory = dict_factory
+
             try:
                 for table_name, df in dataframes.items():
                     df.to_sql(table_name, con=conn)
                 conn.commit()
                 c = conn.cursor()
                 c.execute(self.source)
-                ret = [list(r) for r in c.fetchall()]
+
+                ret = c.fetchall()
                 if len(ret) > 0 and len(ret[0]) == 1:
-                    ret = [r[0] for r in ret]
+                    ret = [r[list(r.keys())[0]] for r in ret]
+
             finally:
                 conn.close()
 
         elif self.language == "datalog":
-            type_map = {"int64": "number", "object": "symbol"}
+
+            def columns_to_relation(df):
+                type_map = {"int64": "number", "object": "symbol", "float64": "float"}
+
+                def convert_name(c):
+                    try:
+                        int(c)
+                        return f"x{c}"
+                    except ValueError:
+                        return c
+
+                return [
+                    f"{convert_name(c)}:{type_map[str(df[c].dtype)]}"
+                    for c in df.columns
+                ]
 
             prelude = []
             for table_name, df in dataframes.items():
-                columns = [f"{c}:{type_map[str(df[c].dtype)]}" for c in df.columns]
+                columns = columns_to_relation(df)
                 prelude.append(f'.decl {table_name}({", ".join(columns)})')
                 prelude.append(f".input {table_name}")
 
-            columns = ["name:symbol"]
+            output_df = self.to_dataframe(task.sample_output)
+            columns = columns_to_relation(output_df)
             prelude.append(f'.decl {task.id}({", ".join(columns)})')
             prelude.append(f".output {task.id}")
             prelude = "\n".join(prelude)
@@ -171,7 +195,12 @@ class Program(Base):
                     raise
 
                 try:
-                    ret = pd.read_csv(f"{path}/{task.id}.csv", header=None)
+                    ret = pd.read_csv(
+                        f"{path}/{task.id}.csv",
+                        sep="\t",
+                        header=None,
+                        names=output_df.columns.tolist(),
+                    )
                 except pd.errors.EmptyDataError:
                     ret = pd.DataFrame()
 
@@ -221,6 +250,23 @@ TASKS = {
                 ]
             },
             sample_output="North America",
+        ),
+        Task(
+            id="continent_median_population",
+            description="Get the median population continent for each continent",
+            plan=[],
+            sample_input={
+                "countries": [
+                    {"name": "USA", "population": 328, "continent": "North America"},
+                    {"name": "Canada", "population": 37, "continent": "North America"},
+                    {"name": "Ethiopia", "population": 109, "continent": "Africa"},
+                    {"name": "Kenya", "population": 51, "continent": "Africa"},
+                ]
+            },
+            sample_output=[
+                {"continent": "North America", "population": 182.5},
+                {"continent": "Africa", "population": 80.0},
+            ],
         ),
         Task(
             id="unique_beer_drinkers",
