@@ -67,10 +67,13 @@ class Program(Base):
     plan: Dict[str, List[SourceRange]] = field(default_factory=dict)
     source: str = ""
     author: str = ""
+    implementation: str = ""
 
     def fname(self):
         return os.path.join(
-            DATA_DIR, "programs", f"{self.language}_{self.task}_{self.author}.json"
+            DATA_DIR,
+            "programs",
+            f"{self.language}_{self.task}_{self.author}_{self.implementation}.json",
         )
 
     def to_dataframe(self, value):
@@ -107,7 +110,7 @@ class Program(Base):
             df = pd.DataFrame(table)
             dataframes[table_name] = df.reindex(sorted(df.columns), axis=1)
 
-        if self.language == "python":
+        if "python" in self.language:
             globls = {}
             exec(self.source, globls, globls)
 
@@ -214,7 +217,13 @@ def load_all_programs():
 
 LANGUAGES = {
     l.id: l
-    for l in [Language(id="python", name="Python"), Language(id="sql", name="SQL")]
+    for l in [
+        Language(id="python-imperative", name="Python (Imperative)"),
+        Language(id="python-functional", name="Python (Functional)"),
+        Language(id="python-pandas", name="Python (Pandas)"),
+        Language(id="sql", name="SQL"),
+        Language(id="datalog", name="Datalog"),
+    ]
 }
 
 TASKS = {
@@ -240,7 +249,9 @@ TASKS = {
         Task(
             id="continent_by_population",
             description="Find the continent with the highest average population",
-            plan=[],
+            plan=[
+                Plan(id="filter", description="Filter >35"),
+            ],
             sample_input={
                 "countries": [
                     {"name": "USA", "population": 328, "continent": "North America"},
