@@ -1,0 +1,1 @@
+{"task": "youngest_over_35", "language": "python-functional", "plan": {}, "source": "def youngest_over_35(people):\n  over_35 = [p for p in people if p['age'] > 35]\n  youngest = min(over_35, default=None, key=lambda p: p['age'])\n  return youngest['name'] if youngest is not None else None", "author": "will", "implementation": ""}

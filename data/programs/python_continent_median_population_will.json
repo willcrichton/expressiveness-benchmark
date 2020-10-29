@@ -1,0 +1,1 @@
+{"task": "continent_median_population", "language": "python", "plan": {}, "source": "\nimport pandas as pd\ndef continent_median_population(countries):\n  return (pd.DataFrame(countries) \n      .groupby('continent')\n      .population.median()\n      .reset_index())\n", "author": "will"}

@@ -4,6 +4,7 @@ import subprocess as sp
 import tempfile
 from dataclasses import dataclass, field
 from glob import glob
+from pathlib import Path
 from typing import Any, Dict, List
 
 import pandas as pd
@@ -13,8 +14,16 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 class Base:
+    def validate(self):
+        pass
+
     def save(self):
-        with open(self.fname(), "w") as f:
+        self.validate()
+
+        p = Path(self.fname())
+        p.parent.mkdir(parents=True, exist_ok=True)
+
+        with p.open("w") as f:
             f.write(self.to_json())
 
     def load(self):
@@ -32,13 +41,17 @@ class Plan:
 @dataclass
 class Task(Base):
     id: str
-    description: str
-    plan: List[Plan]
-    sample_input: Dict[str, List[Dict[str, Any]]]
-    sample_output: Any
+    description: str = ""
+    plan: List[Plan] = field(default_factory=list)
+    sample_input: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
+    sample_output: Any = None
 
     def fname(self):
         return os.path.join(DATA_DIR, "tasks", f"{self.id}.json")
+
+    def validate(self):
+        assert self.sample_input is not None
+        assert self.sample_output is not None
 
 
 @dataclass_json
@@ -73,8 +86,23 @@ class Program(Base):
         return os.path.join(
             DATA_DIR,
             "programs",
-            f"{self.language}_{self.task}_{self.author}_{self.implementation}.json",
+            self.task,
+            f"{self.language}_{self.implementation}_{self.author}.json",
         )
+
+    def validate(self):
+        try:
+            Task(id=self.task).load()
+        except FileNotFoundError:
+            assert False, f"{self.task} is not a valid task"
+        assert self.author != "", "Author must not be empty"
+        assert self.source != "", "Source must not be empty"
+        assert self.language in LANGUAGES, f"{self.language} is not a valid language"
+
+    def widget(self, task):
+        from code_widget.example import CodeWidget
+
+        return CodeWidget(program=self.to_json(), task=task.to_json())
 
     def to_dataframe(self, value):
         if isinstance(value, pd.DataFrame):
@@ -112,9 +140,19 @@ class Program(Base):
 
         if "python" in self.language:
             globls = {}
-            exec(self.source, globls, globls)
+            exec(
+                "import pandas as pd\nfrom collections import defaultdict\n"
+                + self.source,
+                globls,
+                globls,
+            )
 
-            call = f"{task.id}(**{task.sample_input})"
+            args = [
+                f"{k}=pd.DataFrame({v})" if "pandas" in self.language else f"{k}={v}"
+                for k, v in task.sample_input.items()
+            ]
+
+            call = f"{task.id}({', '.join(args)})"
             ret = eval(call, globls, globls)
 
         elif self.language == "sql":
@@ -226,85 +264,7 @@ LANGUAGES = {
     ]
 }
 
-TASKS = {
-    t.id: t
-    for t in [
-        Task(
-            id="youngest_over_35",
-            description="Find the name of the youngest person over 35",
-            plan=[
-                Plan(id="filter", description="Filter >35"),
-                Plan(id="min", description="Min by age"),
-                Plan(id="name", description="Get the name"),
-            ],
-            sample_input={
-                "people": [
-                    {"age": 35, "name": "John"},
-                    {"age": 36, "name": "Mary"},
-                    {"age": 37, "name": "Jane"},
-                ]
-            },
-            sample_output="Mary",
-        ),
-        Task(
-            id="continent_by_population",
-            description="Find the continent with the highest average population",
-            plan=[
-                Plan(id="filter", description="Filter >35"),
-            ],
-            sample_input={
-                "countries": [
-                    {"name": "USA", "population": 328, "continent": "North America"},
-                    {"name": "Canada", "population": 37, "continent": "North America"},
-                    {"name": "Ethiopia", "population": 109, "continent": "Africa"},
-                    {"name": "Kenya", "population": 51, "continent": "Africa"},
-                ]
-            },
-            sample_output="North America",
-        ),
-        Task(
-            id="continent_median_population",
-            description="Get the median population continent for each continent",
-            plan=[],
-            sample_input={
-                "countries": [
-                    {"name": "USA", "population": 328, "continent": "North America"},
-                    {"name": "Canada", "population": 37, "continent": "North America"},
-                    {"name": "Ethiopia", "population": 109, "continent": "Africa"},
-                    {"name": "Kenya", "population": 51, "continent": "Africa"},
-                ]
-            },
-            sample_output=[
-                {"continent": "North America", "population": 182.5},
-                {"continent": "Africa", "population": 80.0},
-            ],
-        ),
-        Task(
-            id="unique_beer_drinkers",
-            description="Find the people who like a unique set of beer",
-            plan=[],
-            sample_input={
-                "likes": [
-                    {"name": "will", "beer": "ipa"},
-                    {"name": "will", "beer": "lager"},
-                    {"name": "scott", "beer": "ipa"},
-                    {"name": "scott", "beer": "stout"},
-                    {"name": "gleb", "beer": "ipa"},
-                    {"name": "gleb", "beer": "stout"},
-                    {"name": "fred", "beer": "ipa"},
-                    {"name": "fred", "beer": "lager"},
-                    {"name": "fred", "beer": "stout"},
-                ]
-            },
-            sample_output=["will", "fred"],
-        ),
-    ]
-}
 
-
-def save_languages_and_tasks():
+def save_languages():
     for l in LANGUAGES.values():
         l.save()
-
-    for t in TASKS.values():
-        t.save()

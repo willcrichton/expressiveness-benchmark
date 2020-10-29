@@ -1,0 +1,1 @@
+{"task": "youngest_over_35", "language": "python-pandas", "plan": {}, "source": "def youngest_over_35(people):\n  over_35 = people[people.age > 35]\n  youngest = over_35.loc[over_35.age.idxmin()]\n  return youngest['name']", "author": "will", "implementation": ""}

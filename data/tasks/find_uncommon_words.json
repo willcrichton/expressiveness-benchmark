@@ -1,0 +1,1 @@
+{"id": "find_uncommon_words", "description": "Find documents that contain at least three uncommon words", "plan": [], "sample_input": {"documents": [{"text": "hello world"}]}, "sample_output": "hello"}

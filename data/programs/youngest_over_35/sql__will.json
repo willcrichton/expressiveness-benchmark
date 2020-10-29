@@ -1,0 +1,1 @@
+{"task": "youngest_over_35", "language": "sql", "plan": {}, "source": "SELECT name\nFROM people\nWHERE age = (\n  SELECT MIN(age)\n  FROM people\n  WHERE age > 35)\nLIMIT 1", "author": "will", "implementation": ""}

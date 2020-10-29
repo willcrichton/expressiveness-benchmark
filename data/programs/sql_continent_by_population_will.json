@@ -1,1 +1,0 @@
-{"task": "continent_by_population", "language": "sql", "plan": {}, "source": "SELECT continent \nFROM countries\nGROUP BY continent\nORDER BY AVG(population) DESC\nLIMIT 1\n", "author": "will"}

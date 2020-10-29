@@ -1,1 +1,0 @@
-{"task": "continent_by_population", "language": "python", "plan": {}, "source": "\ndef continent_by_population(countries):\n  import pandas as pd\n  countries = pd.DataFrame(countries)\n  mean_pop = countries.groupby('continent').population.mean()\n  return mean_pop.index[mean_pop.argmax()]\n", "author": "will"}
