@@ -25,4 +25,5 @@ class CodeWidget(DOMWidget):
 
     program = Unicode('{}').tag(sync=True)
     task = Unicode('{}').tag(sync=True)
-    plans = Unicode('{}').tag(sync=True)
+    source = Unicode('').tag(sync=True)
+    plan = Unicode('{}').tag(sync=True)

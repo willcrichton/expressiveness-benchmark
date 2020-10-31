@@ -1,14 +1,17 @@
+import json
 import os
 import sqlite3
 import subprocess as sp
 import tempfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from glob import glob
 from pathlib import Path
 from typing import Any, Dict, List
 
+import ipywidgets as widgets
 import pandas as pd
 from dataclasses_json import dataclass_json
+from IPython.display import display
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
@@ -99,10 +102,28 @@ class Program(Base):
         assert self.source != "", "Source must not be empty"
         assert self.language in LANGUAGES, f"{self.language} is not a valid language"
 
+    def load_plan(self):
+        saved_self = self.load()
+        return replace(self, plan=saved_self.plan)
+
     def widget(self, task):
         from code_widget.example import CodeWidget
 
-        return CodeWidget(program=self.to_json(), task=task.to_json())
+        widget = CodeWidget(program=self.to_json(), task=task.to_json())
+        output = widgets.Output()
+        display(output)
+
+        def save_plan_changes(changes):
+            with output:
+                if changes["name"] == "plan":
+                    plan = json.loads(changes["new"])
+                    replace(self, plan=plan).save()
+                elif changes["name"] == "source":
+                    replace(self, source=changes["new"]).save()
+
+        widget.observe(save_plan_changes, names=["plan", "source"])
+
+        return widget
 
     def to_dataframe(self, value):
         if isinstance(value, pd.DataFrame):

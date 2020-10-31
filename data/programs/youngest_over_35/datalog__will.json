@@ -1,1 +1,1 @@
-{"task": "youngest_over_35", "language": "datalog", "plan": {}, "source": "\nyoungest_over_35(name) :- people(age, name), age = min age : { people(age, _), age > 35 }.\n    ", "author": "will", "implementation": ""}
+{"task": "youngest_over_35", "language": "datalog", "plan": {}, "source": "\nyoungest_over_35(Name) :- people(Age, Name), Age = min Age : { people(Age, _), Age > 35 }.\n    ", "author": "will", "implementation": ""}
