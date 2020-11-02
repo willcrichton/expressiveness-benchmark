@@ -44,6 +44,7 @@ class Plan:
 @dataclass
 class Task(Base):
     id: str
+    category: str = ""
     description: str = ""
     plan: List[Plan] = field(default_factory=list)
     sample_input: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)

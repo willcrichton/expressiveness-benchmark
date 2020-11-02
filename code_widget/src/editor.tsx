@@ -1,12 +1,12 @@
 import * as ace from 'ace-builds';
 import _ from 'lodash';
 import {observer} from 'mobx-react';
-import {observable, ObservableMap, toJS} from 'mobx';
+import {observable, ObservableMap, toJS, extendObservable} from 'mobx';
 
-(window as any).ace.require = (window as any).ace.acequire;
-
-/* (ace as any).require = (ace as any).acequire;
- *  */
+let _window = window as any;
+if (_window.ace && _window.ace.acequire) {
+  _window.ace.require = _window.ace.acequire;
+}
 
 // Import the CSS
 import '../css/widget.css';
@@ -24,6 +24,7 @@ export const PALETTE = [[161, 201, 244], [255, 180, 130], [141, 229, 161], [255,
 
 export interface Task {
   id: string
+  category: string
   description: string
   plan: {id: string, description: string}[]
 }
@@ -36,6 +37,11 @@ export class Program {
   task: string;
   language: string;
   author: string;
+
+  constructor(json: any) {
+    extendObservable(this, json);
+    this.plan = observable.map(json.plan);
+  }
 }
 
 export interface Language {
@@ -48,7 +54,8 @@ export interface CodeViewerProps {
   program: Program,
   on_load?: (editor: any) => void,
   width?: string,
-  height?: string
+  height?: string,
+  editor_props?: any
 }
 
 let compute_markers = (task: Task, program: Program) => {
@@ -117,7 +124,7 @@ let compute_markers = (task: Task, program: Program) => {
 
 }
 
-export let CodeViewer = observer(({task, program, on_load, width, height}: CodeViewerProps) => {
+export let CodeViewer = observer(({task, program, on_load, width, height, editor_props}: CodeViewerProps) => {
   let mode =
     program.language == "sql" ? "sql"
       : program.language == "datalog" ? "prolog"
@@ -139,6 +146,8 @@ export let CodeViewer = observer(({task, program, on_load, width, height}: CodeV
       theme='textmate'
       onLoad={on_load}
       onChange={on_change}
+      showPrintMargin={false}
+      {...editor_props}
     />
   </div>);
 });

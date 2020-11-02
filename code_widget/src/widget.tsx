@@ -48,10 +48,7 @@ export class CodeView extends DOMWidgetView {
   render() {
     let task = JSON.parse(this.model.get('task'));
     let program = JSON.parse(this.model.get('program'));
-
-    let model = new Program();
-    mobx.extendObservable(model, program);
-    model.plan = mobx.observable.map(program.plan);
+    let model = new Program(program);
 
     mobx.autorun(() => {
       let source = model.source;

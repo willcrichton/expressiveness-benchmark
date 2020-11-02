@@ -4,5 +4,9 @@
     "skipLibCheck": true,
     "jsx": "react",
     "lib": ["es2015", "esnext", "dom"],
-  }
+    "experimentalDecorators": true
+  },
+  "include": [
+    "js/**/*.tsx"
+  ]
 }

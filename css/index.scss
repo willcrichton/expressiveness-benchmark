@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#container {
+    width: 1200px;
+    margin: 10px auto;
+}
+
+.matrix {
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    td, th {
+        border: 1px solid black;
+        padding: 4px 10px;
+        width: 150px;
+        height: 100px;
+        overflow: hidden;
+    }
+
+    .task-kind, .task-type {
+        width: 50px;
+    }
+
+    .task-kind {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    .task-type {
+        font-weight: bold;
+    }
+
+    th {
+        border-top: none;
+    }
+
+    td:first-child, th:first-child {
+        border-left: none;
+    }
+
+    .ace_scrollbar { display: none; }
+}
