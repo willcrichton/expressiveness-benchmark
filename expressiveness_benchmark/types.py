@@ -103,8 +103,11 @@ class Program(Base):
         assert self.language in LANGUAGES, f"{self.language} is not a valid language"
 
     def load_plan(self):
-        saved_self = self.load()
-        return replace(self, plan=saved_self.plan)
+        try:
+            saved_self = self.load()
+            return replace(self, plan=saved_self.plan)
+        except FileNotFoundError:
+            return self
 
     def widget(self, task):
         from code_widget.example import CodeWidget
@@ -161,9 +164,14 @@ class Program(Base):
 
         if "python" in self.language:
             globls = {}
+            imports = [
+                "import pandas as pd",
+                "import numpy as np",
+                "from collections import defaultdict"
+            ]
+
             exec(
-                "import pandas as pd\nfrom collections import defaultdict\n"
-                + self.source,
+                "\n".join(imports) + "\n" + self.source,
                 globls,
                 globls,
             )
@@ -193,7 +201,10 @@ class Program(Base):
                     df.to_sql(table_name, con=conn)
                 conn.commit()
                 c = conn.cursor()
-                c.execute(self.source)
+
+                commands = self.source.split(';')
+                for cmd in commands:
+                    c.execute(cmd)
 
                 ret = c.fetchall()
                 if len(ret) > 0 and len(ret[0]) == 1:

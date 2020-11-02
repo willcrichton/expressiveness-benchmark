@@ -1,0 +1,1 @@
+{"id": "documents_with_infrequent_words", "description": "TODO", "plan": [], "sample_input": {"documents": [{"id": 1, "text": "Hello world"}, {"id": 2, "text": "Hello friend"}, {"id": 3, "text": "friend of the world"}, {"id": 4, "text": "Hola"}]}, "sample_output": [3, 4]}
