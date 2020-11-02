@@ -167,7 +167,7 @@ class Program(Base):
             imports = [
                 "import pandas as pd",
                 "import numpy as np",
-                "from collections import defaultdict"
+                "from collections import defaultdict",
             ]
 
             exec(
@@ -202,7 +202,7 @@ class Program(Base):
                 conn.commit()
                 c = conn.cursor()
 
-                commands = self.source.split(';')
+                commands = self.source.split(";")
                 for cmd in commands:
                     c.execute(cmd)
 
