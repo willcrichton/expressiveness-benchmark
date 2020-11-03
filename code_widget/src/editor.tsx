@@ -80,12 +80,16 @@ let compute_markers = (task: Task, program: Program) => {
     let active: {[key:string]: number} = {};
 
     let flush = (i:number) => {
+      let indices =
+        _.sortBy(Object.keys(active))
+         .map((key) => plan_index[key])
+         .join("-");
       markers.push({
         startRow: line,
         startCol: current_range,
         endRow: line,
         endCol: i,
-        className: `plan-marker color-${_.sortBy(Object.keys(active)).map((key) => plan_index[key]).join("-")}`,
+        className: `plan-marker color-${indices}`,
         type: ("text" as any)
       });
     };
@@ -136,17 +140,21 @@ export let CodeViewer = observer(({task, program, on_load, width, height, editor
     program.source = source;
   };
 
+  let num_lines = program.source.split('\n').length;
+  let line_height = 22;
+
   return (<div className='code-viewer'>
     <AceEditor
       mode={mode}
       defaultValue={program.source}
       markers={markers}
       width={width || '100%'}
-      height={height || '300px'}
+      height={height || line_height * num_lines}
       theme='textmate'
       onLoad={on_load}
       onChange={on_change}
       showPrintMargin={false}
+      fontSize={16}
       {...editor_props}
     />
   </div>);

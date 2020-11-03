@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    font-size: 20px;
 }
 
 #container {
@@ -7,9 +8,27 @@ body {
     margin: 10px auto;
 }
 
+.back-button {
+    float: right;
+    font-size: 20px;
+}
+
+.program-container {
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+}
+
 .matrix {
     border-collapse: collapse;
     table-layout: fixed;
+
+    .hover {
+        background: rgba(240, 240, 30, 0.3);
+    }
+
+    .hoverable {
+        cursor: pointer;
+    }
 
     td, th {
         border: 1px solid black;
@@ -40,5 +59,6 @@ body {
         border-left: none;
     }
 
+    .ace_editor { background: none; }
     .ace_scrollbar { display: none; }
 }
