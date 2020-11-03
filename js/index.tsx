@@ -54,6 +54,7 @@ let LangView = ({lang}) => {
      .value();
 
   return <div>
+    <h2>Language: {lang.name}</h2>
     {programs.map((program, i) => {
       let task = _.find(TASKS, {id: program.task});
       return <div key={i} className='program-container'>
@@ -68,7 +69,7 @@ let LangView = ({lang}) => {
 let Cell = ({program, task}) =>
   <Code
     program={program}
-    width={"140px"}
+    width={"160px"}
     height={"100px"}
     editor_props={{
       showGutter: false,
