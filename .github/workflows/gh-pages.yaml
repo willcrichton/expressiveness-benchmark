@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: cd code_widget && npm run build && cd .. && npm run build
+      - run: cd code_widget && npm install && npm run build && cd ..
+      - run: npm install && npm run build
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
