@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: cd code_widget && npm install && npm run build && cd ..
-      - run: npm install && npm run build
+      - run: npm install && npm run deploy
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

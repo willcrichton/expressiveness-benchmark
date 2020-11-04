@@ -6,6 +6,7 @@
   "scripts": {
     "watch": "parcel serve index.html --open & tsc --watch",
     "build": "tsc && parcel build index.html",
+    "deploy": "tsc && parcel build index.html --public-url /expressiveness-benchmark",
     "build-all": "cd code_widget && npm run build && cd .. && npm run build"
   },
   "repository": {
