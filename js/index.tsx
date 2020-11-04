@@ -83,7 +83,7 @@ let Matrix = () => {
 
   let lang_order = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
   let langs_sorted = lang_order.map((id) => _.find(LANGUAGES, {id}));
-  let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic'];
+  let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic', 'Method Chaining', 'Graph Reachability', 'Time Series'];
   let task_groups = _.groupBy(TASKS, 'category');
   let tasks_sorted = task_order.map((key) => [key, task_groups[key]]);
 
