@@ -156,7 +156,7 @@ let App = () => {
   return <div>
     <h1>Expressiveness Benchmark</h1>
 
-    <Router>
+    <Router basename="/expressiveness-benchmark">
       <Switch>
         <Route path="/task/:id"><TaskRoute /></Route>
         <Route path="/lang/:id"><LangRoute /></Route>
