@@ -1,0 +1,1 @@
+{"task": "strings_to_numbers", "language": "sql", "plan": {}, "source": "SELECT \n  CAST((CASE format\n    WHEN \"comma_sep\" THEN REPLACE(value, \",\", \"\")\n    WHEN \"under_sep\" THEN REPLACE(value, \"_\", \"\")\n    END) AS integer)\nFROM numbers", "author": "will", "implementation": ""}

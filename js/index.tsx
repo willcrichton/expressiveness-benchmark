@@ -14,9 +14,12 @@ import _LANGUAGES from '../data/languages/*.json';
 import _PROGRAMS from '../data/programs/**/*.json';
 
 const TASKS: Task[] = Object.values(_TASKS);
-const LANGUAGES: Language[] = Object.values(_LANGUAGES);
 const PROGRAMS: {[task_id:string]: Program[]} =
   _.mapValues(_PROGRAMS, (programs) => Object.values(programs).map((p) => new Program(p)));
+
+const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
+const LANGUAGES: Language[] = LANG_ORDER.map((id) => _LANGUAGES[id]);
+
 
 let Code = ({program, ...props}) =>
   <CodeViewer
@@ -31,7 +34,12 @@ let Code = ({program, ...props}) =>
   />;
 
 let TaskView = ({task}: {task: Task}) => {
-  let programs = PROGRAMS[task.id].filter((program) => program.task == task.id);
+  let programs =
+    _.chain(PROGRAMS[task.id])
+     .filter((program) => program.task == task.id)
+     .sortBy((program) => _.findIndex(LANGUAGES, {id: program.language}))
+     .value();
+
   return <div>
     <h2>Task: {task.description}</h2>
     {programs.map((program, i) => {
@@ -81,8 +89,6 @@ let Matrix = () => {
   let [hover, set_hover] = useState(null);
   let history = useHistory();
 
-  let lang_order = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
-  let langs_sorted = lang_order.map((id) => _.find(LANGUAGES, {id}));
   let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic'];
   let task_groups = _.groupBy(TASKS, 'category');
   let tasks_sorted = task_order.map((key) => [key, task_groups[key]]);
@@ -92,7 +98,7 @@ let Matrix = () => {
       <tr>
         <th className='task-kind'>Task type</th>
         <th className='task-kind'>Task name</th>
-        {langs_sorted.map((lang) => {
+        {LANGUAGES.map((lang) => {
           let category = {type: "lang", id: lang.id};
           return <th className='hoverable' key={lang.id}
                      onMouseEnter={() => set_hover(category)}
@@ -118,7 +124,7 @@ let Matrix = () => {
             >
               {task.description}
             </td>
-            {langs_sorted.map((lang) => {
+            {LANGUAGES.map((lang) => {
               let program = _.find(PROGRAMS[task.id], {language: lang.id});
               let is_hover = hover
                 ? ((hover.type == 'lang' && hover.id == lang.id)

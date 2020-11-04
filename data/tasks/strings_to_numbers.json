@@ -1,0 +1,1 @@
+{"id": "strings_to_numbers", "category": "Strings", "description": "Convert strings with different formats to numbers", "plan": [], "sample_input": {"numbers": [{"format": "comma_sep", "value": "12,337,800"}, {"format": "under_sep", "value": "80_999"}]}, "sample_output": [12337800, 80999]}

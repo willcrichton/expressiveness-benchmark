@@ -1,0 +1,1 @@
+{"task": "strings_to_numbers", "language": "python-pandas", "plan": {}, "source": "def strings_to_numbers(numbers):\n    def convert(row):\n      sep = \",\" if row.format == 'comma_sep' else \"_\"\n      return int(row.value.replace(sep, \"\"))\n    return numbers.apply(convert, axis=1).tolist()", "author": "will", "implementation": ""}

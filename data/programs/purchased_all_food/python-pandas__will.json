@@ -1,0 +1,1 @@
+{"task": "purchased_all_food", "language": "python-pandas", "plan": {}, "source": "def purchased_all_food(food, orders):\n    n_food = len(food)\n    n_unique_orders = (orders\n        .groupby('buyer')\n        .food.unique() \n        .map(len))\n    return n_unique_orders[n_unique_orders == n_food].index.values\n    ", "author": "will", "implementation": ""}

@@ -1,0 +1,1 @@
+{"task": "purchased_all_food", "language": "sql", "plan": {}, "source": "SELECT DISTINCT buyer\nFROM orders o1\nWHERE \n  (SELECT COUNT(DISTINCT food) FROM orders o2 WHERE o1.buyer = o2.buyer) = \n  (SELECT COUNT(*) FROM food)\n", "author": "will", "implementation": ""}
