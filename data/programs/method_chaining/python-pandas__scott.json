@@ -1,0 +1,1 @@
+{"task": "method_chaining", "language": "python-pandas", "plan": {}, "source": "\nimport pandas as pd\ndef method_chaining(data):\n    d = pd.DataFrame(data)\n    d.v1 = d.v1 + 1\n    d = d[d.v1 > 0]\n    result = d.v2 / d.v1 + 1\n    return result.tolist()\n", "author": "scott", "implementation": ""}
