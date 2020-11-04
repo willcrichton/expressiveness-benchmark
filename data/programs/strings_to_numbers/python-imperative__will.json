@@ -1,0 +1,1 @@
+{"task": "strings_to_numbers", "language": "python-imperative", "plan": {}, "source": "def strings_to_numbers(numbers):\n    output = []\n    for row in numbers:\n      if row[\"format\"] == 'comma_sep':\n        sep = \",\"\n      else:\n        sep = \"_\"\n      output.append(int(row[\"value\"].replace(sep, \"\")))\n    return output", "author": "will", "implementation": ""}

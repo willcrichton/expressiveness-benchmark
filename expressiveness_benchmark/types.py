@@ -157,7 +157,7 @@ class Program(Base):
             print("Actual: ", actual)
             raise
 
-    def execute(self, task):
+    def execute(self, task, debug=False):
         dataframes = {}
         for table_name, table in task.sample_input.items():
             df = pd.DataFrame(table)
@@ -246,6 +246,10 @@ class Program(Base):
             program = prelude + "\n" + self.source
 
             with tempfile.TemporaryDirectory() as path:
+                if debug:
+                    path = tempfile.mkdtemp()
+                    print('Path:', path)
+
                 with open(f"{path}/program.dl", "w") as f:
                     f.write(program)
 
