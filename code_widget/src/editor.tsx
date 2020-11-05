@@ -141,7 +141,7 @@ export let CodeViewer = observer(({task, program, on_load, width, height, editor
   };
 
   let num_lines = program.source.split('\n').length;
-  let line_height = 22;
+  let line_height = 23;
 
   return (<div className='code-viewer'>
     <AceEditor
