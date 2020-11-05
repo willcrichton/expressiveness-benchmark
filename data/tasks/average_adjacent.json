@@ -1,0 +1,1 @@
+{"id": "average_adjacent", "category": "Time Series", "description": "compute averages of adjacent values in time-ordering", "plan": [], "sample_input": {"data": [{"time": 20, "x": 14.0}, {"time": 3, "x": 3.0}, {"time": 1, "x": 1.0}, {"time": 9, "x": 7.0}, {"time": 10, "x": 9.0}, {"time": 11, "x": 11.0}]}, "sample_output": [2.0, 5.0, 8.0, 10.0, 12.5]}

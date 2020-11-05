@@ -1,0 +1,1 @@
+{"task": "average_adjacent", "language": "python-functional", "plan": {}, "source": "# from itertools import zip\ndef average_adjacent(data):\n    data = sorted(data, key=lambda v: v[\"time\"])\n    return [(a[\"x\"]+b[\"x\"])/2 for a, b in zip(data[1:], data[:-1])]\n", "author": "scott", "implementation": ""}
