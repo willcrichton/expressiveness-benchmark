@@ -1,0 +1,1 @@
+{"task": "exists_unique", "language": "python-functional", "plan": {}, "source": "\ndef exists_unique(list):\n    return int(any(list.count(x) == 1 for x in list))\n", "author": "g", "implementation": ""}

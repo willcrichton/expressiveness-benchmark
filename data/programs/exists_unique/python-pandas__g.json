@@ -1,0 +1,1 @@
+{"task": "exists_unique", "language": "python-pandas", "plan": {}, "source": "\ndef exists_unique(list):\n    values = list.value.value_counts()\n    if 1 in values:\n        return 1\n    return 0\n", "author": "g", "implementation": ""}

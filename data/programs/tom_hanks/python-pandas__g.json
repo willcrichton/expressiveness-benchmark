@@ -1,0 +1,1 @@
+{"task": "tom_hanks", "language": "python-pandas", "plan": {}, "source": "\ndef tom_hanks(movies):\n    return movies.loc[movies['actor'] == 'Tom Hanks', 'director']\n", "author": "g", "implementation": ""}

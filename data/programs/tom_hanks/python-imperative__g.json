@@ -1,0 +1,1 @@
+{"task": "tom_hanks", "language": "python-imperative", "plan": {}, "source": "\ndef tom_hanks(movies):\n    r_directors = []\n    for m in movies:\n        if 'Tom Hanks' in m['actor']:\n            r_directors.append(m['director'])\n    return r_directors\n", "author": "g", "implementation": ""}

@@ -1,0 +1,1 @@
+{"task": "tom_hanks", "language": "python-functional", "plan": {}, "source": "\ndef tom_hanks(movies):\n    directors = [m['director'] for m in movies if m['actor'] == 'Tom Hanks']\n    return directors\n", "author": "g", "implementation": ""}

@@ -1,0 +1,1 @@
+{"id": "exists_unique", "category": "", "description": "Find if there exists an object that is different than all other objects", "plan": [], "sample_input": {"list": [{"value": 1}, {"value": 2}, {"value": 3}, {"value": 1}]}, "sample_output": 1}

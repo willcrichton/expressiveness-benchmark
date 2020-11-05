@@ -1,0 +1,1 @@
+{"task": "exists_unique", "language": "sql", "plan": {}, "source": "\n    SELECT Count(*) > 0 AS HasUnique\n    FROM (SELECT DISTINCT value FROM list)\n", "author": "g", "implementation": ""}

@@ -1,0 +1,1 @@
+{"task": "tom_hanks", "language": "sql", "plan": {}, "source": "\n    SELECT director FROM movies WHERE \"Tom Hanks\" IS actor\n", "author": "g", "implementation": ""}
