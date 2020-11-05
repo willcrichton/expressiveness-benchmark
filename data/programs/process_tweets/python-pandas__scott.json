@@ -1,0 +1,1 @@
+{"task": "process_tweets", "language": "python-pandas", "plan": {}, "source": "import pandas as pd\ndef process_tweets(data):\n    result = data[(data.language == 'en') & (data.is_retweet == 'false')]\n    result.body = result.body.apply(lambda s: s.lower())\n    return result[[\"body\", \"ts\"]]\n", "author": "scott", "implementation": ""}

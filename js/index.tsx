@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 import _ from 'lodash';
 import {Program, Task, Language, CodeViewer} from './editor/editor';
 import './editor/main.css';
@@ -34,23 +35,80 @@ let Code = ({program, ...props}) =>
   />;
 
 let TaskView = ({task}: {task: Task}) => {
-  let programs =
-    _.chain(PROGRAMS[task.id])
-     .filter((program) => program.task == task.id)
-     .sortBy((program) => _.findIndex(LANGUAGES, {id: program.language}))
-     .value();
+  let [selected, set_selected] = useState([]);
+  let [hover, set_hover] = useState(null);
+
+  let programs = PROGRAMS[task.id].filter((program) => program.task == task.id);
+
+  let MinimapCell = ({Tag, lang, children}) =>
+    <Tag
+      className={classNames({
+        hover: hover && hover == lang.id,
+        selected: _.includes(selected, lang.id)
+      })}
+      onMouseEnter={() => set_hover(lang.id)}
+      onMouseLeave={() => set_hover(null)}
+      onClick={() => {
+        let idx = _.findIndex(selected, (id) => id == lang.id);
+        if (idx > -1) {
+          let s = [...selected];
+          s.splice(idx);
+          set_selected(s);
+        } else {
+          set_selected([...selected, lang.id]);
+        }
+      }}
+    >{children}</Tag>;
+
+  let Minimap = () =>
+    <div>
+      <button onClick={() => {
+        if (selected.length == 0) {
+          set_selected(LANGUAGES
+            .filter(lang => _.find(programs, {language: lang.id}))
+            .map(lang => lang.id));
+        } else {
+          set_selected([]);
+        }
+      }}>Toggle All</button>
+      <table className='minimap'>
+        <thead>
+          <tr>{LANGUAGES.map(lang =>
+            <MinimapCell Tag={props => <th {...props} />} lang={lang}>
+              {lang.name}
+            </MinimapCell>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {LANGUAGES.map(lang => {
+              let program = _.find(programs, {language: lang.id});
+              return <MinimapCell Tag={props => <td {...props} />} lang={lang}>
+                {program
+                  ? <Cell program={program} task={task} />
+                  : <>Not implemented</>
+                }</MinimapCell>;
+            })}
+          </tr>
+        </tbody>
+      </table>
+    </div>;
+
+  let selected_programs = selected.map(language => _.find(programs, {language}));
 
   return <div>
     <h2>Task: {task.description}</h2>
-    {programs.map((program, i) => {
-      let language = _.find(LANGUAGES, {id: program.language});
-      return <div key={i} className='program-container'>
-        <div><strong>Language:</strong> {language.name}</div>
-        <div><strong>Author:</strong> {program.author}</div>
-        <Code program={program} />
-      </div>
-    })}
-  </div>
+    <Minimap />
+
+    {_.chunk(selected_programs, 2).map(progs =>
+      <div className='program-row'>
+        {progs.map(prog =>
+          <div className='program-container'>
+            <h3>{_.find(LANGUAGES, {id: prog.language}).name}</h3>
+            <Code program={prog} task={task} />
+          </div>)}
+      </div>)}
+    </div>
 };
 
 let LangView = ({lang}) => {
@@ -77,6 +135,7 @@ let LangView = ({lang}) => {
 let Cell = ({program, task}) =>
   <Code
     program={program}
+    task={task}
     width={"160px"}
     height={"100px"}
     editor_props={{
@@ -89,7 +148,8 @@ let Matrix = () => {
   let [hover, set_hover] = useState(null);
   let history = useHistory();
 
-  let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic'];
+  let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic', 'Method Chaining', 'Graph Reachability', 'Time Series'];
+
   let task_groups = _.groupBy(TASKS, 'category');
   let tasks_sorted = task_order.map((key) => [key, task_groups[key]]);
 
