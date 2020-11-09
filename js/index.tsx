@@ -15,8 +15,8 @@ import _LANGUAGES from '../data/languages/*.json';
 import _PROGRAMS from '../data/programs/**/*.json';
 
 const TASKS: Task[] = Object.values(_TASKS);
-const PROGRAMS: {[task_id:string]: Program[]} =
-  _.mapValues(_PROGRAMS, (programs) => Object.values(programs).map((p) => new Program(p)));
+const PROGRAMS: Program[] =
+  _.map(_PROGRAMS, (programs) => Object.values(programs).map((p) => new Program(p))).flat();
 
 const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
 const LANGUAGES: Language[] = LANG_ORDER.map((id) => _LANGUAGES[id]);
@@ -34,56 +34,61 @@ let Code = ({program, ...props}) =>
     }}
   />;
 
-let TaskView = ({task}: {task: Task}) => {
+let PivotView = ({group_key, group_value, pivot_key}) => {
   let [selected, set_selected] = useState([]);
   let [hover, set_hover] = useState(null);
 
-  let programs = PROGRAMS[task.id].filter((program) => program.task == task.id);
+  let programs = PROGRAMS.filter(program => program[group_key] == group_value.id);
 
-  let MinimapCell = ({Tag, lang, children}) =>
+  let MinimapCell = ({Tag, pivot, children}) =>
     <Tag
       className={classNames({
-        hover: hover && hover == lang.id,
-        selected: _.includes(selected, lang.id)
+        hover: hover && hover == pivot,
+        selected: _.includes(selected, pivot)
       })}
-      onMouseEnter={() => set_hover(lang.id)}
+      onMouseEnter={() => set_hover(pivot)}
       onMouseLeave={() => set_hover(null)}
       onClick={() => {
-        let idx = _.findIndex(selected, (id) => id == lang.id);
+        let idx = _.findIndex(selected, id => id == pivot);
         if (idx > -1) {
           let s = [...selected];
           s.splice(idx);
           set_selected(s);
         } else {
-          set_selected([...selected, lang.id]);
+          set_selected([...selected, pivot]);
         }
       }}
     >{children}</Tag>;
+
+  let pivot_values: {id: string}[] =
+    pivot_key == 'language' ? LANGUAGES : TASKS;
+  let desc_key = k => k == 'language' ? "name" : "description";
 
   let Minimap = () =>
     <div>
       <button onClick={() => {
         if (selected.length == 0) {
-          set_selected(LANGUAGES
-            .filter(lang => _.find(programs, {language: lang.id}))
-            .map(lang => lang.id));
+          set_selected(pivot_values
+            .filter(v => _.find(programs, {[pivot_key]: v.id}))
+            .map(v => v.id));
         } else {
           set_selected([]);
         }
       }}>Toggle All</button>
       <table className='minimap'>
         <thead>
-          <tr>{LANGUAGES.map(lang =>
-            <MinimapCell Tag={props => <th {...props} />} lang={lang}>
-              {lang.name}
+          <tr>{pivot_values.map(v =>
+            <MinimapCell Tag={props => <th {...props} />} pivot={v.id}>
+              {v[desc_key(pivot_key)]}
             </MinimapCell>)}
           </tr>
         </thead>
         <tbody>
           <tr>
-            {LANGUAGES.map(lang => {
-              let program = _.find(programs, {language: lang.id});
-              return <MinimapCell Tag={props => <td {...props} />} lang={lang}>
+            {pivot_values.map(v => {
+              let program = _.find(programs, {[pivot_key]: v.id});
+              let task = _.find(TASKS, {id: program.task});
+              return <MinimapCell Tag={props => <td {...props} />} pivot={v.id}>
                 {program
                   ? <Cell program={program} task={task} />
                   : <>Not implemented</>
@@ -94,43 +99,28 @@ let TaskView = ({task}: {task: Task}) => {
       </table>
     </div>;
 
-  let selected_programs = selected.map(language => _.find(programs, {language}));
+  let selected_programs = selected.map(id => _.find(programs, {[pivot_key]: id}));
 
   return <div>
-    <h2>Task: {task.description}</h2>
+    <h2>{_.capitalize(group_key)}: {group_value[desc_key(group_key)]}</h2>
     <Minimap />
 
     {_.chunk(selected_programs, 2).map(progs =>
       <div className='program-row'>
         {progs.map(prog =>
           <div className='program-container'>
-            <h3>{_.find(LANGUAGES, {id: prog.language}).name}</h3>
-            <Code program={prog} task={task} />
+            <h3>{_.find(pivot_values, {id: prog[pivot_key]})[desc_key(pivot_key)]}</h3>
+            <Code program={prog} task={_.find(TASKS, {id: prog.task})} />
           </div>)}
       </div>)}
-    </div>
+  </div>
 };
 
-let LangView = ({lang}) => {
-  let programs =
-    _.chain(PROGRAMS)
-     .values()
-     .flatten()
-     .filter((program) => program.language == lang.id)
-     .value();
+let TaskView = ({task}) =>
+  <PivotView group_key={"task"} group_value={task} pivot_key={"language"} />;
 
-  return <div>
-    <h2>Language: {lang.name}</h2>
-    {programs.map((program, i) => {
-      let task = _.find(TASKS, {id: program.task});
-      return <div key={i} className='program-container'>
-        <div><strong>Task:</strong> {task.description}</div>
-        <div><strong>Author:</strong> {program.author}</div>
-        <Code program={program} />
-      </div>;
-    })}
-  </div>;
-};
+let LangView = ({lang}) =>
+  <PivotView group_key={"language"} group_value={lang} pivot_key={"task"} />;
 
 let Cell = ({program, task}) =>
   <Code
@@ -185,7 +175,7 @@ let Matrix = () => {
               {task.description}
             </td>
             {LANGUAGES.map((lang) => {
-              let program = _.find(PROGRAMS[task.id], {language: lang.id});
+              let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
               let is_hover = hover
                 ? ((hover.type == 'lang' && hover.id == lang.id)
                   || (hover.type == 'task' && hover.id == task.id))
