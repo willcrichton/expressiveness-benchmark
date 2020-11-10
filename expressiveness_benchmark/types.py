@@ -248,7 +248,7 @@ class Program(Base):
             with tempfile.TemporaryDirectory() as path:
                 if debug:
                     path = tempfile.mkdtemp()
-                    print('Path:', path)
+                    print("Path:", path)
 
                 with open(f"{path}/program.dl", "w") as f:
                     f.write(program)
