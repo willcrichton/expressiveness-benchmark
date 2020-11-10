@@ -14,13 +14,19 @@ import _LANGUAGES from '../data/languages/*.json';
 //@ts-ignore
 import _PROGRAMS from '../data/programs/**/*.json';
 
-const TASKS: Task[] = Object.values(_TASKS);
+const TASK_GROUP_ORDER = [
+  'Basic', 'Aggregation', 'Strings', 'First-order logic', 'Method Chaining',
+  'Graph Reachability', 'Time Series'];
+const TASKS: Task[] = _.sortBy(
+  Object.values(_TASKS),
+  [t => _.findIndex(TASK_GROUP_ORDER, c => c == t.category),
+   'description']);
+
 const PROGRAMS: Program[] =
-  _.map(_PROGRAMS, (programs) => Object.values(programs).map((p) => new Program(p))).flat();
+  _.map(_PROGRAMS, programs => Object.values(programs).map(p => new Program(p))).flat();
 
 const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
-const LANGUAGES: Language[] = LANG_ORDER.map((id) => _LANGUAGES[id]);
-
+const LANGUAGES: Language[] = LANG_ORDER.map(id => _LANGUAGES[id]);
 
 let Code = ({program, ...props}) =>
   <CodeViewer
@@ -34,15 +40,34 @@ let Code = ({program, ...props}) =>
     }}
   />;
 
+/* TODO: performance bug. Ace is regenerating on every render despite props
+ * not changing. Seems like fontSize or something is invoking a render func?
+
+let Cell = ({program, task}) =>
+  <Code
+    program={program}
+    task={task}
+    width={"160px"}
+    height={"100px"}
+    editor_props={{
+      showGutter: false,
+      fontSize: 4
+    }}
+  />; */
+
+let Cell = ({program, task}) =>
+  <pre style={{width: 160, height: 100, fontSize: 4}}>{program.source}</pre>;
+
 let PivotView = ({group_key, group_value, pivot_key}) => {
   let [selected, set_selected] = useState([]);
   let [hover, set_hover] = useState(null);
 
   let programs = PROGRAMS.filter(program => program[group_key] == group_value.id);
 
-  let MinimapCell = ({Tag, pivot, children}) =>
-    <Tag
+  let MinimapCell = ({pivot, children}) =>
+    <td
       className={classNames({
+        header: true,
         hover: hover && hover == pivot,
         selected: _.includes(selected, pivot)
       })}
@@ -58,43 +83,43 @@ let PivotView = ({group_key, group_value, pivot_key}) => {
           set_selected([...selected, pivot]);
         }
       }}
-    >{children}</Tag>;
+    >{children}</td>;
 
   let pivot_values: {id: string}[] =
     pivot_key == 'language' ? LANGUAGES : TASKS;
+  let valid_values = pivot_values.filter(v => _.find(programs, {[pivot_key]: v.id}));
   let desc_key = k => k == 'language' ? "name" : "description";
 
   let Minimap = () =>
     <div>
       <button onClick={() => {
-        if (selected.length == 0) {
-          set_selected(pivot_values
-            .filter(v => _.find(programs, {[pivot_key]: v.id}))
-            .map(v => v.id));
-        } else {
-          set_selected([]);
-        }
+        set_selected(selected.length == 0 ? valid_values.map(v => v.id) : []);
       }}>Toggle All</button>
       <table className='minimap'>
-        <thead>
-          <tr>{pivot_values.map(v =>
-            <MinimapCell Tag={props => <th {...props} />} pivot={v.id}>
-              {v[desc_key(pivot_key)]}
-            </MinimapCell>)}
-          </tr>
-        </thead>
         <tbody>
-          <tr>
-            {pivot_values.map(v => {
-              let program = _.find(programs, {[pivot_key]: v.id});
-              let task = _.find(TASKS, {id: program.task});
-              return <MinimapCell Tag={props => <td {...props} />} pivot={v.id}>
-                {program
-                  ? <Cell program={program} task={task} />
-                  : <>Not implemented</>
-                }</MinimapCell>;
-            })}
-          </tr>
+          {
+            _.chunk(valid_values, 8).map(vals =>
+              <>
+                <tr>
+                  {vals.map(v =>
+                    <MinimapCell key={v.id} pivot={v.id}>
+                      {v[desc_key(pivot_key)]}
+                    </MinimapCell>)}
+                </tr>
+                <tr>
+                  {vals.map(v => {
+                    let program = _.find(programs, {[pivot_key]: v.id});
+                    let task = _.find(TASKS, {id: program.task});
+                    return <MinimapCell key={v.id} pivot={v.id}>
+                      {program
+                        ? <Cell program={program} task={task} />
+                        : <>Not implemented</>
+                      }</MinimapCell>;
+                  })}
+                </tr>
+              </>
+            )
+          }
         </tbody>
       </table>
     </div>;
@@ -122,33 +147,19 @@ let TaskView = ({task}) =>
 let LangView = ({lang}) =>
   <PivotView group_key={"language"} group_value={lang} pivot_key={"task"} />;
 
-let Cell = ({program, task}) =>
-  <Code
-    program={program}
-    task={task}
-    width={"160px"}
-    height={"100px"}
-    editor_props={{
-      showGutter: false,
-      fontSize: 4
-    }}
-  />;
-
 let Matrix = () => {
   let [hover, set_hover] = useState(null);
   let history = useHistory();
 
-  let task_order = ['Basic', 'Aggregation', 'Strings', 'First-order logic', 'Method Chaining', 'Graph Reachability', 'Time Series'];
-
   let task_groups = _.groupBy(TASKS, 'category');
-  let tasks_sorted = task_order.map((key) => [key, task_groups[key]]);
+  let tasks_sorted = TASK_GROUP_ORDER.map(key => [key, task_groups[key]]);
 
   return <table className='matrix'>
     <thead>
       <tr>
         <th className='task-kind'>Task type</th>
         <th className='task-kind'>Task name</th>
-        {LANGUAGES.map((lang) => {
+        {LANGUAGES.map(lang => {
           let category = {type: "lang", id: lang.id};
           return <th className='hoverable' key={lang.id}
                      onMouseEnter={() => set_hover(category)}
@@ -174,7 +185,7 @@ let Matrix = () => {
             >
               {task.description}
             </td>
-            {LANGUAGES.map((lang) => {
+            {LANGUAGES.map(lang => {
               let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
               let is_hover = hover
                 ? ((hover.type == 'lang' && hover.id == lang.id)
