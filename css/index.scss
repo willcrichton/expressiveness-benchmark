@@ -28,7 +28,19 @@ body {
     }
 }
 
+.pivot-view {
+    .io, .description {
+        margin-bottom: 10px;
+    }
+}
+
 table {
+    border-collapse: collapse;
+
+    td, th { border: 1px solid black; padding: 2px 5px; }
+}
+
+.code-table {
     border-collapse: collapse;
     table-layout: fixed;
 

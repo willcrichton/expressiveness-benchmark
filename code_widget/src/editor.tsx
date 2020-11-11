@@ -25,8 +25,11 @@ export const PALETTE = [[161, 201, 244], [255, 180, 130], [141, 229, 161], [255,
 export interface Task {
   id: string
   category: string
+  name: string
   description: string
   plan: {id: string, description: string}[]
+  sample_input: {[key:string]: any[]}
+  sample_output: any
 }
 
 export type SourceRange = {line: number, start: number, end: number};
