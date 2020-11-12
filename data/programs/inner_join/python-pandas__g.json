@@ -1,0 +1,1 @@
+{"task": "inner_join", "language": "python-pandas", "plan": {}, "source": "  \ndef inner_join(customers,orders):\n    joined = orders.join(customers, on=\"cid\",how=\"inner\",lsuffix=\"_j\")\n    joined = joined.loc[joined['location'] == \"California\"]\n    return pd.DataFrame({0: list(joined.oid)})\n\n", "author": "g", "implementation": ""}

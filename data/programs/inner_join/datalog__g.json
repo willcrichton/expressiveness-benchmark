@@ -1,0 +1,1 @@
+{"task": "inner_join", "language": "datalog", "plan": {}, "source": "  \n    inner_join(oid):-\n    customers(cid,customer,location),\n    location=\"California\",\n    orders(cid,_,oid,_).\n", "author": "g", "implementation": ""}

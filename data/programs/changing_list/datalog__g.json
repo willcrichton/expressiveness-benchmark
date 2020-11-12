@@ -1,0 +1,1 @@
+{"task": "changing_list", "language": "datalog", "plan": {}, "source": "\n    .decl avg(a:number)\n    avg(first_sum/first_count) :-\n      first_count = count : list(_, _),\n      real_count = first_count - 1,\n      first_sum = sum value:{list(_,value)}.\n      \n    changing_list(id):-\n    avg(a),\n    id = a.\n", "author": "g", "implementation": ""}

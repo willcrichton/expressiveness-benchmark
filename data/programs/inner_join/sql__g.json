@@ -1,0 +1,1 @@
+{"task": "inner_join", "language": "sql", "plan": {}, "source": "  \n    SELECT orders.oid \n    FROM \n    (orders INNER JOIN customers ON orders.cid = customers.cid) \n    WHERE location=\"California\"\n", "author": "g", "implementation": ""}

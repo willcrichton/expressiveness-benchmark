@@ -1,0 +1,1 @@
+{"task": "exists_unique", "language": "datalog", "plan": {}, "source": "\n.decl is_unique(Value:number)\nis_unique(Value) :-\nlist(_,Value), !not_unique(Value).\n.decl not_unique(Value:number)\nnot_unique(Value) :- list(Id1,Value), list(Id2,Value), Id1 != Id2.\n\nexists_unique(Value):-\n(is_unique(_),Value=1);\n(!is_unique(_),Value=0).\n\n", "author": "g", "implementation": ""}

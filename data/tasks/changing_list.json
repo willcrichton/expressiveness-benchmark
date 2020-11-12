@@ -1,1 +1,1 @@
-{"id": "changing_list", "category": "", "description": "First element you can remove that would not change the mean of the list by more than N", "plan": [], "sample_input": {"list": [{"value": 1}, {"value": 2}, {"value": 3}, {"value": 1}]}, "sample_output": 1}
+{"id": "changing_list", "category": "", "name": "", "description": "First element you can remove that would not change the mean of the list by more than 0.1", "plan": [], "sample_input": {"list": [{"id": 0, "value": 1}, {"id": 1, "value": 2}, {"id": 2, "value": 3}, {"id": 3, "value": 1}]}, "sample_output": 1}

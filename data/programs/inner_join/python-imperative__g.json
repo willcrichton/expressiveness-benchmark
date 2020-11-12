@@ -1,0 +1,1 @@
+{"task": "inner_join", "language": "python-imperative", "plan": {}, "source": "  \ndef inner_join(customers,orders):\n    cids = [customer['cid'] for customer in customers if customer['location'] == \"California\"]\n    oids = [order['oid'] for order in orders if order['cid'] in cids]\n    return oids\n", "author": "g", "implementation": ""}
