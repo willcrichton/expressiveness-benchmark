@@ -1,1 +1,1 @@
-{"task": "average_adjacent", "language": "sql", "plan": {}, "source": "SELECT\n  (x + previous) / 2\nFROM (SELECT\n  x, LAG(x, 1) OVER (ORDER BY time) as previous\n  FROM data)\nWHERE previous is not null\n", "author": "scott", "implementation": ""}
+{"task": "average_adjacent", "language": "sql", "plan": {}, "source": "SELECT\n  time, (x + next) / 2 as x\nFROM (SELECT\n  time, x, LEAD(x, 1) OVER (ORDER BY time) as next\n  FROM data)\nWHERE next is not null", "author": "scott", "implementation": ""}

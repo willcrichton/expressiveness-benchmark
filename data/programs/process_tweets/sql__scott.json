@@ -1,1 +1,1 @@
-{"task": "process_tweets", "language": "sql", "plan": {}, "source": "\nSELECT LOWER(body) as body, ts\nFROM data\nWHERE language = 'en' and is_retweet = 'false'\n", "author": "scott", "implementation": ""}
+{"task": "process_tweets", "language": "sql", "plan": {}, "source": "SELECT LOWER(body) as body, ts\nFROM data\nWHERE language = \"en\" and is_retweet = \"false\"", "author": "scott", "implementation": ""}
