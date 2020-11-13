@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import _ from 'lodash';
-import {Program, Task, Language, CodeViewer} from './editor/editor';
+import {Program, Task, Language, CodeViewer, PALETTE} from './editor/editor';
 import './editor/main.css';
 import '../css/index.scss';
 import {BrowserRouter as Router, Switch, Route, Link, useHistory, useParams} from 'react-router-dom';
@@ -86,7 +86,20 @@ let JsonTable = ({table}) => {
   </table>;
 };
 
-let SampleIO = ({task}) =>
+let PlanDescription = ({plan}) =>
+  <div className='plan-desc'>
+    <strong>Task Goals:</strong>
+    {plan.map((p, i) => {
+      let background = `rgb(${PALETTE[i].join(', ')})`;
+      return <span key={p.id}
+                   className='goal'
+                   style={{background}}>
+        {p.description}
+      </span>
+    })}
+  </div>
+
+  let SampleIO = ({task}) =>
   <div className='io'>
     {_.map(task.sample_input, (table, key) =>
       <div>
@@ -170,7 +183,12 @@ let SampleIO = ({task}) =>
       <div className='description'>
         <strong>Description:</strong> {group_value.description}
       </div>
-      {group_key == "task" ? <SampleIO task={group_value} />: null}
+      {group_key == "task"
+        ? <>
+          <SampleIO task={group_value} />
+          <PlanDescription plan={group_value.plan} />
+        </>
+        : null}
 
       <Minimap />
 
