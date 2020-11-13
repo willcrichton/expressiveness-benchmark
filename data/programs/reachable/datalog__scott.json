@@ -1,0 +1,1 @@
+{"task": "reachable", "language": "datalog", "plan": {}, "source": ".decl path(x: symbol, y: symbol)\npath(x, y) :- graph(x, y).\npath(x, y) :- graph(x, z), path(z, y).\nreachable(x) :- query(source), path(source, x).", "author": "scott", "implementation": ""}
