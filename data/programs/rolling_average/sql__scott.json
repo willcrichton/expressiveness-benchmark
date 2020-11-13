@@ -1,1 +1,1 @@
-{"task": "rolling_average", "language": "sql", "plan": {}, "source": "SELECT\nstart.time as start_time,  AVG(other.x) as average\nFROM data as start\nJOIN data as other\nON other.time >= start.time and other.time < start.time + 7\nGROUP BY start.time", "author": "scott", "implementation": ""}
+{"task": "rolling_average", "language": "sql", "plan": {}, "source": "SELECT\nend.time as end_time,  AVG(other.x) as average\nFROM data as end\nJOIN data as other\nON other.time <= end.time and other.time > end.time - 7\nGROUP BY end.time", "author": "scott", "implementation": ""}
