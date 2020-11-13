@@ -1,1 +1,1 @@
-{"task": "tom_hanks", "language": "datalog", "plan": {}, "source": "\n    \n    tom_hanks(director):-\n    movies(actor,director,_),\n    actor = \"Tom Hanks\".\n", "author": "g", "implementation": ""}
+{"task": "tom_hanks", "language": "datalog", "plan": {}, "source": "\n    tom_hanks(director):-\n    actors(actor,movie1),\n    directors(director,movie2),\n    movie1 = movie2,\n    actor = \"Tom Hanks\".\n", "author": "g", "implementation": ""}

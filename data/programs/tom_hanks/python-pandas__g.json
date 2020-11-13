@@ -1,1 +1,1 @@
-{"task": "tom_hanks", "language": "python-pandas", "plan": {}, "source": "\ndef tom_hanks(movies):\n    return movies.loc[movies['actor'] == 'Tom Hanks', 'director']\n", "author": "g", "implementation": ""}
+{"task": "tom_hanks", "language": "python-pandas", "plan": {}, "source": "\ndef tom_hanks(actors,directors):\n    movies = list(actors.loc[actors['actor'] == 'Tom Hanks', 'movie'])\n    return directors[directors['movie'].isin(movies)]['director']\n", "author": "g", "implementation": ""}

@@ -1,1 +1,1 @@
-{"task": "tom_hanks", "language": "sql", "plan": {}, "source": "\n    SELECT director FROM movies WHERE \"Tom Hanks\" IS actor\n", "author": "g", "implementation": ""}
+{"task": "tom_hanks", "language": "sql", "plan": {}, "source": "\n    SELECT directors.director\n    FROM \n    (directors INNER JOIN actors ON directors.movie = actors.movie) \n    WHERE actors.actor=\"Tom Hanks\"\n", "author": "g", "implementation": ""}

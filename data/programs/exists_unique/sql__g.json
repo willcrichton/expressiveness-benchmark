@@ -1,1 +1,1 @@
-{"task": "exists_unique", "language": "sql", "plan": {}, "source": "\n    SELECT Count(*) > 0 AS HasUnique\n    FROM (SELECT DISTINCT value FROM list)\n", "author": "g", "implementation": ""}
+{"task": "exists_unique", "language": "sql", "plan": {}, "source": "\n    SELECT CASE WHEN EXISTS (\n    SELECT value\n    FROM list\n    GROUP BY value\n    HAVING Count(*) == 1\n    )\n    THEN CAST(1 AS INT)\n    ELSE CAST(0 AS INT)\n    END\n", "author": "g", "implementation": ""}

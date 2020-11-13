@@ -1,1 +1,1 @@
-{"task": "exists_unique", "language": "python-imperative", "plan": {}, "source": "\ndef exists_unique(list):\n    for elem in list:\n        e = elem[\"value\"]\n        if list.count(elem) == 1:\n            return 1\n    return 0\n", "author": "g", "implementation": ""}
+{"task": "exists_unique", "language": "python-imperative", "plan": {}, "source": "\ndef exists_unique(list):\n    values = [l[\"value\"] for l in list]\n    for elem in values:\n        if values.count(elem) == 1:\n            return 1\n    return 0\n", "author": "g", "implementation": ""}
