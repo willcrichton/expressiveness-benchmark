@@ -1,1 +1,0 @@
-{"task": "time_series", "language": "python-pandas", "plan": {}, "source": "import pandas as pd\nimport math\ndef time_series(data):\n    def window(t):\n        return math.floor(t / 7)\n    result = pd.DataFrame(data).sort_values(\"time\").set_index(\"time\").groupby(window).mean()\n    return result['x'].tolist()\n", "author": "scott", "implementation": ""}

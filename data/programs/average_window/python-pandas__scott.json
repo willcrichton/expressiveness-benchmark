@@ -1,0 +1,1 @@
+{"task": "average_window", "language": "python-pandas", "plan": {}, "source": "def average_window(data):\n    def window(t):\n        return math.floor(t / 7)\n    result = pd.DataFrame(data).sort_values(\"time\")                .set_index(\"time\").groupby(window).mean()\n    return result['x'].tolist()", "author": "scott", "implementation": ""}

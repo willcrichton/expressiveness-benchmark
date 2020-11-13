@@ -1,1 +1,0 @@
-{"task": "time_series", "language": "sql", "plan": {}, "source": "SELECT AVG(x) as x\nFROM data\nGROUP BY cast(time / 7 as int)\nORDER BY time\n", "author": "scott", "implementation": ""}
