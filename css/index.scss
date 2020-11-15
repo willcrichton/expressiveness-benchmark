@@ -4,7 +4,7 @@ body {
 }
 
 #container {
-    width: 1400px;
+    width: 1600px;
     margin: 10px auto;
 }
 
@@ -28,9 +28,72 @@ body {
     }
 }
 
+.task-spec {
+    .goal {
+        padding: 1px 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
 .pivot-view {
-    .io, .description {
-        margin-bottom: 10px;
+    .minimap {
+        .toggle { margin-bottom: 5px; }
+    }
+
+    .io {
+        background: #f2f2f2;
+        padding: 20px;
+
+        .data-container {
+            overflow: auto;
+
+            > div {
+                float: left;
+                margin-right: 20px;
+            }
+        }
+    }
+
+    .column-container {
+        position: relative;
+
+        .main-content {
+            width: 1380px;
+
+            .main-sticky {
+                position: sticky;
+                top: 0px;
+                left: 0;
+                background: #f2f2f2;
+                padding: 20px;
+                border-bottom: 20px solid white;
+                border-top: 20px solid white;
+                margin-top: -20px;
+                z-index: 2;
+            }
+
+            .main-scroll {
+                position: relative;
+                z-index: 1;
+            }
+        }
+
+        .sidebar {
+            width: 200px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+
+            .sidebar-sticky {
+                position: sticky;
+                top: 20px;
+                left: 0;
+                width: 100%;
+            }
+        }
     }
 }
 
@@ -107,16 +170,4 @@ table {
 
     .ace_editor { background: none; }
     .ace_scrollbar { display: none; }
-
-    &.minimap {
-        td, th {
-            padding: 4px 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .header {
-            font-weight: bold;
-        }
-    }
 }

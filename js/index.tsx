@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -6,6 +6,8 @@ import {Program, Task, Language, CodeViewer, PALETTE} from './editor/editor';
 import './editor/main.css';
 import '../css/index.scss';
 import {BrowserRouter as Router, Switch, Route, Link, useHistory, useParams} from 'react-router-dom';
+
+let get_color = (i: number, opacity?: number) => `rgba(${PALETTE[i].join(', ')}, ${opacity || 1.})`;
 
 //@ts-ignore
 import _TASKS from '../data/tasks/*.json';
@@ -36,6 +38,8 @@ let Code = ({program, ...props}) =>
     editor_props={{
       highlightActiveLine: false,
       readOnly: true,
+      showGutter: false,
+      tabSize: 2,
       ...props.editor_props
     }}
   />;
@@ -43,17 +47,17 @@ let Code = ({program, ...props}) =>
 /* TODO: performance bug. Ace is regenerating on every render despite props
  * not changing. Seems like fontSize or something is invoking a render func?
 
-let Cell = ({program, task}) =>
-  <Code
-    program={program}
-    task={task}
-    width={"160px"}
-    height={"100px"}
-    editor_props={{
-      showGutter: false,
-      fontSize: 4
-    }}
-  />; */
+   let Cell = ({program, task}) =>
+   <Code
+   program={program}
+   task={task}
+   width={"160px"}
+   height={"100px"}
+   editor_props={{
+   showGutter: false,
+   fontSize: 4
+   }}
+   />; */
 
 let Cell = ({program, task}) =>
   <pre style={{width: 160, height: 100, fontSize: 4}}>{program.source}</pre>;
@@ -88,32 +92,65 @@ let JsonTable = ({table}) => {
   </table>;
 };
 
-let PlanDescription = ({plan}) =>
-  <div className='plan-desc'>
-    <strong>Task Goals:</strong>
-    {plan.map((p, i) => {
-      let background = `rgb(${PALETTE[i].join(', ')})`;
-      return <span key={p.id}
-                   className='goal'
-                   style={{background}}>
-        {p.description}
-      </span>
-    })}
-  </div>;
-
 let SampleIO = ({task}) =>
   <div className='io'>
-    {_.map(task.sample_input, (table, key) =>
-      <div key={key}>
-        <strong>Input: {key}</strong>
-        <JsonTable table={table} />
-      </div>)}
-    <div>
-      <strong>Output:</strong> <code><Output val={task.sample_output} /></code>
+    <strong>Example input/output:</strong>
+    <div className='data-container'>
+      {_.map(task.sample_input, (table, key) =>
+        <div key={key}>
+          <strong>Input:</strong> <code>{key}</code>
+          <JsonTable table={table} />
+        </div>)}
+      <div>
+        <strong>Output:</strong> <code><Output val={task.sample_output} /></code>
+      </div>
     </div>
   </div>;
 
+let TaskSpec = ({task, on_selected}) => {
+  let [selected, set_selected] = useState(null);
+
+  useEffect(() => on_selected(selected), [selected]);
+
+  let desc = task.description;
+  let plans =
+    _.chain(task.plan)
+     .map((p, index) => [desc.indexOf(p.description), {index, ...p}])
+     .fromPairs()
+     .value();
+
+  let i = 0;
+  let elts = [];
+  while (i < desc.length) {
+    if (i in plans) {
+      let plan = plans[i];
+      let background = get_color(
+        plan.index,
+        selected ? (selected == plan.id ? 1. : 0.25) : 0.5
+      );
+      console.log(background);
+      elts.push(
+        <span
+          className='goal'
+          onClick={() => set_selected(selected && selected == plan.id ? null : plan.id)}
+          style={{background}}>
+          {plan.description}
+        </span>);
+      i += plan.description.length;
+    } else {
+      elts.push(desc[i]);
+      i += 1;
+    }
+  }
+
+  return <div className='task-spec'>
+    <strong>Specification: </strong>
+    {elts}
+  </div>;
+};
+
 let PivotView = ({group_key, group_value, pivot_key}) => {
+
   let programs = PROGRAMS.filter(program => program[group_key] == group_value.id);
   let pivot_values: {id: string}[] =
     pivot_key == 'language' ? LANGUAGES : TASKS;
@@ -121,61 +158,31 @@ let PivotView = ({group_key, group_value, pivot_key}) => {
   let valid_ids = valid_values.map(v => v.id);
 
   let [selected, set_selected] = useState(valid_ids);
-  let [hover, set_hover] = useState(null);
+  let [plan_selected, set_plan_selected] = useState(null);
 
-  let MinimapCell = ({pivot, children}) =>
-    <td
-      className={classNames({
-        header: true,
-        hover: hover && hover == pivot,
-        selected: _.includes(selected, pivot)
-      })}
-      onMouseEnter={() => set_hover(pivot)}
-      onMouseLeave={() => set_hover(null)}
-      onClick={() => {
-        let idx = _.findIndex(selected, id => id == pivot);
-        if (idx > -1) {
-          let s = [...selected];
-          s.splice(idx, 1);
-          set_selected(s);
-        } else {
-          set_selected([...selected, pivot]);
-        }
-      }}
-    >{children}</td>;
+  let Checkbox = ({pivot}) => {
+    let on_click = () => {
+      let idx = _.findIndex(selected, id => id == pivot.id);
+      if (idx > -1) {
+        let s = [...selected];
+        s.splice(idx, 1);
+        set_selected(s);
+      } else {
+        set_selected([...selected, pivot.id]);
+      }
+    };
+    return <div onClick={on_click}>
+      <input type="checkbox" checked={_.includes(selected, pivot.id)} />
+      {pivot.name}
+    </div>;
+  };
 
   let Minimap = () =>
-    <div>
-      <button onClick={() => {
+    <div className='minimap'>
+      <button className='toggle' onClick={() => {
         set_selected(selected.length == 0 ? valid_ids : []);
       }}>Toggle All</button>
-      <table className='minimap code-table'>
-        <tbody>
-          {
-            _.chunk(valid_values, 8).map((vals, i) =>
-              <Fragment key={i}>
-                <tr>
-                  {vals.map(v =>
-                    <MinimapCell key={v.id} pivot={v.id}>
-                      {v.name}
-                    </MinimapCell>)}
-                </tr>
-                <tr>
-                  {vals.map(v => {
-                    let program = _.find(programs, {[pivot_key]: v.id});
-                    let task = _.find(TASKS, {id: program.task});
-                    return <MinimapCell key={v.id} pivot={v.id}>
-                      {program
-                        ? <Cell program={program} task={task} />
-                        : <>Not implemented</>
-                      }</MinimapCell>;
-                  })}
-                </tr>
-              </Fragment>
-            )
-          }
-        </tbody>
-      </table>
+      {valid_values.map(val => <Checkbox key={val.id} pivot={val} />)}
     </div>;
 
   let selected_programs =
@@ -186,26 +193,32 @@ let PivotView = ({group_key, group_value, pivot_key}) => {
 
   return <div className='pivot-view'>
     <h2>{_.capitalize(group_key)}: {group_value.name}</h2>
-    <div className='description'>
-      <strong>Description:</strong> {group_value.description}
+    <div className='column-container'>
+      <div className='main-content'>
+        <div className='main-sticky'>
+          {group_key == "task" ?
+            <TaskSpec task={group_value} on_selected={set_plan_selected} /> : null}
+        </div>
+        <div className='main-scroll'>
+          {group_key == "task"
+            ? <>
+              <SampleIO task={group_value} />
+            </>
+            : null}
+          {_.chunk(selected_programs, 2).map((progs, i) =>
+            <div className='program-row' key={i}>
+              {progs.map((prog, j) =>
+                <div className='program-container' key={`${i}_${j}`}>
+                  <h3>{_.find(pivot_values, {id: prog[pivot_key]}).name}</h3>
+                  <Code program={prog} width={'100%'} task={_.find(TASKS, {id: prog.task})} plan_focus={plan_selected} />
+                </div>)}
+            </div>)}
+        </div>
+      </div>
+      <div className='sidebar'>
+        <div className='sidebar-sticky'><Minimap /></div>
+      </div>
     </div>
-    {group_key == "task"
-      ? <>
-        <SampleIO task={group_value} />
-        <PlanDescription plan={group_value.plan} />
-      </>
-      : null}
-
-    <Minimap />
-
-    {_.chunk(selected_programs, 2).map((progs, i) =>
-      <div className='program-row' key={i}>
-        {progs.map((prog, j) =>
-          <div className='program-container' key={`${i}_${j}`}>
-            <h3>{_.find(pivot_values, {id: prog[pivot_key]}).name}</h3>
-            <Code program={prog} task={_.find(TASKS, {id: prog.task})} />
-          </div>)}
-      </div>)}
   </div>
 };
 

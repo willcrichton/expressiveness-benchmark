@@ -52,16 +52,7 @@ export interface Language {
   name: string
 }
 
-export interface CodeViewerProps {
-  task: Task,
-  program: Program,
-  on_load?: (editor: any) => void,
-  width?: string,
-  height?: string,
-  editor_props?: any
-}
-
-let compute_markers = (task: Task, program: Program) => {
+let compute_markers = (task: Task, program: Program, plan_focus?: string) => {
   let plan = program.plan;
   let plan_index: {[key: string]: number} = {};
   task.plan.forEach((plan: any, i: any) => {
@@ -87,12 +78,19 @@ let compute_markers = (task: Task, program: Program) => {
         _.sortBy(Object.keys(active))
          .map((key) => plan_index[key])
          .join("-");
+
+      let className = `plan-marker color-${indices}`;
+      if (plan_focus) {
+        let cls = _.includes(Object.keys(active), plan_focus) ? "focus" : "blur";
+        className += " " + cls;
+      }
+
       markers.push({
         startRow: line,
         startCol: current_range,
         endRow: line,
         endCol: i,
-        className: `plan-marker color-${indices}`,
+        className,
         type: ("text" as any)
       });
     };
@@ -128,16 +126,27 @@ let compute_markers = (task: Task, program: Program) => {
 
     return markers;
   }).flat();
-
 }
 
-export let CodeViewer = observer(({task, program, on_load, width, height, editor_props}: CodeViewerProps) => {
+export interface CodeViewerProps {
+  task: Task,
+  program: Program,
+  on_load?: (editor: any) => void,
+  width?: string,
+  height?: string,
+  editor_props?: any
+  plan_focus?: string
+}
+
+export let CodeViewer = observer((props: CodeViewerProps) => {
+  let {task, program, on_load, width, height, editor_props, plan_focus} = props;
+
   let mode =
     program.language == "sql" ? "sql"
       : program.language == "datalog" ? "prolog"
       : "python";
 
-  let markers = compute_markers(task, program);
+  let markers = compute_markers(task, program, plan_focus);
 
   let on_change = (source: string) => {
     program.source = source;

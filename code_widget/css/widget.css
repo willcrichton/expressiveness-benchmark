@@ -1,6 +1,6 @@
 .code-viewer .plan-marker {
     position: absolute;
-    opacity: 0.4;
+    opacity: 0.25;
 }
 
 /*
@@ -20,6 +20,14 @@ for c in range(1, 2+1):
 }}
 """.strip())
 */
+
+.code-viewer .plan-marker.blur {
+  opacity: 0.1;
+}
+
+.code-viewer .plan-marker.focus {
+  opacity: 0.5;
+}
 
 .color-0 {
   background-image: repeating-linear-gradient(45deg, rgb(161, 201, 244) 0px, rgb(161, 201, 244) 10px)
