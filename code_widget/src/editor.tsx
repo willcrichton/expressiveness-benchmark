@@ -149,7 +149,7 @@ export let CodeViewer = observer(({task, program, on_load, width, height, editor
   return (<div className='code-viewer'>
     <AceEditor
       mode={mode}
-      defaultValue={program.source}
+      value={program.source}
       markers={markers}
       width={width || '100%'}
       height={height || line_height * num_lines}

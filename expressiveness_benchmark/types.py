@@ -114,6 +114,7 @@ class Program(Base):
     def widget(self, task):
         from code_widget.example import CodeWidget
 
+        initial_plan = json.dumps(json.loads(self.to_json())['plan'])
         widget = CodeWidget(program=self.to_json(), task=task.to_json())
         output = widgets.Output()
         display(output)
@@ -121,10 +122,13 @@ class Program(Base):
         def save_plan_changes(changes):
             with output:
                 if changes["name"] == "plan":
-                    plan = json.loads(changes["new"])
-                    replace(self, plan=plan).save()
+                    new_plan = json.loads(changes["new"])
+                    if json.dumps(new_plan) != initial_plan:
+                        self.plan = new_plan
+                        self.save()
                 elif changes["name"] == "source":
-                    replace(self, source=changes["new"]).save()
+                    self.source = changes["new"]
+                    #self.save()
 
         widget.observe(save_plan_changes, names=["plan", "source"])
 
