@@ -1,0 +1,1 @@
+{"task": "unique_product", "language": "datalog", "plan": {}, "source": "\n.decl is_unique(Value:symbol)\nis_unique(Value) :-\n    list(_,Value), !not_unique(Value).\n    \n.decl not_unique(Value:symbol)\nnot_unique(Value) :- \n    list(id1,Value), list(id2,Value), id1 != id2.\n\nunique_product(value) :- is_unique(value).\n", "author": "g", "implementation": ""}

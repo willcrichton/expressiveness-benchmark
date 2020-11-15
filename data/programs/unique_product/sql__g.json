@@ -1,0 +1,1 @@
+{"task": "unique_product", "language": "sql", "plan": {}, "source": "\nSELECT value\nFROM list\nGROUP BY value\nHAVING Count(*) == 1\n", "author": "g", "implementation": ""}

@@ -1,0 +1,1 @@
+{"task": "unique_product", "language": "python-pandas", "plan": {}, "source": "\ndef unique_product(list):\n  return list[list.groupby('value').value.\n    transform(len) == 1].value\n", "author": "g", "implementation": ""}

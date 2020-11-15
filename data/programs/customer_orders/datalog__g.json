@@ -1,0 +1,1 @@
+{"task": "customer_orders", "language": "datalog", "plan": {}, "source": "  \ncustomer_orders(oid):-\n  customers(cid,customer,\"California\"),\n  orders(cid,_,oid,_).\n", "author": "g", "implementation": ""}

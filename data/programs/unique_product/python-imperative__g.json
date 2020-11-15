@@ -1,0 +1,1 @@
+{"task": "unique_product", "language": "python-imperative", "plan": {}, "source": "\ndef unique_product(list):\n  values = [l[\"value\"] for l in list]\n  for elem in values:\n    if values.count(elem) == 1:\n      return elem\n  return None\n", "author": "g", "implementation": ""}

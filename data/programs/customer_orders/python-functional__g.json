@@ -1,0 +1,1 @@
+{"task": "customer_orders", "language": "python-functional", "plan": {}, "source": "  \ndef customer_orders(customers,orders):\n  oids = []\n  cids = [customer['cid'] for customer in customers\n    if customer['location'] == \"California\"]\n  oids = [order['oid'] for order in orders \n    if order['cid'] in cids]\n  return oids\n", "author": "g", "implementation": ""}

@@ -1,0 +1,1 @@
+{"task": "customer_orders", "language": "python-pandas", "plan": {}, "source": "  \ndef customer_orders(customers,orders):\n  joined = orders.join(customers, on=\"cid\",how=\"inner\",lsuffix=\"_j\")\n  joined = joined.loc[joined['location'] == \"California\"]\n  return joined.oid.tolist()\n\n", "author": "g", "implementation": ""}
