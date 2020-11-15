@@ -109,6 +109,7 @@ let SampleIO = ({task}) =>
 
 let TaskSpec = ({task, on_selected}) => {
   let [selected, set_selected] = useState(null);
+  let [hover, set_hover] = useState(null);
 
   useEffect(() => on_selected(selected), [selected]);
 
@@ -124,19 +125,29 @@ let TaskSpec = ({task, on_selected}) => {
   while (i < desc.length) {
     if (i in plans) {
       let plan = plans[i];
-      let background = get_color(
-        plan.index,
-        selected ? (selected == plan.id ? 1. : 0.25) : 0.5
-      );
-      console.log(background);
+      let cur_plan = selected || hover;
+      let alpha = cur_plan ? (cur_plan == plan.id ? 1. : 0.25) : 0.5;
+      let background = get_color(plan.index, alpha);
+      let border_color = get_color(plan.index, Math.min(1, alpha * 2));
       elts.push(
         <span
           className='goal'
           onClick={() => set_selected(selected && selected == plan.id ? null : plan.id)}
-          style={{background}}>
+          onMouseEnter={() => {
+            if (!selected) { on_selected(plan.id); }
+            set_hover(plan.id);
+          }}
+          onMouseLeave={() => {
+              if (!selected) { on_selected(null); }
+              set_hover(null);
+          }}
+          style={{
+            background: get_color(plan.index, alpha),
+            border: `2px solid ${border_color}`
+          }}>
           {plan.description}
         </span>);
-      i += plan.description.length;
+    i += plan.description.length;
     } else {
       elts.push(desc[i]);
       i += 1;
