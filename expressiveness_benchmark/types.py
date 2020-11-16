@@ -20,18 +20,25 @@ class Base:
     def validate(self):
         pass
 
+    def path(self):
+        return os.path.join(self.fdir(), self.fname())
+
     def save(self):
         self.validate()
 
-        p = Path(self.fname())
+        p = Path(self.path())
         p.parent.mkdir(parents=True, exist_ok=True)
 
         with p.open("w") as f:
             f.write(self.to_json())
 
     def load(self):
-        return self.from_json(open(self.fname(), "r").read())
+        return self.from_json(open(self.path(), "r").read())
 
+    @classmethod
+    def load_all(cls):
+        paths = glob(os.path.join(cls.fdir(), "**", "*.json"), recursive=True)
+        return pd.DataFrame([cls.from_json(open(path).read()) for path in paths])
 
 @dataclass_json
 @dataclass
@@ -51,8 +58,12 @@ class Task(Base):
     sample_input: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
     sample_output: Any = None
 
+    @staticmethod
+    def fdir():
+        return os.path.join(DATA_DIR, "tasks")
+
     def fname(self):
-        return os.path.join(DATA_DIR, "tasks", f"{self.id}.json")
+        return f"{self.id}.json"
 
     def validate(self):
         assert self.sample_input is not None
@@ -65,8 +76,12 @@ class Language(Base):
     id: str
     name: str
 
+    @staticmethod
+    def fdir():
+        return os.path.join(DATA_DIR, "languages")
+
     def fname(self):
-        return os.path.join(DATA_DIR, "languages", f"{self.id}.json")
+        return f"{self.id}.json"
 
 
 @dataclass_json
@@ -87,10 +102,12 @@ class Program(Base):
     author: str = ""
     implementation: str = ""
 
+    @staticmethod
+    def fdir():
+        return os.path.join(DATA_DIR, "programs")
+
     def fname(self):
         return os.path.join(
-            DATA_DIR,
-            "programs",
             self.task,
             f"{self.language}_{self.implementation}_{self.author}.json",
         )
@@ -290,10 +307,6 @@ class Program(Base):
 
         self.check_equals(task.sample_output, ret)
 
-
-def load_all_programs():
-    programs = glob(os.path.join(DATA_DIR, "programs", "*.json"))
-    return [Program.from_json(open(p).read()) for p in programs]
 
 
 LANGUAGES = {
