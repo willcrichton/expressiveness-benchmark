@@ -44,23 +44,16 @@ let Code = ({program, ...props}) =>
     }}
   />;
 
-/* TODO: performance bug. Ace is regenerating on every render despite props
- * not changing. Seems like fontSize or something is invoking a render func?
-
-   let Cell = ({program, task}) =>
+let Cell = ({program, task}) =>
    <Code
    program={program}
    task={task}
    width={"160px"}
    height={"100px"}
    editor_props={{
-   showGutter: false,
-   fontSize: 4
-   }}
-   />; */
-
-let Cell = ({program, task}) =>
-  <pre style={{width: 160, height: 100, fontSize: 4}}>{program.source}</pre>;
+     showGutter: false,
+     fontSize: 4
+   }} />;
 
 let Output = ({val}) => {
   if (Array.isArray(val)) {
