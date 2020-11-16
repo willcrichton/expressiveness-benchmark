@@ -40,6 +40,7 @@ class Base:
         paths = glob(os.path.join(cls.fdir(), "**", "*.json"), recursive=True)
         return pd.DataFrame([cls.from_json(open(path).read()) for path in paths])
 
+
 @dataclass_json
 @dataclass
 class Plan:
@@ -306,7 +307,6 @@ class Program(Base):
                     ret = pd.DataFrame()
 
         self.check_equals(task.sample_output, ret)
-
 
 
 LANGUAGES = {
