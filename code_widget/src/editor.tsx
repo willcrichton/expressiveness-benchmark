@@ -19,8 +19,12 @@ import "ace-builds/src-min-noconflict/mode-python";
 import "ace-builds/src-min-noconflict/mode-sql";
 import "ace-builds/src-min-noconflict/mode-prolog";
 
-// [[round(r*255), round(g*255), round(b*255)] for (r, g, b) in seaborn.color_palette('pastel')]
-export const PALETTE = [[161, 201, 244], [255, 180, 130], [141, 229, 161], [255, 159, 155], [208, 187, 255], [222, 187, 155], [250, 176, 228], [207, 207, 207], [255, 254, 163], [185, 242, 240]]
+/*
+   palette = seaborn.color_palette('pastel')
+   palette = [palette[i] for i in [0, 1, 2, 6, 8]]
+   print([[round(r*255), round(g*255), round(b*255)] for (r, g, b) in palette])
+ */
+export const PALETTE = [[161, 201, 244], [255, 180, 130], [141, 229, 161], [250, 176, 228], [255, 254, 163]];
 
 export interface Task {
   id: string
@@ -75,9 +79,12 @@ let compute_markers = (task: Task, program: Program, plan_focus?: string) => {
 
     let flush = (i:number) => {
       let indices =
-        _.sortBy(Object.keys(active))
-         .map((key) => plan_index[key])
-         .join("-");
+        _.chain(active)
+         .keys()
+         .map(key => plan_index[key])
+         .sortBy()
+         .join("-")
+         .value();
 
       let className = `plan-marker color-${indices}`;
       if (plan_focus) {
