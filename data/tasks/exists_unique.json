@@ -1,1 +1,0 @@
-{"id": "exists_unique", "category": "Basic", "name": "Unique product", "description": "Find if there is a product that is different from all other products on a shelf", "plan": [], "sample_input": {"list": [{"id": 0, "value": "Apple"}, {"id": 1, "value": "Banana"}, {"id": 2, "value": "Banana"}, {"id": 3, "value": "Banana"}]}, "sample_output": 1}
