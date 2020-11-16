@@ -86,10 +86,14 @@ let compute_markers = (task: Task, program: Program, plan_focus?: string) => {
          .join("-")
          .value();
 
-      let className = `plan-marker color-${indices}`;
+      let className = `plan-marker `;
       if (plan_focus) {
-        let cls = _.includes(Object.keys(active), plan_focus) ? "focus" : "blur";
-        className += " " + cls;
+        let focused = _.includes(Object.keys(active), plan_focus);
+        let cls = focused ? "focus" : "blur";
+        let focus_indices = focused ? plan_index[plan_focus] : indices;
+        className += `${cls} color-${focus_indices}`;
+      } else {
+        className += `color-${indices}`;
       }
 
       markers.push({
