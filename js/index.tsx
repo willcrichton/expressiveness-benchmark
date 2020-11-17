@@ -17,7 +17,7 @@ import _LANGUAGES from '../data/languages/*.json';
 import _PROGRAMS from '../data/programs/**/*.json';
 
 const TASK_GROUP_ORDER = [
-  'Basic', 'Aggregation', 'Strings', 'First-order logic',
+  'Basic', 'Joins', 'Aggregation', 'Strings', 'First-order logic',
   'Graphs', 'Time Series'];
 const TASKS: Task[] = _.sortBy(
   Object.values(_TASKS),
