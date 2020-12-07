@@ -18,6 +18,7 @@ import "ace-builds/src-min-noconflict/theme-textmate";
 import "ace-builds/src-min-noconflict/mode-python";
 import "ace-builds/src-min-noconflict/mode-sql";
 import "ace-builds/src-min-noconflict/mode-prolog";
+import "ace-builds/src-min-noconflict/mode-r";
 
 /*
    palette = seaborn.color_palette('pastel')
@@ -155,6 +156,7 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
   let mode =
     program.language == "sql" ? "sql"
       : program.language == "datalog" ? "prolog"
+      : program.language == "r" ? "r"
       : "python";
 
   let markers = compute_markers(task, program, plan_focus);

@@ -1,0 +1,1 @@
+{"task": "row_per_child", "language": "python-pandas", "plan": {}, "source": "def row_per_child(families):\n  df = pd.wide_to_long(\n    families, \n    stubnames=['dob', 'height'], \n    sep=\"_child\", \n    i='family', \n    j='child').reset_index()\n  df.child = df.child.map(lambda c: f'child{c}')\n  return df\n  ", "author": "will", "implementation": ""}

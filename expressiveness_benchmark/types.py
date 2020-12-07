@@ -7,6 +7,10 @@ from dataclasses import dataclass, field, replace
 from glob import glob
 from pathlib import Path
 from typing import Any, Dict, List
+import rpy2.robjects as ro
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+import numpy as np
 
 import ipywidgets as widgets
 import pandas as pd
@@ -153,16 +157,22 @@ class Program(Base):
         return widget
 
     def to_dataframe(self, value):
-        if isinstance(value, pd.DataFrame):
-            return value
+        def to_df():
+            if isinstance(value, pd.DataFrame):
+                return value
 
-        if isinstance(value, list):
-            if len(value) > 0 and isinstance(value[0], dict):
-                return pd.DataFrame(value)
+            if isinstance(value, list):
+                if len(value) > 0 and isinstance(value[0], dict):
+                    return pd.DataFrame(value)
+                else:
+                    return pd.DataFrame([[el] for el in value])
             else:
-                return pd.DataFrame([[el] for el in value])
-        else:
-            return pd.DataFrame([value])
+                return pd.DataFrame([value])
+
+        df = to_df()
+        d = dict.fromkeys(df.select_dtypes(np.number).columns, np.int64)
+        df = df.astype(d)
+        return df.reindex(sorted(df.columns), axis=1)
 
     def check_equals(self, target, actual):
         target = self.to_dataframe(target)
@@ -252,7 +262,7 @@ class Program(Base):
 
                 return [
                     f"{convert_name(c)}:{type_map[str(df[c].dtype)]}"
-                    for c in df.columns
+                    for c in sorted(df.columns)
                 ]
 
             prelude = []
@@ -301,10 +311,27 @@ class Program(Base):
                         f"{path}/{task.id}.csv",
                         sep="\t",
                         header=None,
-                        names=output_df.columns.tolist(),
+                        names=sorted(output_df.columns.tolist()),
+                        dtype=dict(zip(output_df.columns, output_df.dtypes))
                     )
                 except pd.errors.EmptyDataError:
                     ret = pd.DataFrame()
+
+        elif self.language == "r":
+            with localconverter(ro.default_converter + pandas2ri.converter):
+                r_dfs_in = {
+                    key: ro.conversion.py2rpy(df)
+                    for key, df in dataframes.items()
+                }
+
+                ro.r('library(tidyverse)')
+                ro.r(self.source)
+                r_df_out = ro.r[task.id](**r_dfs_in)
+
+                ret = ro.conversion.rpy2py(r_df_out)
+
+        else:
+            assert False, "Unknown language"
 
         self.check_equals(task.sample_output, ret)
 
@@ -317,6 +344,7 @@ LANGUAGES = {
         Language(id="python-pandas", name="Python (Pandas)"),
         Language(id="sql", name="SQL"),
         Language(id="datalog", name="Datalog"),
+        Language(id="r", name="R"),
     ]
 }
 

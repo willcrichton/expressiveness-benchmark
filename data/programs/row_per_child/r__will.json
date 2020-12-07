@@ -1,0 +1,1 @@
+{"task": "row_per_child", "language": "r", "plan": {}, "source": "\nrow_per_child <- function(families) {\n  families %>%\n    pivot_longer(\n      !family,\n      names_to = c(\".value\", \"child\"),\n      names_sep = \"_\",\n    )\n}", "author": "will", "implementation": ""}

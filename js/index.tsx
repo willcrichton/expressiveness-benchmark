@@ -27,7 +27,7 @@ const TASKS: Task[] = _.sortBy(
 const PROGRAMS: Program[] =
   _.map(_PROGRAMS, programs => Object.values(programs).map(p => new Program(p))).flat();
 
-const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'sql', 'datalog'];
+const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'r', 'sql', 'datalog'];
 const LANGUAGES: Language[] = LANG_ORDER.map(id => _LANGUAGES[id]);
 
 let Code = ({program, ...props}) =>
@@ -232,62 +232,64 @@ let TaskView = ({task}) =>
 let LangView = ({lang}) =>
   <PivotView group_key={"language"} group_value={lang} pivot_key={"task"} />;
 
-let Matrix = () => {
+let MatrixRoute = () => {
   let [hover, set_hover] = useState(null);
   let history = useHistory();
 
   let task_groups = _.groupBy(TASKS, 'category');
   let tasks_sorted = TASK_GROUP_ORDER.map(key => [key, task_groups[key]]);
 
-  return <table className='matrix code-table'>
-    <thead>
-      <tr>
-        <th className='task-kind'>Task type</th>
-        <th className='task-kind'>Task name</th>
-        {LANGUAGES.map(lang => {
-          let category = {type: "lang", id: lang.id};
-          return <th className='hoverable' key={lang.id}
-                     onMouseEnter={() => set_hover(category)}
-                     onMouseLeave={() => set_hover(null)}
-                     onClick={() => history.push(`/lang/${lang.id}`)}>
-            {lang.name}
-          </th>
-        })}
-      </tr>
-    </thead>
+  return <div>
+    <table className='matrix code-table'>
+      <thead>
+        <tr>
+          <th className='task-kind'>Task type</th>
+          <th className='task-kind'>Task name</th>
+          {LANGUAGES.map(lang => {
+            let category = {type: "lang", id: lang.id};
+            return <th className='hoverable' key={lang.id}
+                       onMouseEnter={() => set_hover(category)}
+                       onMouseLeave={() => set_hover(null)}
+                       onClick={() => history.push(`/lang/${lang.id}`)}>
+              {lang.name}
+            </th>
+          })}
+        </tr>
+      </thead>
 
-    <tbody>
-      {tasks_sorted.map(([group, tasks]) =>
-        tasks.map((task, i) => {
-          let category = {type: "task", id: task.id};
-          return <tr key={task.id}>
-            {i == 0 ? <td className='task-type' rowSpan={tasks.length}>{group}</td> : null}
-            <td
-              className='task-description hoverable'
-              onMouseEnter={() => set_hover(category)}
-              onMouseLeave={() => set_hover(null)}
-              onClick={() => history.push(`/task/${task.id}`)}
-            >
-              {task.name}
-            </td>
-            {LANGUAGES.map(lang => {
-              let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
-              let is_hover = hover
-                ? ((hover.type == 'lang' && hover.id == lang.id)
-                  || (hover.type == 'task' && hover.id == task.id))
-                : false;
+      <tbody>
+        {tasks_sorted.map(([group, tasks]) =>
+          tasks.map((task, i) => {
+            let category = {type: "task", id: task.id};
+            return <tr key={task.id}>
+              {i == 0 ? <td className='task-type' rowSpan={tasks.length}>{group}</td> : null}
+              <td
+                className='task-description hoverable'
+                onMouseEnter={() => set_hover(category)}
+                onMouseLeave={() => set_hover(null)}
+                onClick={() => history.push(`/task/${task.id}`)}
+              >
+                {task.name}
+              </td>
+              {LANGUAGES.map(lang => {
+                let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
+                let is_hover = hover
+                  ? ((hover.type == 'lang' && hover.id == lang.id)
+                    || (hover.type == 'task' && hover.id == task.id))
+                  : false;
 
-              return <td className={`task-code ${is_hover ? "hover" : ""}`} key={lang.id}>
-                {program
-                  ? <Cell program={program} task={task} />
-                  : ''}
-              </td>;
-            })}
-          </tr>
-        })
-      )}
-    </tbody>
-  </table>
+                return <td className={`task-code ${is_hover ? "hover" : ""}`} key={lang.id}>
+                  {program
+                    ? <Cell program={program} task={task} />
+                    : ''}
+                </td>;
+              })}
+            </tr>
+          })
+        )}
+      </tbody>
+    </table>
+  </div>
 };
 
 let App = () => {
@@ -307,14 +309,11 @@ let App = () => {
 
   return <div>
     <h1>Expressiveness Benchmark</h1>
-
     <Router basename="/expressiveness-benchmark">
       <Switch>
         <Route path="/task/:id"><TaskRoute /></Route>
         <Route path="/lang/:id"><LangRoute /></Route>
-        <Route path="/">
-          <Matrix />
-        </Route>
+        <Route path="/"><MatrixRoute /></Route>
       </Switch>
     </Router>
   </div>;
