@@ -1,0 +1,1 @@
+{"task": "youngest_over_35", "language": "r", "plan": {"name": [{"line": 4, "start": 4, "end": 14}], "min": [{"line": 3, "start": 4, "end": 29}], "filter": [{"line": 2, "start": 4, "end": 24}]}, "source": "youngest_over_35 <- function(people) {\n  people %>%\n    filter(age > 35) %>%\n    slice(which.min(age)) %>%\n    pull(name)\n}", "author": "will", "implementation": ""}

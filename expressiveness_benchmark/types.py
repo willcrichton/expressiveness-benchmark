@@ -161,7 +161,7 @@ class Program(Base):
             if isinstance(value, pd.DataFrame):
                 return value
 
-            if isinstance(value, list):
+            if isinstance(value, (list, tuple, np.ndarray)):
                 if len(value) > 0 and isinstance(value[0], dict):
                     return pd.DataFrame(value)
                 else:
@@ -170,7 +170,7 @@ class Program(Base):
                 return pd.DataFrame([value])
 
         df = to_df()
-        d = dict.fromkeys(df.select_dtypes(np.number).columns, np.int64)
+        d = dict.fromkeys(df.select_dtypes(np.number).columns, np.float64)
         df = df.astype(d)
         return df.reindex(sorted(df.columns), axis=1)
 
