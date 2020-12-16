@@ -7,9 +7,9 @@ from dataclasses import dataclass, field, replace
 from glob import glob
 from pathlib import Path
 from typing import Any, Dict, List
-import numpy as np
 
 import ipywidgets as widgets
+import numpy as np
 import pandas as pd
 from dataclasses_json import dataclass_json
 from IPython.display import display
@@ -201,16 +201,13 @@ class Program(Base):
         self.check_equals(task.sample_output, ret)
 
 
-from .languages.python import LANGUAGES as L1
-from .languages.sql import LANGUAGES as L2
 from .languages.datalog import LANGUAGES as L3
+from .languages.python import LANGUAGES as L1
+from .languages.q import LANGUAGES as L5
 from .languages.r import LANGUAGES as L4
-from .languages.k import LANGUAGES as L5
+from .languages.sql import LANGUAGES as L2
 
-LANGUAGES = {
-    l.id: l
-    for l in L1 + L2 + L3 + L4 + L5
-}
+LANGUAGES = {l.id: l for l in L1 + L2 + L3 + L4 + L5}
 
 
 def save_languages():
