@@ -149,7 +149,6 @@ code_widget/nbextension/static/*index.*
 *.js.map
 *.worker.js
 *.embed-bundle.js
-src/*.js
 
 code_widget/labextension/*.tgz
 
