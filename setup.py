@@ -10,5 +10,5 @@ if __name__ == "__main__":
         author_email='wcrichto@cs.stanford.edu',
         license='Apache 2.0',
         packages=find_packages(),
-        install_requires=['jupyter', 'dataclasses-json', 'pandas', 'tox', 'rpy2'],
+        install_requires=['jupyter', 'dataclasses-json', 'pandas', 'tox', 'rpy2', 'pyinterval', 'seaborn'],
         zip_safe=False)

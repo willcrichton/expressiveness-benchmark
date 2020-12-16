@@ -7,9 +7,6 @@ from dataclasses import dataclass, field, replace
 from glob import glob
 from pathlib import Path
 from typing import Any, Dict, List
-import rpy2.robjects as ro
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
 import numpy as np
 
 import ipywidgets as widgets
@@ -87,6 +84,9 @@ class Language(Base):
 
     def fname(self):
         return f"{self.id}.json"
+
+    def execute(self, program, task, debug=False):
+        raise NotImplementedError
 
 
 @dataclass_json
@@ -196,156 +196,20 @@ class Program(Base):
             df = pd.DataFrame(table)
             dataframes[table_name] = df.reindex(sorted(df.columns), axis=1)
 
-        if "python" in self.language:
-            globls = {}
-            imports = [
-                "import pandas as pd",
-                "import numpy as np",
-                "from collections import defaultdict",
-                "import math",
-            ]
-
-            exec(
-                "\n".join(imports) + "\n" + self.source,
-                globls,
-                globls,
-            )
-
-            args = [
-                f"{k}=pd.DataFrame({v})" if "pandas" in self.language else f"{k}={v}"
-                for k, v in task.sample_input.items()
-            ]
-
-            call = f"{task.id}({', '.join(args)})"
-            ret = eval(call, globls, globls)
-
-        elif self.language == "sql":
-            conn = sqlite3.connect(":memory:")
-
-            # https://stackoverflow.com/questions/3300464/how-can-i-get-dict-from-sqlite-query
-            def dict_factory(cursor, row):
-                d = {}
-                for idx, col in enumerate(cursor.description):
-                    d[col[0]] = row[idx]
-                return d
-
-            conn.row_factory = dict_factory
-
-            try:
-                for table_name, df in dataframes.items():
-                    df.to_sql(table_name, con=conn)
-                conn.commit()
-                c = conn.cursor()
-
-                commands = self.source.split(";")
-                for cmd in commands:
-                    c.execute(cmd)
-
-                ret = c.fetchall()
-                if len(ret) > 0 and len(ret[0]) == 1:
-                    ret = [r[list(r.keys())[0]] for r in ret]
-
-            finally:
-                conn.close()
-
-        elif self.language == "datalog":
-
-            def columns_to_relation(df):
-                type_map = {"int64": "number", "object": "symbol", "float64": "float"}
-
-                def convert_name(c):
-                    try:
-                        int(c)
-                        return f"x{c}"
-                    except ValueError:
-                        return c
-
-                return [
-                    f"{convert_name(c)}:{type_map[str(df[c].dtype)]}"
-                    for c in sorted(df.columns)
-                ]
-
-            prelude = []
-            for table_name, df in dataframes.items():
-                columns = columns_to_relation(df)
-                prelude.append(f'.decl {table_name}({", ".join(columns)})')
-                prelude.append(f".input {table_name}")
-
-            output_df = self.to_dataframe(task.sample_output)
-            columns = columns_to_relation(output_df)
-            prelude.append(f'.decl {task.id}({", ".join(columns)})')
-            prelude.append(f".output {task.id}")
-            prelude = "\n".join(prelude)
-
-            program = prelude + "\n" + self.source
-
-            with tempfile.TemporaryDirectory() as path:
-                if debug:
-                    path = tempfile.mkdtemp()
-                    print("Path:", path)
-
-                with open(f"{path}/program.dl", "w") as f:
-                    f.write(program)
-
-                for table_name, df in dataframes.items():
-                    df.to_csv(
-                        f"{path}/{table_name}.facts",
-                        sep="\t",
-                        index=False,
-                        header=False,
-                    )
-
-                try:
-                    sp.check_output(
-                        "souffle -F. -D. program.dl",
-                        cwd=path,
-                        shell=True,
-                        stderr=sp.PIPE,
-                    )
-                except sp.CalledProcessError as e:
-                    print(e.stderr.decode("utf-8"))
-                    raise
-
-                try:
-                    ret = pd.read_csv(
-                        f"{path}/{task.id}.csv",
-                        sep="\t",
-                        header=None,
-                        names=sorted(output_df.columns.tolist()),
-                        dtype=dict(zip(output_df.columns, output_df.dtypes))
-                    )
-                except pd.errors.EmptyDataError:
-                    ret = pd.DataFrame()
-
-        elif self.language == "r":
-            with localconverter(ro.default_converter + pandas2ri.converter):
-                r_dfs_in = {
-                    key: ro.conversion.py2rpy(df)
-                    for key, df in dataframes.items()
-                }
-
-                ro.r('library(tidyverse)')
-                ro.r(self.source)
-                r_df_out = ro.r[task.id](**r_dfs_in)
-
-                ret = ro.conversion.rpy2py(r_df_out)
-
-        else:
-            assert False, "Unknown language"
+        ret = LANGUAGES[self.language].execute(self, task, dataframes, debug)
 
         self.check_equals(task.sample_output, ret)
 
 
+from .languages.python import LANGUAGES as L1
+from .languages.sql import LANGUAGES as L2
+from .languages.datalog import LANGUAGES as L3
+from .languages.r import LANGUAGES as L4
+from .languages.k import LANGUAGES as L5
+
 LANGUAGES = {
     l.id: l
-    for l in [
-        Language(id="python-imperative", name="Python (Imperative)"),
-        Language(id="python-functional", name="Python (Functional)"),
-        Language(id="python-pandas", name="Python (Pandas)"),
-        Language(id="sql", name="SQL"),
-        Language(id="datalog", name="Datalog"),
-        Language(id="r", name="R"),
-    ]
+    for l in L1 + L2 + L3 + L4 + L5
 }
 
 

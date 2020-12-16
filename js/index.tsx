@@ -27,7 +27,7 @@ const TASKS: Task[] = _.sortBy(
 const PROGRAMS: Program[] =
   _.map(_PROGRAMS, programs => Object.values(programs).map(p => new Program(p))).flat();
 
-const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'r', 'sql', 'datalog'];
+const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'r', 'sql', 'datalog', 'q'];
 const LANGUAGES: Language[] = LANG_ORDER.map(id => _LANGUAGES[id]);
 
 let Code = ({program, ...props}) =>
