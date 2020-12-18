@@ -309,11 +309,11 @@ let App = () => {
 
   return <div>
     <h1>Expressiveness Benchmark</h1>
-    <Router basename="/expressiveness-benchmark">
+    <Router basename={process.env.PUBLIC_URL}>
       <Switch>
-        <Route path="/task/:id"><TaskRoute /></Route>
-        <Route path="/lang/:id"><LangRoute /></Route>
-        <Route path="/"><MatrixRoute /></Route>
+        <Route exact path="/task/:id"><TaskRoute /></Route>
+        <Route exact path="/lang/:id"><LangRoute /></Route>
+        <Route exact path="/"><MatrixRoute /></Route>
       </Switch>
     </Router>
   </div>;
