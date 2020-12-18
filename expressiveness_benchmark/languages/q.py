@@ -17,6 +17,10 @@ class _Q(Language):
                 df.to_csv(f"{path}/{k}.csv", index=False)
                 type_map = {"int64": "I", "object": "*", "float64": "F"}
                 types = "".join([type_map[str(c)] for c in df.dtypes])
+
+                # HACK: Q can't seem to open 1-column CSVs?
+                if len(df.dtypes) == 1:
+                    types += "*"
                 csv_commands.append(f'{k}:("{types}"; enlist ",") 0:`:{path}/{k}.csv')
 
             args = "; ".join(sorted(dataframes.keys()))
