@@ -1,0 +1,3 @@
+youngest_over_35(Name) :-
+  people(Age, Name),
+  Age = min Age : { people(Age, _), Age > 35 }.

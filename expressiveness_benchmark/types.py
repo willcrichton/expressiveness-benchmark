@@ -4,6 +4,9 @@ from dataclasses import dataclass, field, replace
 from glob import glob
 from pathlib import Path
 from typing import Any, Dict, List
+import tempfile
+import subprocess as sp
+from iterextras import par_for
 
 import ipywidgets as widgets
 import numpy as np
@@ -34,9 +37,13 @@ class Base:
         return self.from_json(open(self.path(), "r").read())
 
     @classmethod
-    def load_all(cls):
+    def _load_all(cls):
         paths = glob(os.path.join(cls.fdir(), "**", "*.json"), recursive=True)
-        return pd.DataFrame([cls.from_json(open(path).read()) for path in paths])
+        return [cls.from_json(open(path).read()) for path in paths]
+
+    @classmethod
+    def load_all(cls):
+        return pd.DataFrame(cls._load_all())
 
 
 @dataclass_json
@@ -114,6 +121,14 @@ class Program(Base):
             f"{self.language}_{self.implementation}_{self.author}.json",
         )
 
+    @classmethod
+    def load_all(cls):
+        progs = cls._load_all()
+        ntokens = par_for(lambda p: p.ntokens(), progs, progress=False)
+        df = pd.DataFrame(progs)
+        df['ntokens'] = ntokens
+        return df
+
     def validate(self):
         try:
             Task(id=self.task).load()
@@ -129,6 +144,19 @@ class Program(Base):
             return replace(self, plan=saved_self.plan)
         except FileNotFoundError:
             return self
+
+    def ntokens(self):
+        with tempfile.NamedTemporaryFile() as f:
+            f.write(self.source.encode('utf-8'))
+            f.flush()
+
+            out = sp.check_output(
+                f'node index.js {f.name} {self.language}',
+                shell=True,
+                cwd=os.path.join(os.path.dirname(__file__), "..", "scripts", "tokenizer"),
+                stderr=sp.PIPE)
+
+            return int(out)
 
     def widget(self, task):
         from code_widget.example import CodeWidget
