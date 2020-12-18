@@ -309,7 +309,7 @@ let App = () => {
 
   return <div>
     <h1>Expressiveness Benchmark</h1>
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename="/expressiveness-benchmark">
       <Switch>
         <Route exact path="/task/:id"><TaskRoute /></Route>
         <Route exact path="/lang/:id"><LangRoute /></Route>
