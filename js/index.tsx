@@ -19,10 +19,12 @@ import _PROGRAMS from '../data/programs/**/*.json';
 const TASK_GROUP_ORDER = [
   'Basic', 'Joins', 'Aggregation', 'Strings', 'First-order logic',
   'Time Series', 'Graphs'];
-const TASKS: Task[] = _.sortBy(
-  Object.values(_TASKS),
-  [t => _.findIndex(TASK_GROUP_ORDER, c => c == t.category),
-   'name']);
+const TASKS: Task[] =
+  _.sortBy(
+    Object.values(_TASKS),
+    [t => _.findIndex(TASK_GROUP_ORDER, c => c == t.category),
+     'name'])
+   .filter(t => !_.includes(['customer_orders', 'unique_product', 'average_adjacent'], t.id))
 
 const PROGRAMS: Program[] =
   _.map(_PROGRAMS, programs => Object.values(programs).map(p => new Program(p))).flat();
