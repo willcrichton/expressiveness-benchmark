@@ -311,7 +311,7 @@ let App = () => {
 
   return <div>
     <h1>Expressiveness Benchmark</h1>
-    <Router basename="/expressiveness-benchmark">
+    <Router>
       <Switch>
         <Route exact path="/task/:id"><TaskRoute /></Route>
         <Route exact path="/lang/:id"><LangRoute /></Route>
