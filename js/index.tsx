@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {Program, Task, Language, CodeViewer, PALETTE} from './editor/editor';
 import './editor/main.css';
 import '../css/index.scss';
-import {BrowserRouter as Router, Switch, Route, Link, useHistory, useParams} from 'react-router-dom';
+import {HashRouter as Router, Switch, Route, Link, useHistory, useParams} from 'react-router-dom';
 
 let get_color = (i: number, opacity?: number) => `rgba(${PALETTE[i].join(', ')}, ${opacity || 1.})`;
 
