@@ -164,7 +164,7 @@ var TaskSpec = function (_a) {
         elts);
 };
 var PivotView = function (_a) {
-    var group_key = _a.group_key, group_value = _a.group_value, pivot_key = _a.pivot_key;
+    var group_key = _a.group_key, group_value = _a.group_value, pivot_key = _a.pivot_key, show_plan = _a.show_plan;
     var programs = data_1.PROGRAMS.filter(function (program) { return program[group_key] == group_value.id; });
     var pivot_values = pivot_key == 'language' ? data_1.LANGUAGES : data_1.TASKS;
     var valid_values = pivot_values.filter(function (v) {
@@ -223,7 +223,7 @@ var PivotView = function (_a) {
                         return react_1["default"].createElement("div", { className: 'program-row', key: i }, progs.map(function (prog, j) {
                             return react_1["default"].createElement("div", { className: 'program-container', key: i + "_" + j },
                                 react_1["default"].createElement("h3", null, lodash_1["default"].find(pivot_values, { id: prog[pivot_key] }).name),
-                                react_1["default"].createElement(exports.Code, { program: prog, width: '100%', task: lodash_1["default"].find(data_1.TASKS, { id: prog.task }), plan_focus: plan_selected }));
+                                react_1["default"].createElement(exports.Code, { program: prog, width: '100%', task: lodash_1["default"].find(data_1.TASKS, { id: prog.task }), plan_focus: plan_selected, show_plan: show_plan }));
                         }));
                     }))),
             react_1["default"].createElement("div", { className: 'sidebar' },
@@ -232,9 +232,9 @@ var PivotView = function (_a) {
 };
 exports.TaskView = function (_a) {
     var task = _a.task;
-    return react_1["default"].createElement(PivotView, { group_key: "task", group_value: task, pivot_key: "language" });
+    return react_1["default"].createElement(PivotView, { group_key: "task", group_value: task, pivot_key: "language", show_plan: true });
 };
 exports.LangView = function (_a) {
     var lang = _a.lang;
-    return react_1["default"].createElement(PivotView, { group_key: "language", group_value: lang, pivot_key: "task" });
+    return react_1["default"].createElement(PivotView, { group_key: "language", group_value: lang, pivot_key: "task", show_plan: false });
 };
