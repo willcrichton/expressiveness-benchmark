@@ -173,3 +173,16 @@ table {
     .ace_editor { background: none; }
     .ace_scrollbar { display: none; }
 }
+
+.analysis {
+    line-height: 1.3em;
+
+    p {
+        padding: 0 20px;
+        margin: 10px 0;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+    }
+}

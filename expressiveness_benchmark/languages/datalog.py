@@ -76,4 +76,4 @@ class _Datalog(Language):
                 return None
 
 
-LANGUAGES = [_Datalog(id="datalog", name="Datalog")]
+LANGUAGES = [_Datalog(id="datalog", name="Datalog - Souffle")]

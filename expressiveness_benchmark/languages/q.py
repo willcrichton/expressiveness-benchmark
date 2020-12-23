@@ -66,5 +66,5 @@ save `:output.csv
 
 
 LANGUAGES = [
-    _Q(id="q", name="q"),
+    _Q(id="q", name="Q - kdb+"),
 ]

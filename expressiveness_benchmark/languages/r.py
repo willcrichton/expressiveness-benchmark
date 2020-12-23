@@ -17,4 +17,4 @@ class _R(Language):
             return ro.conversion.rpy2py(r_df_out)
 
 
-LANGUAGES = [_R(id="r", name="R (Tidyverse)")]
+LANGUAGES = [_R(id="r", name="R - Tidyverse")]

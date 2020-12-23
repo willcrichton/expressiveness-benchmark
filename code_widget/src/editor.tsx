@@ -149,6 +149,7 @@ export interface CodeViewerProps {
   height?: string,
   editor_props?: any
   plan_focus?: string
+  show_plan?: boolean
 }
 
 export let CodeViewer = observer((props: CodeViewerProps) => {
@@ -161,7 +162,7 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
       : program.language == "q" ? "q"
       : "python";
 
-  let markers = compute_markers(task, program, plan_focus);
+  let markers = props.show_plan !== false ? compute_markers(task, program, plan_focus) : [];
 
   let on_change = (source: string) => {
     program.source = source;

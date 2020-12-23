@@ -35,4 +35,4 @@ class _Sql(Language):
             conn.close()
 
 
-LANGUAGES = [_Sql(id="sql", name="SQL (SQLite)")]
+LANGUAGES = [_Sql(id="sql", name="SQL - SQLite")]

@@ -92,6 +92,19 @@ class Language(Base):
     def execute(self, program, task, debug=False):
         raise NotImplementedError
 
+    def ntokens(self, program):
+        with tempfile.NamedTemporaryFile() as f:
+            f.write(program.encode('utf-8'))
+            f.flush()
+
+            out = sp.check_output(
+                f'node index.js {f.name} {self.id}',
+                shell=True,
+                cwd=os.path.join(os.path.dirname(__file__), "..", "scripts", "tokenizer"),
+                stderr=sp.PIPE)
+
+            return int(out)
+
 
 @dataclass_json
 @dataclass
@@ -99,6 +112,12 @@ class SourceRange:
     line: int
     start: int
     end: int
+
+    def slice(self, lines):
+        try:
+            return lines[self.line][self.start:self.end+1]
+        except IndexError:
+            return ''
 
 
 @dataclass_json
@@ -121,12 +140,31 @@ class Program(Base):
             f"{self.language}_{self.implementation}_{self.author}.json",
         )
 
+    def language_obj(self):
+        return LANGUAGES[self.language]
+
     @classmethod
     def load_all(cls):
         progs = cls._load_all()
-        ntokens = par_for(lambda p: p.ntokens(), progs, progress=False)
+        def compute_tokens(p):
+            lang = p.language_obj()
+            ntokens = lang.ntokens(p.source)
+            lines = p.source.split('\n')
+            plan_ntokens = {
+                k: [{**json.loads(r.to_json()), 'ntokens': lang.ntokens(r.slice(lines))}
+                    for r in ranges]
+                for k, ranges in p.plan.items()
+            }
+            return {
+                'ntokens': ntokens,
+                'plan': plan_ntokens
+            }
+        ntokens = pd.DataFrame(par_for(compute_tokens, progs))
+
         df = pd.DataFrame(progs)
-        df['ntokens'] = ntokens
+        df['ntokens'] = ntokens.ntokens
+        df['plan'] = ntokens.plan
+
         return df
 
     def validate(self):
@@ -144,19 +182,6 @@ class Program(Base):
             return replace(self, plan=saved_self.plan)
         except FileNotFoundError:
             return self
-
-    def ntokens(self):
-        with tempfile.NamedTemporaryFile() as f:
-            f.write(self.source.encode('utf-8'))
-            f.flush()
-
-            out = sp.check_output(
-                f'node index.js {f.name} {self.language}',
-                shell=True,
-                cwd=os.path.join(os.path.dirname(__file__), "..", "scripts", "tokenizer"),
-                stderr=sp.PIPE)
-
-            return int(out)
 
     def widget(self, task):
         from code_widget.example import CodeWidget

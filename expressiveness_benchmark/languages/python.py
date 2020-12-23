@@ -27,7 +27,7 @@ class _Python(Language):
 
 
 LANGUAGES = [
-    _Python(id="python-imperative", name="Python (Imperative)"),
-    _Python(id="python-functional", name="Python (Functional)"),
-    _Python(id="python-pandas", name="Python (Pandas)"),
+    _Python(id="python-imperative", name="Python - Imperative"),
+    _Python(id="python-functional", name="Python - Functional"),
+    _Python(id="python-pandas", name="Python - Pandas"),
 ]
