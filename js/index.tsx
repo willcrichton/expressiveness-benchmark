@@ -16,10 +16,24 @@ let MatrixRoute = () => {
   let tasks_sorted = TASK_GROUP_ORDER.map(key => [key, task_groups[key]]);
 
   return <div>
+    <p>
+      This benchmark is a collection of programs implementing tabular data analytics tasks, similar to <a href="https://rosettacode.org/">Rosetta Code</a> or <a href="https://eugenkiss.github.io/7guis/">7GUIs</a>. This benchmark has two goals:
+    </p>
+    <ol>
+      <li>
+        <strong>Assist in cross-language learning.</strong>
+        {" A common problem in learning to program is tutorials assume a different background than yours. The task/language matrix can provide insight for many pairs of background/learning goal. For example, if you know Python and want to learn R, then you can look at correspondences between many examples."}
+      </li>
+      <li>
+        <strong>Quantify the relationship between programs and tasks.</strong>
+        {" The dream of declarative programming is for a program to be as close as possible to its specification. Is it possible to quantify the conceptual distance between a program and task?"}
+      </li>
+    </ol>
+    <p>Click on a task name below (like <Link to="/task/youngest_over_35">Youngest over 35</Link>) to see its specification and implementations.<br /> Click on <Link to="/analysis">Dataset analysis</Link> to see a statistical comparison of languages based on conciseness.</p>
     <table className='matrix code-table'>
       <thead>
         <tr>
-          <th className='task-kind'>Task type</th>
+          <th className='task-kind'>Category</th>
           <th className='task-kind'>Task name</th>
           {LANGUAGES.map(lang => {
             let category = {type: "lang", id: lang.id};
@@ -84,8 +98,16 @@ let App = () => {
   };
 
   return <div>
-    <h1>Expressiveness Benchmark</h1>
     <Router>
+      <div className='title'>
+        <h1>
+          Expressiveness Benchmark
+        </h1>
+        <nav>
+          <Link to="/">Task matrix</Link>
+          <Link to="/analysis">Dataset analysis</Link>
+        </nav>
+      </div>
       <Switch>
         <Route exact path="/task/:id"><TaskRoute /></Route>
         <Route exact path="/lang/:id"><LangRoute /></Route>

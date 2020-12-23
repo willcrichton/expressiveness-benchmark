@@ -128,7 +128,7 @@ let TaskSpec = ({task, on_selected}) => {
   </div>;
 };
 
-let PivotView = ({group_key, group_value, pivot_key}) => {
+let PivotView = ({group_key, group_value, pivot_key, show_plan}) => {
   let programs = PROGRAMS.filter(program => program[group_key] == group_value.id);
   let pivot_values: {id: string}[] =
     pivot_key == 'language' ? LANGUAGES : TASKS;
@@ -188,7 +188,7 @@ let PivotView = ({group_key, group_value, pivot_key}) => {
               {progs.map((prog, j) =>
                 <div className='program-container' key={`${i}_${j}`}>
                   <h3>{_.find(pivot_values, {id: prog[pivot_key]}).name}</h3>
-                  <Code program={prog} width={'100%'} task={_.find(TASKS, {id: prog.task})} plan_focus={plan_selected} />
+                  <Code program={prog} width={'100%'} task={_.find(TASKS, {id: prog.task})} plan_focus={plan_selected} show_plan={show_plan} />
                 </div>)}
             </div>)}
         </div>
@@ -201,7 +201,7 @@ let PivotView = ({group_key, group_value, pivot_key}) => {
 };
 
 export let TaskView = ({task}) =>
-  <PivotView group_key={"task"} group_value={task} pivot_key={"language"} />;
+  <PivotView group_key={"task"} group_value={task} pivot_key={"language"} show_plan={true} />;
 
 export let LangView = ({lang}) =>
-  <PivotView group_key={"language"} group_value={lang} pivot_key={"task"} />;
+  <PivotView group_key={"language"} group_value={lang} pivot_key={"task"} show_plan={false} />;
