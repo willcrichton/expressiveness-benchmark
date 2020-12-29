@@ -83,18 +83,14 @@ let MatrixRoute = () => {
 };
 
 let App = () => {
-  let BackButton = () => <Link to="/">
-    <button className='back-button'>Back</button>
-  </Link>;
-
   let TaskRoute = () => {
     let {id} = useParams();
-    return <><BackButton /><TaskView task={_.find(TASKS, {id})} /></>;
+    return <TaskView task={_.find(TASKS, {id})} />
   };
 
   let LangRoute = () => {
     let {id} = useParams();
-    return <><BackButton /><LangView lang={_.find(LANGUAGES, {id})} /></>;
+    return <LangView lang={_.find(LANGUAGES, {id})} />;
   };
 
   return <div>
