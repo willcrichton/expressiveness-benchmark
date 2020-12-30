@@ -47,10 +47,10 @@ module.exports = [
     entry: './src/editor.tsx',
     output: {
       filename: 'editor.js',
-      path: path.resolve(__dirname, '..', 'js', 'editor'),
+      path: path.resolve(__dirname, '..', 'components', 'editor'),
       libraryTarget: 'commonjs'
     },
-    module: { rules: rules('../js/editor') },
+    module: { rules: rules('../components/editor') },
     devtool: 'source-map',
     externals: {
       'react': 'react',

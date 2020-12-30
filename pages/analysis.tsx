@@ -1,12 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import {Link} from 'react-router-dom';
+import Link from 'next/link'
 
 import {VegaLite} from 'react-vega';
 import * as vegaThemes from 'vega-themes';
 
-import {PROGRAM_DATA, LANG_ORDER, LANGUAGES, TASK_GROUP_ORDER, TASKS, PROGRAMS} from './data';
-import {Code} from './pivot';
+import {PROGRAM_DATA, LANG_ORDER, LANGUAGES, TASK_GROUP_ORDER, TASKS, PROGRAMS} from '../components/data';
+import {Code} from '../components/pivot';
 
 const LANG_NAME_ORDER = LANG_ORDER.map(id => _.find(LANGUAGES, {id}).name);
 
@@ -112,13 +112,13 @@ let Programs = ({language, category}) =>
       .map(program => {
         let task = _.find(TASKS, {id: program.task});
         return <div className='program-container'>
-          <strong><Link to={`/task/${task.id}`}>{task.name}</Link></strong>
+          <strong><Link href={`/task/${task.id}`}>{task.name}</Link></strong>
           <Code program={program} width={'100%'} task={task} show_plan={false} />
         </div>;
       })}
   </div>;
 
-export let AnalysisRoute = () => {
+export default function Analysis() {
   return <div className='analysis'>
     <h2>Dataset analysis</h2>
 
@@ -150,7 +150,7 @@ export let AnalysisRoute = () => {
 
     <h3>2. For a given language, what are its most and least concise tasks?</h3>
 
-    <p>To compare languages within categories, we take each task and assign its programs a <a href="https://en.wikipedia.org/wiki/Standard_score">z-score</a> based on length. The z-score tells us: for a given task (e.g. <Link to="/task/youngest_over_35">Youngest over 35</Link>), how does program's size in one language compare to other languages? A high z-score means a larger program than normal, and low z-score is smaller. Because the z-score is normalized, we can compare z-scores across multiple tasks. A language's highest z-score is its worst category, and lowest z-score is its best category. Below we plot the z-scores for each language and category (z-scores within a given category/language pair are averaged).
+    <p>To compare languages within categories, we take each task and assign its programs a <a href="https://en.wikipedia.org/wiki/Standard_score">z-score</a> based on length. The z-score tells us: for a given task (e.g. <Link href="/task/youngest_over_35">Youngest over 35</Link>), how does program's size in one language compare to other languages? A high z-score means a larger program than normal, and low z-score is smaller. Because the z-score is normalized, we can compare z-scores across multiple tasks. A language's highest z-score is its worst category, and lowest z-score is its best category. Below we plot the z-scores for each language and category (z-scores within a given category/language pair are averaged).
     </p>
 
     <ZscoreChart outer_group="language_name" inner_group="category" />

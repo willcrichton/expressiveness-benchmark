@@ -3,9 +3,11 @@ import _ from 'lodash';
 import {observer} from 'mobx-react';
 import {observable, ObservableMap, toJS, extendObservable} from 'mobx';
 
-let _window = window as any;
-if (_window.ace && _window.ace.acequire) {
-  _window.ace.require = _window.ace.acequire;
+if (typeof window !== 'undefined') {
+  let _window = window as any;
+  if (_window.ace && _window.ace.acequire) {
+    _window.ace.require = _window.ace.acequire;
+  }
 }
 
 // Import the CSS

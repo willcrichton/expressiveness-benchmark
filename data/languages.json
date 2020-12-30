@@ -1,0 +1,1 @@
+[{"id": "python-imperative", "name": "Python - Imperative"}, {"id": "r", "name": "R - Tidyverse"}, {"id": "python-pandas", "name": "Python - Pandas"}, {"id": "python-functional", "name": "Python - Functional"}, {"id": "sql", "name": "SQL - SQLite"}, {"id": "q", "name": "Q - kdb+"}, {"id": "datalog", "name": "Datalog - Souffle"}]

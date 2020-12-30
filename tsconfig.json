@@ -2,12 +2,28 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "jsx": "react",
-    "lib": ["es2015", "esnext", "dom"],
+    "jsx": "preserve",
+    "lib": [
+      "es2015",
+      "esnext",
+      "dom"
+    ],
     "outDir": "dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "target": "es5",
+    "allowJs": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": [
     "js/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

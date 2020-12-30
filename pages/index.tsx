@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import './editor/main.css';
-import '../css/index.scss';
-import {HashRouter as Router, Switch, Route, Link, useHistory, useParams} from 'react-router-dom';
-import {PROGRAMS, TASKS, LANGUAGES, TASK_GROUP_ORDER} from './data';
-import {Cell, LangView, TaskView} from './pivot';
-import {AnalysisRoute} from './analysis';
+import {PROGRAMS, TASKS, LANGUAGES, TASK_GROUP_ORDER} from '../components/data';
+import Link from 'next/link'
+import {useRouter} from 'next/router'
+import {Cell} from '../components/pivot';
 
-let MatrixRoute = () => {
+export default function Index() {
+  let router = useRouter();
   let [hover, set_hover] = useState(null);
-  let history = useHistory();
 
   let task_groups = _.groupBy(TASKS, 'category');
   let tasks_sorted = TASK_GROUP_ORDER.map(key => [key, task_groups[key]]);
@@ -29,7 +27,7 @@ let MatrixRoute = () => {
         {" The dream of declarative programming is for a program to be as close as possible to its specification. Is it possible to quantify the conceptual distance between a program and task?"}
       </li>
     </ol>
-    <p>Click on a task name below (like <Link to="/task/youngest_over_35">Youngest over 35</Link>) to see its specification and implementations.<br /> Click on <Link to="/analysis">Dataset analysis</Link> to see a statistical comparison of languages based on conciseness.</p>
+    <p>Click on a task name below (like <Link href="/task/youngest_over_35">Youngest over 35</Link>) to see its specification and implementations.<br /> Click on <Link href="/analysis">Dataset analysis</Link> to see a statistical comparison of languages based on conciseness.</p>
     <table className='matrix code-table'>
       <thead>
         <tr>
@@ -40,7 +38,7 @@ let MatrixRoute = () => {
             return <th className='hoverable' key={lang.id}
                        onMouseEnter={() => set_hover(category)}
                        onMouseLeave={() => set_hover(null)}
-                       onClick={() => history.push(`/lang/${lang.id}`)}>
+                       onClick={() => {router.push(`/lang/${lang.id}`)}}>
               {lang.name}
             </th>
           })}
@@ -57,7 +55,7 @@ let MatrixRoute = () => {
                 className='task-description hoverable'
                 onMouseEnter={() => set_hover(category)}
                 onMouseLeave={() => set_hover(null)}
-                onClick={() => history.push(`/task/${task.id}`)}
+                onClick={() => {router.push(`/task/${task.id}`)}}
               >
                 {task.name}
               </td>
@@ -79,39 +77,5 @@ let MatrixRoute = () => {
         )}
       </tbody>
     </table>
-  </div>
-};
-
-let App = () => {
-  let TaskRoute = () => {
-    let {id} = useParams();
-    return <TaskView task={_.find(TASKS, {id})} />
-  };
-
-  let LangRoute = () => {
-    let {id} = useParams();
-    return <LangView lang={_.find(LANGUAGES, {id})} />;
-  };
-
-  return <div>
-    <Router>
-      <div className='title'>
-        <h1>
-          Expressiveness Benchmark
-        </h1>
-        <nav>
-          <Link to="/">Task matrix</Link>
-          <Link to="/analysis">Dataset analysis</Link>
-        </nav>
-      </div>
-      <Switch>
-        <Route exact path="/task/:id"><TaskRoute /></Route>
-        <Route exact path="/lang/:id"><LangRoute /></Route>
-        <Route exact path="/analysis"><AnalysisRoute /></Route>
-        <Route exact path="/"><MatrixRoute /></Route>
-      </Switch>
-    </Router>
   </div>;
-};
-
-ReactDOM.render(<App />, document.getElementById('container'));
+}

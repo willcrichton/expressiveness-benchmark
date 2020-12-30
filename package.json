@@ -4,9 +4,8 @@
   "description": "## Setup",
   "main": "index.js",
   "scripts": {
-    "watch": "parcel serve index.html --open & tsc --watch",
-    "build": "tsc && parcel build index.html",
-    "deploy": "tsc && parcel build index.html --public-url /expressiveness-benchmark",
+    "watch": "next dev",
+    "build": "next build && next export",
     "build-all": "cd code_widget && npm run build && cd .. && npm run build"
   },
   "repository": {
@@ -22,13 +21,15 @@
   "devDependencies": {
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "parcel": "^1.12.4",
     "sass": "^1.28.0",
     "typescript": "^4.0.3"
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "fs": "0.0.1-security",
+    "glob": "^7.1.6",
     "lodash": "^4.17.20",
+    "next": "^10.0.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

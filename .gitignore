@@ -5,8 +5,10 @@ __pycache__
 .cache
 dist
 node_modules
-js/editor
-js/index.js
+components/editor
 .eggs
 .tox
 .Rhistory
+.next
+out
+next-env.d.ts
