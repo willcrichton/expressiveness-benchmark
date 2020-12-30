@@ -174,7 +174,7 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
   let line_height = 23;
 
   width = width || '100%';
-  height = height || (line_height * num_lines).toString();
+  height = height || `${(line_height * num_lines)}px`;
 
   return (<div className='code-viewer'>
     <div style={{display: editor_init ? 'block' : 'none'}}>
