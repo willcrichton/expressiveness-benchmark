@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 import Link from 'next/link'
 
@@ -71,7 +71,7 @@ let sort_by_median = (group, measure) =>
    .value();
 
 
-let ZscoreChart = ({outer_group, inner_group}) => {
+let ZscoreChart = ({outer_group, inner_group, columns}) => {
   let extremum = (max, min, neither) => ({
     field: "extremum",
     scale: {domain: ["Worst", "Best", "In-between"], range: [max, min, neither]}
@@ -93,9 +93,10 @@ let ZscoreChart = ({outer_group, inner_group}) => {
        as: "extremum"},
     ],
     encoding: {
-      x: {field: "zscore_mean", type: "quantitative", title: "Average z-score"},
+      x: {field: "zscore_mean", type: "quantitative", title: "Average z-score",
+          scale: {domain: [-2.2, 2.2]}},
       y: axis[inner_group],
-      facet: {...axis[outer_group], columns: 4},
+      facet: {...axis[outer_group], columns},
       color: extremum("#e41a1c", "#7fc97f", "steelblue"),
       angle: extremum(45, 135, 0), // TODO: values don't map onto max/min/neither ??
       size: extremum(150, 40, 0),
@@ -118,63 +119,119 @@ let Programs = ({language, category}) =>
       })}
   </div>;
 
+let questions = [
+  {title: "Overall, how concise are programs in each language and category?",
+   body: <>
+     <p>
+       Our goal is to use quantitative metrics to compare the conciseness of programs in each language. We use <strong>number of tokens</strong> to measure program length. For example, the program "<code>(var_name + 1) * 2</code>" has the tokens "<code>[(, var_name, +, 1, ), *, 2]</code>" for a length of 7. Using tokens instead of lines-of-code or number of characters helps control for stylistic differences in indentation, and it does not penalize e.g. longer variable names. The boxplots below show the distribution of the number of tokens in programs for each category, sorted by median.
+     </p>
+
+     <Chart spec={{
+       mark: "boxplot",
+       height: 220,
+       title: "Tokens per language",
+       encoding: {
+         x: axis.ntokens,
+         y: {...axis.language_name, sort: sort_by_median('language_name', 'ntokens')}
+       }
+     }} />
+
+     <Chart spec={{
+       mark: "boxplot",
+       height: 220,
+       title: "Tokens per task category",
+       encoding: {
+         x: axis.ntokens,
+         y: {...axis.category, sort: sort_by_median('category', 'ntokens')}
+       }
+     }} />
+   </>},
+
+  {title: "For a given language, what are its most and least concise tasks?",
+   body: <>
+     <p>To compare languages within categories, we take each task and assign its programs a <a href="https://en.wikipedia.org/wiki/Standard_score">z-score</a> based on length. The z-score tells us: for a given task (e.g. <Link href="/task/youngest_over_35">Youngest over 35</Link>), how does program's size in one language compare to other languages? A high z-score means a larger program than normal, and low z-score is smaller. Because the z-score is normalized, we can compare z-scores across multiple tasks. A language's highest z-score is its worst category, and lowest z-score is its best category. Below we plot the z-scores for each language and category (z-scores within a given category/language pair are averaged).
+     </p>
+
+     <ZscoreChart outer_group="language_name" inner_group="category" columns={4} />
+
+     <p>To understand these statistics, let's dig into an example. For <strong>Datalog</strong>, its best category is <strong>Joins</strong> and worst category is <strong>Strings</strong>. Here are the two Datalog join programs:
+     </p>
+
+     <Programs language='datalog' category='Joins' />
+
+     <p>Datalog has more concise programs for joins because relationships between tables are implicitly expressed by sharing variables across tables. By contrast, languages like SQL require explicit <code>JOIN</code> clauses. But if we look to <strong>Strings</strong>, we can see when Datalog gets verbose:</p>
+
+     <Programs language='datalog' category='Strings' />
+
+     <p>The main issue is that Datalog (i.e. Souffle) does not have many built-in primitives for string process like splitting or removing characters, so re-implementing those primitives requires a lot of code.</p>
+   </>},
+
+  {title: "For a given task, what are its most and least concise languages?",
+   body: <>
+     <p>To answer this question, we can transpose the previous analysis. For each category, we can compare the z-scores for different languages, shown below.</p>
+
+     <ZscoreChart outer_group="category" inner_group="language_name" columns={3} />
+
+     <p><strong>Python - Imperative</strong> has the most verbose programs for every category except <strong>Strings</strong>. The most concise programs vary mostly between <strong>SQL</strong>, <strong>R</strong>, and <strong>Q</strong>.</p>
+
+   </>}
+].map((q, i) => ({
+  index: i + 1,
+  id: `#question-${i+1}`,
+  href: `question-${i+1}`,
+  ...q
+}));
+
+let TOC = () => {
+  const [active_id, set_active_id] = useState(null);
+  let ids = questions.map(q => q.href);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        let es = entries.filter(entry => entry.isIntersecting);
+        if (es.length > 0) {
+          set_active_id(es[es.length-1].target.id);
+        }
+      },
+      { rootMargin: `0% 0% -50% 0%` }
+    );
+
+    ids.forEach(id => observer.observe(document.getElementById(id)));
+    return () => {
+      if (document.getElementById(ids[0])) {
+        ids.forEach(id => observer.unobserve(document.getElementById(id)));
+      }
+    }
+  });
+
+  return <>
+    <strong>Table of contents</strong>
+    <ol>
+      {questions.map(q =>
+        <li><a href={q.id} className={active_id == q.href ? 'hl' : null}>{q.title}</a></li>
+      )}
+    </ol>
+  </>;
+}
+
 export default function Analysis() {
   return <div className='analysis'>
     <h2>Dataset analysis</h2>
 
-    <h3>1. Overall, how concise are programs in each language and category?</h3>
+    <div className='column-container big'>
+      <div className='main-content'>
+        {questions.map(q =>
+          <>
+            <h3><a id={q.href} name={q.href}>{q.index}. {q.title}</a></h3>
+            {q.body}
+          </>)}
+      </div>
 
-    <p>
-      Our goal is to use quantitative metrics to compare the conciseness of programs in each language. We use <strong>number of tokens</strong> to measure program length. For example, the program "<code>(var_name + 1) * 2</code>" has the tokens "<code>[(, var_name, +, 1, ), *, 2]</code>" for a length of 7. Using tokens instead of lines-of-code or number of characters helps control for stylistic differences in indentation, and it does not penalize e.g. longer variable names. The boxplots below show the distribution of the number of tokens in programs for each category, sorted by median.
-    </p>
-
-    <Chart spec={{
-      mark: "boxplot",
-      height: 220,
-      title: "Tokens per language",
-      encoding: {
-        x: axis.ntokens,
-        y: {...axis.language_name, sort: sort_by_median('language_name', 'ntokens')}
-      }
-    }} />
-
-    <Chart spec={{
-      mark: "boxplot",
-      height: 220,
-      title: "Tokens per task category",
-      encoding: {
-        x: axis.ntokens,
-        y: {...axis.category, sort: sort_by_median('category', 'ntokens')}
-      }
-    }} />
-
-    <h3>2. For a given language, what are its most and least concise tasks?</h3>
-
-    <p>To compare languages within categories, we take each task and assign its programs a <a href="https://en.wikipedia.org/wiki/Standard_score">z-score</a> based on length. The z-score tells us: for a given task (e.g. <Link href="/task/youngest_over_35">Youngest over 35</Link>), how does program's size in one language compare to other languages? A high z-score means a larger program than normal, and low z-score is smaller. Because the z-score is normalized, we can compare z-scores across multiple tasks. A language's highest z-score is its worst category, and lowest z-score is its best category. Below we plot the z-scores for each language and category (z-scores within a given category/language pair are averaged).
-    </p>
-
-    <ZscoreChart outer_group="language_name" inner_group="category" />
-
-    {/* <ZscoreChart group="task" /> */}
-
-    <p>To understand these statistics, let's dig into an example. For <strong>Datalog</strong>, its best category is <strong>Joins</strong> and worst category is <strong>Strings</strong>. Here are the two Datalog join programs:
-    </p>
-
-    <Programs language='datalog' category='Joins' />
-
-    <p>Datalog has more concise programs for joins because relationships between tables are implicitly expressed by sharing variables across tables. By contrast, languages like SQL require explicit <code>JOIN</code> clauses. But if we look to <strong>Strings</strong>, we can see when Datalog gets verbose:</p>
-
-    <Programs language='datalog' category='Strings' />
-
-    <p>The main issue is that Datalog (i.e. Souffle) does not have many built-in primitives for string process like splitting or removing characters, so re-implementing those primitives requires a lot of code.</p>
-
-    <h3>3. For a given task, what are its most and least concise languages?</h3>
-
-    <p>To answer this question, we can transpose the previous analysis. For each category, we can compare the z-scores for different languages, shown below.</p>
-
-    <ZscoreChart outer_group="category" inner_group="language_name" />
-
-    <p><strong>Python - Imperative</strong> has the most verbose programs for every category except <strong>Strings</strong>. The most concise programs vary mostly between <strong>SQL</strong>, <strong>R</strong>, and <strong>Q</strong>.</p>
-
-  </div>
+      <div className='sidebar'>
+        <div className='sidebar-sticky'>
+          <TOC />
+        </div>
+      </div>
+    </div>
+  </div>;
 };

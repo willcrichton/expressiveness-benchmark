@@ -15,7 +15,7 @@ from dataclasses_json import dataclass_json
 from IPython.display import display
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-
+MAX_LINE_SIZE = 70
 
 class Base:
     def validate(self):
@@ -175,6 +175,10 @@ class Program(Base):
         assert self.author != "", "Author must not be empty"
         assert self.source != "", "Source must not be empty"
         assert self.language in LANGUAGES, f"{self.language} is not a valid language"
+
+        for i, line in enumerate(self.source.split('\n')):
+            if len(line) > MAX_LINE_SIZE:
+                print(f'Warning: line {i+1} over max line size')
 
     def load_plan(self):
         try:

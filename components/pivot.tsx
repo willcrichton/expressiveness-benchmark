@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 import {CodeViewer, PALETTE} from './editor/editor';
 import {PROGRAMS, TASKS, LANGUAGES, TASK_GROUP_ORDER} from './data';
+import Link from 'next/link'
 
 let get_color = (i: number, opacity?: number) => `rgba(${PALETTE[i].join(', ')}, ${opacity || 1.})`;
 
@@ -18,17 +19,6 @@ export let Code = ({program, ...props}) =>
       ...props.editor_props
     }}
   />;
-
-export let Cell = ({program, task}) =>
-  <Code
-    program={program}
-    task={task}
-    width={"160px"}
-    height={"100px"}
-    editor_props={{
-      showGutter: false,
-      fontSize: 4
-    }} />;
 
 let Output = ({val}) => {
   if (Array.isArray(val)) {
@@ -186,11 +176,12 @@ let PivotView = ({group_key, group_value, pivot_key, show_plan}) => {
             : null}
           {_.chunk(selected_programs, 2).map((progs, i) =>
             <div className='program-row' key={i}>
-              {progs.map((prog, j) =>
-                <div className='program-container' key={`${i}_${j}`}>
-                  <h3>{_.find(pivot_values, {id: prog[pivot_key]}).name}</h3>
+              {progs.map((prog, j) => {
+                let val = _.find(pivot_values, {id: prog[pivot_key]});
+                return <div className='program-container' key={`${i}_${j}`}>
+                  <h3><Link href={`/${pivot_key}/${val.id}`}>{val.name}</Link></h3>
                   <Code program={prog} width={'100%'} task={_.find(TASKS, {id: prog.task})} plan_focus={plan_selected} show_plan={show_plan} />
-                </div>)}
+                </div>})}
             </div>)}
         </div>
       </div>

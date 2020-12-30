@@ -9,7 +9,7 @@ import _PROGRAMS from '../data/programs.json';
 export {default as PROGRAM_DATA} from '../data/analysis/programs.json';
 
 export const TASK_GROUP_ORDER = [
-  'Basic', 'Joins', 'Aggregation', 'Strings', 'First-order logic',
+  'Aggregation', 'Joins', 'Strings', 'First-order logic',
   'Time Series', 'Graphs'];
 export const TASK_BLACKLIST = ['customer_orders', 'unique_product', 'average_adjacent'];
 export const TASKS: Task[] =
@@ -22,4 +22,5 @@ export const TASKS: Task[] =
 export const PROGRAMS: Program[] = _PROGRAMS.map(p => new Program(p));
 
 export const LANG_ORDER = ['python-imperative', 'python-functional', 'python-pandas', 'r', 'sql', 'datalog', 'q'];
-export const LANGUAGES: Language[] = _LANGUAGES;
+export const LANGUAGES: Language[] =
+  _.sortBy(_LANGUAGES, t => _.findIndex(LANG_ORDER, i => i == t.id));

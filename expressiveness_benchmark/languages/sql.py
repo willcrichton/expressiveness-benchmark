@@ -29,7 +29,7 @@ class _Sql(Language):
             ret = c.fetchall()
             if len(ret) > 0 and len(ret[0]) == 1:
                 return [r[list(r.keys())[0]] for r in ret]
-            return None
+            return ret
 
         finally:
             conn.close()

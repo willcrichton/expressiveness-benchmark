@@ -4,7 +4,19 @@ import _ from 'lodash';
 import {PROGRAMS, TASKS, LANGUAGES, TASK_GROUP_ORDER} from '../components/data';
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {Cell} from '../components/pivot';
+import {Code} from '../components/pivot';
+
+let Cell = ({program, task}) =>
+  <Code
+    program={program}
+    task={task}
+    width={"160px"}
+    height={"100px"}
+    show_plan={false}
+    editor_props={{
+      showGutter: false,
+      fontSize: 4
+    }} />;
 
 export default function Index() {
   let router = useRouter();
@@ -27,7 +39,14 @@ export default function Index() {
         {" The dream of declarative programming is for a program to be as close as possible to its specification. Is it possible to quantify the conceptual distance between a program and task?"}
       </li>
     </ol>
-    <p>Click on a task name below (like <Link href="/task/youngest_over_35">Youngest over 35</Link>) to see its specification and implementations.<br /> Click on <Link href="/analysis">Dataset analysis</Link> to see a statistical comparison of languages based on conciseness.</p>
+    <center>
+      <strong>Click on a task name</strong>
+      <span>or</span>
+      <strong>Click on a language</strong>
+      <span>or</span>
+      <strong>Read the <Link href="/analysis">analysis</Link></strong>
+    </center>
+
     <table className='matrix code-table'>
       <thead>
         <tr>

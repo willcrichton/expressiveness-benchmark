@@ -23,7 +23,6 @@ class _Q(Language):
                     types += "*"
                 csv_commands.append(f'{k}:("{types}"; enlist ",") 0:`:{path}/{k}.csv')
 
-            args = "; ".join(sorted(dataframes.keys()))
             if isinstance(task.sample_output, list):
                 if isinstance(task.sample_output[0], dict):
                     output_convert = "output"
@@ -33,7 +32,7 @@ class _Q(Language):
                 output_convert = "([] c:enlist[output])"
 
             query = f"""
-output: {task.id}[{args}]
+output: {task.id}
 output: {output_convert}
 output: (asc cols output) xcols output
 save `:output.csv

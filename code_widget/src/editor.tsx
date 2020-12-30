@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from "react";
 import * as ace from 'ace-builds';
 import _ from 'lodash';
 import {observer} from 'mobx-react';
@@ -12,8 +13,6 @@ if (typeof window !== 'undefined') {
 
 // Import the CSS
 import '../css/widget.css';
-
-import React, {useState, useEffect} from "react";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-min-noconflict/theme-textmate";
@@ -21,7 +20,7 @@ import "ace-builds/src-min-noconflict/mode-python";
 import "ace-builds/src-min-noconflict/mode-sql";
 import "ace-builds/src-min-noconflict/mode-prolog";
 import "ace-builds/src-min-noconflict/mode-r";
-import "./mode-q"
+import "./mode-q";
 
 /*
    palette = seaborn.color_palette('pastel')
@@ -155,6 +154,7 @@ export interface CodeViewerProps {
 }
 
 export let CodeViewer = observer((props: CodeViewerProps) => {
+  let [editor_init, set_editor_init] = useState(false);
   let {task, program, on_load, width, height, editor_props, plan_focus} = props;
 
   let mode =
@@ -174,20 +174,28 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
   let line_height = 23;
 
   return (<div className='code-viewer'>
-    <AceEditor
-      mode={mode}
-      value={program.source}
-      markers={markers}
-      width={width || '100%'}
-      height={height || line_height * num_lines}
-      theme='textmate'
-      onLoad={on_load}
-      onChange={on_change}
-      showPrintMargin={false}
-      fontSize={16}
-      {...editor_props}
-    />
-  </div>);
+    <div style={{display: editor_init ? 'block' : 'none'}}>
+      <AceEditor
+        mode={mode}
+        value={program.source}
+        markers={markers}
+        width={width || '100%'}
+        height={height || line_height * num_lines}
+        theme='textmate'
+        onLoad={(editor: any) => {
+          set_editor_init(true);
+          if (on_load) {
+            on_load(editor);
+          }
+        }}
+        onChange={on_change}
+        showPrintMargin={false}
+        fontSize={16}
+        {...editor_props}
+      />
+    </div>
+    {!editor_init ? <pre>{program.source}</pre> : null}
+    </div>);
 });
 
 export interface EditorProps {
