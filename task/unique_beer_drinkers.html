@@ -1,1 +1,93 @@
-<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/expressiveness-benchmark/_next/static/css/951a260a02d5f70a4da3.css" as="style"/><link rel="stylesheet" href="/expressiveness-benchmark/_next/static/css/951a260a02d5f70a4da3.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/main-37d3e06a165c1d597d18.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/framework.5dd4f904a9dfd0e61e2e.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/7af292aedcfc0dee33cb084bb051b047deb348a0.2a18c3fb784fda18e1a9.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/_app-b07970b8421d0288f6a4.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/48fe5443.61e1d7097b45cd235c5a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/29107295.da783454e48c2f576166.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.b5d97103d02d9d216d8b.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/task/%5Bid%5D-e7bfa2dd5c363b28bd0d.js" as="script"/></head><body><div id="__next"><div><div class="title"><h1><a href="/expressiveness-benchmark">Expressiveness Benchmark</a></h1><nav><a href="/">Task matrix</a><a href="/analysis">Dataset analysis</a></nav></div><div class="pivot-view"><h2>Task<!-- -->: <!-- -->People who like a unique set of beer</h2><div class="column-container"><div class="main-content"><div class="main-sticky"><div class="task-spec"><strong>Specification: </strong>F<!-- -->i<!-- -->n<!-- -->d<!-- --> <span class="goal" style="background:rgba(255, 180, 130, 0.5);border:2px solid rgba(255, 180, 130, 1)">all people</span> <!-- -->w<!-- -->h<!-- -->o<!-- -->s<!-- -->e<!-- --> <span class="goal" style="background:rgba(161, 201, 244, 0.5);border:2px solid rgba(161, 201, 244, 1)">preferred set of beers</span> <!-- -->i<!-- -->s<!-- --> <span class="goal" style="background:rgba(141, 229, 161, 0.5);border:2px solid rgba(141, 229, 161, 1)">distinct from each other person&#x27;s preferred set</span></div></div><div class="main-scroll"><div class="io"><strong>Example input/output:</strong><div class="data-container"><div><strong>Input:</strong> <code>likes</code><table><thead><tr><th>name</th><th>beer</th></tr></thead><tbody><tr><td><code>will</code></td><td><code>ipa</code></td></tr><tr><td><code>will</code></td><td><code>lager</code></td></tr><tr><td><code>scott</code></td><td><code>ipa</code></td></tr><tr><td><code>scott</code></td><td><code>stout</code></td></tr><tr><td><code>gleb</code></td><td><code>ipa</code></td></tr><tr><td><code>gleb</code></td><td><code>stout</code></td></tr><tr><td><code>fred</code></td><td><code>ipa</code></td></tr><tr><td><code>fred</code></td><td><code>lager</code></td></tr><tr><td><code>fred</code></td><td><code>stout</code></td></tr></tbody></table></div><div><strong>Output:</strong> <code>[<!-- -->will<!-- -->, <!-- -->fred<!-- -->]</code></div></div></div><div class="program-row"><div class="program-container"><h3>Python - Imperative</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:437px"></div></div></div><div class="program-container"><h3>R - Tidyverse</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:184px"></div></div></div></div><div class="program-row"><div class="program-container"><h3>Python - Pandas</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:322px"></div></div></div><div class="program-container"><h3>Python - Functional</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:345px"></div></div></div></div><div class="program-row"><div class="program-container"><h3>SQL - SQLite</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:552px"></div></div></div><div class="program-container"><h3>Q - kdb+</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:92px"></div></div></div></div><div class="program-row"><div class="program-container"><h3>Datalog - Souffle</h3><div class="code-viewer"><div id="ace-editor" style="width:100%;height:322px"></div></div></div></div></div></div><div class="sidebar"><div class="sidebar-sticky"><div class="minimap"><button class="toggle">Toggle All</button><div><input type="checkbox" checked=""/>Python - Imperative</div><div><input type="checkbox" checked=""/>R - Tidyverse</div><div><input type="checkbox" checked=""/>Python - Pandas</div><div><input type="checkbox" checked=""/>Python - Functional</div><div><input type="checkbox" checked=""/>SQL - SQLite</div><div><input type="checkbox" checked=""/>Q - kdb+</div><div><input type="checkbox" checked=""/>Datalog - Souffle</div></div></div></div></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"task":{"id":"unique_beer_drinkers","category":"First-order logic","name":"People who like a unique set of beer","description":"Find all people whose preferred set of beers is distinct from each other person's preferred set","plan":[{"id":"collect","description":"preferred set of beers"},{"id":"iter","description":"all people"},{"id":"compare","description":"distinct from each other person's preferred set"}],"sample_input":{"likes":[{"name":"will","beer":"ipa"},{"name":"will","beer":"lager"},{"name":"scott","beer":"ipa"},{"name":"scott","beer":"stout"},{"name":"gleb","beer":"ipa"},{"name":"gleb","beer":"stout"},{"name":"fred","beer":"ipa"},{"name":"fred","beer":"lager"},{"name":"fred","beer":"stout"}]},"sample_output":["will","fred"]}},"__N_SSG":true},"page":"/task/[id]","query":{"id":"unique_beer_drinkers"},"buildId":"TaFTf5WDkaqVXZAEncG3G","assetPrefix":"/expressiveness-benchmark","nextExport":false,"isFallback":false,"gsp":true}</script><script nomodule="" src="/expressiveness-benchmark/_next/static/chunks/polyfills-d2769c16f665abc9d1ae.js"></script><script src="/expressiveness-benchmark/_next/static/chunks/main-37d3e06a165c1d597d18.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/framework.5dd4f904a9dfd0e61e2e.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/7af292aedcfc0dee33cb084bb051b047deb348a0.2a18c3fb784fda18e1a9.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/_app-b07970b8421d0288f6a4.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/48fe5443.61e1d7097b45cd235c5a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/29107295.da783454e48c2f576166.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.b5d97103d02d9d216d8b.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/task/%5Bid%5D-e7bfa2dd5c363b28bd0d.js" async=""></script><script src="/expressiveness-benchmark/_next/static/TaFTf5WDkaqVXZAEncG3G/_buildManifest.js" async=""></script><script src="/expressiveness-benchmark/_next/static/TaFTf5WDkaqVXZAEncG3G/_ssgManifest.js" async=""></script></body></html>
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/expressiveness-benchmark/_next/static/css/0b9ba0c2982acd8038f7.css" as="style"/><link rel="stylesheet" href="/expressiveness-benchmark/_next/static/css/0b9ba0c2982acd8038f7.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/_app-6c84d9376783aee2d5c0.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/48fe5443.0068883e441da184d389.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.d5e83ddfb8ec0326feec.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/task/%5Bid%5D-ebb6244aed139452441b.js" as="script"/></head><body><div id="__next"><div id="container"><div class="title"><h1><a href="/expressiveness-benchmark">Expressiveness Benchmark</a></h1><nav><a href="/expressiveness-benchmark">Task matrix</a><a href="/expressiveness-benchmark/analysis">Dataset analysis</a></nav></div><div class="pivot-view"><h2>Task<!-- -->: <!-- -->People who like a unique set of beer</h2><div class="column-container"><div class="main-content"><div class="main-sticky"><div class="task-spec"><strong>Specification: </strong>F<!-- -->i<!-- -->n<!-- -->d<!-- --> <span class="goal" style="background:rgba(255, 180, 130, 0.5);border:2px solid rgba(255, 180, 130, 1)">all people</span> <!-- -->w<!-- -->h<!-- -->o<!-- -->s<!-- -->e<!-- --> <span class="goal" style="background:rgba(161, 201, 244, 0.5);border:2px solid rgba(161, 201, 244, 1)">preferred set of beers</span> <!-- -->i<!-- -->s<!-- --> <span class="goal" style="background:rgba(141, 229, 161, 0.5);border:2px solid rgba(141, 229, 161, 1)">distinct from each other person&#x27;s preferred set</span></div></div><div class="main-scroll"><div class="io"><strong>Example input/output:</strong><div class="data-container"><div><strong>Input:</strong> <code>likes</code><table><thead><tr><th>name</th><th>beer</th></tr></thead><tbody><tr><td><code>will</code></td><td><code>ipa</code></td></tr><tr><td><code>will</code></td><td><code>lager</code></td></tr><tr><td><code>scott</code></td><td><code>ipa</code></td></tr><tr><td><code>scott</code></td><td><code>stout</code></td></tr><tr><td><code>gleb</code></td><td><code>ipa</code></td></tr><tr><td><code>gleb</code></td><td><code>stout</code></td></tr><tr><td><code>fred</code></td><td><code>ipa</code></td></tr><tr><td><code>fred</code></td><td><code>lager</code></td></tr><tr><td><code>fred</code></td><td><code>stout</code></td></tr></tbody></table></div><div><strong>Output:</strong> <code>[<!-- -->will<!-- -->, <!-- -->fred<!-- -->]</code></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/language/python-imperative">Python - Imperative</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:437px"></div></div><pre>def unique_beer_drinkers(likes):
+  likes_per_person = defaultdict(set)
+  for row in likes:
+    likes_per_person[row[&#x27;name&#x27;]].add(row[&#x27;beer&#x27;])
+    
+  unique = []
+  for p1, p1_likes in likes_per_person.items():
+    is_unique = True
+    for p2, p2_likes in likes_per_person.items():
+      if p1 == p2:
+        continue
+        
+      if p1_likes == p2_likes:
+        is_unique = False
+        break
+    if is_unique:
+      unique.append(p1)
+      
+  return unique</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/language/python-functional">Python - Functional</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:345px"></div></div><pre>def unique_beer_drinkers(likes):
+  people = set([row[&#x27;name&#x27;] for row in likes])
+  likes_per_person = {
+    name: set([row[&#x27;beer&#x27;] for row in likes if row[&#x27;name&#x27;] == name])
+    for name in people
+  }
+    
+  return [
+    name
+    for name, beers in likes_per_person.items()
+    if not any([
+      other_name != name and beers == other_beers
+      for other_name, other_beers in likes_per_person.items()
+    ])
+  ]</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/language/python-pandas">Python - Pandas</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:322px"></div></div><pre>def unique_beer_drinkers(likes):
+  likes_per_person = (likes
+    .groupby(&#x27;name&#x27;)
+    .beer.unique().map(set)
+    .reset_index())
+
+  def check_not_exists(row):
+    other_people = likes_per_person[
+      likes_per_person.name != row[&#x27;name&#x27;]]
+    return not (other_people.beer == row[&#x27;beer&#x27;]).any()
+  
+  unique_drinkers = likes_per_person[
+    likes_per_person.apply(check_not_exists, axis=1)]
+  return unique_drinkers.name.tolist()</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/language/r">R - Tidyverse</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:184px"></div></div><pre>unique_beer_drinkers &lt;- function(likes) {
+  likes %&gt;%
+    group_by(name) %&gt;%
+    summarize(beer_set = list(sort(unique(beer)))) %&gt;%
+    add_count(beer_set, name = &#x27;num_people_likes&#x27;) %&gt;%
+    filter(num_people_likes == 1) %&gt;%
+    pull(name)
+}</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/language/sql">SQL - SQLite</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:552px"></div></div><pre>SELECT DISTINCT L1.name
+FROM likes L1
+WHERE NOT EXISTS(
+    SELECT *
+    FROM likes L2
+    WHERE L1.name != L2.name
+    AND NOT EXISTS(
+        SELECT *
+        FROM likes L3
+        WHERE L3.name = L2.name
+        AND NOT EXISTS(
+            SELECT *
+            FROM likes L4
+            WHERE L4.name = L1.name
+            AND L4.beer = L3.beer))
+    AND NOT EXISTS(
+        SELECT *
+        FROM likes L5
+        WHERE L5.name = L1.name
+        AND NOT EXISTS(
+            SELECT *
+            FROM likes L6
+            WHERE L6.name = L2.name
+            AND L6.beer= L5.beer)))</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/language/datalog">Datalog - Souffle</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:322px"></div></div><pre>.decl differ(a:symbol, b:symbol)
+differ(A, B) :- likes(Beer, A), likes(_, B), !likes(Beer, B).
+differ(A, B) :- likes(_, A), likes(Beer, B), !likes(Beer, A).
+
+.decl exists_same(a:symbol)
+exists_same(Name) :- 
+  likes(_, Other), 
+  likes(_, Name), 
+  Name != Other, 
+  !differ(Name, Other).
+
+unique_beer_drinkers(Name) :- 
+  likes(_, Name), 
+  !exists_same(Name).</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/language/q">Q - kdb+</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:115px"></div></div><pre>likes_per_person: `name xgroup likes;
+counts: count each group likes_per_person;
+unique_beer_drinkers: 
+  (select name from likes_per_person where beer in\: where[counts=1])
+  `name</pre></div></div></div></div></div><div class="sidebar"><div class="sidebar-sticky"><div class="minimap"><button class="toggle">Toggle All</button><div><input type="checkbox" checked=""/>Python - Imperative</div><div><input type="checkbox" checked=""/>Python - Functional</div><div><input type="checkbox" checked=""/>Python - Pandas</div><div><input type="checkbox" checked=""/>R - Tidyverse</div><div><input type="checkbox" checked=""/>SQL - SQLite</div><div><input type="checkbox" checked=""/>Datalog - Souffle</div><div><input type="checkbox" checked=""/>Q - kdb+</div></div></div></div></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"task":{"id":"unique_beer_drinkers","category":"First-order logic","name":"People who like a unique set of beer","description":"Find all people whose preferred set of beers is distinct from each other person's preferred set","plan":[{"id":"collect","description":"preferred set of beers"},{"id":"iter","description":"all people"},{"id":"compare","description":"distinct from each other person's preferred set"}],"sample_input":{"likes":[{"name":"will","beer":"ipa"},{"name":"will","beer":"lager"},{"name":"scott","beer":"ipa"},{"name":"scott","beer":"stout"},{"name":"gleb","beer":"ipa"},{"name":"gleb","beer":"stout"},{"name":"fred","beer":"ipa"},{"name":"fred","beer":"lager"},{"name":"fred","beer":"stout"}]},"sample_output":["will","fred"]}},"__N_SSG":true},"page":"/task/[id]","query":{"id":"unique_beer_drinkers"},"buildId":"44rM5UFZZGPuGChg5GItW","assetPrefix":"/expressiveness-benchmark","nextExport":false,"isFallback":false,"gsp":true}</script><script nomodule="" src="/expressiveness-benchmark/_next/static/chunks/polyfills-d2769c16f665abc9d1ae.js"></script><script src="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/_app-6c84d9376783aee2d5c0.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/48fe5443.0068883e441da184d389.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.d5e83ddfb8ec0326feec.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/task/%5Bid%5D-ebb6244aed139452441b.js" async=""></script><script src="/expressiveness-benchmark/_next/static/44rM5UFZZGPuGChg5GItW/_buildManifest.js" async=""></script><script src="/expressiveness-benchmark/_next/static/44rM5UFZZGPuGChg5GItW/_ssgManifest.js" async=""></script></body></html>

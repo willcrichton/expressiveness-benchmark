@@ -1,0 +1,1 @@
+_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[12],{YBxw:function(n,_,o){(window.__NEXT_P=window.__NEXT_P||[]).push(["/task/[id]",function(){return o("op+k")}])},"op+k":function(n,_,o){"use strict";o.r(_),o.d(_,"__N_SSG",(function(){return i}));var w=o("I7Fo"),i=!0;_.default=w.c}},[["YBxw",0,2,4,3,1,5]]]);

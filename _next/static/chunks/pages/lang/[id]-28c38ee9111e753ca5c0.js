@@ -1,1 +1,0 @@
-_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[11],{g2nl:function(n,_,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/lang/[id]",function(){return u("huGd")}])},huGd:function(n,_,u){"use strict";u.r(_),u.d(_,"__N_SSG",(function(){return i}));var o=u("I7Fo"),i=!0;_.default=o.c}},[["g2nl",0,1,3,2,5]]]);
