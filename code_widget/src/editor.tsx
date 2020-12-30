@@ -173,14 +173,17 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
   let num_lines = program.source.split('\n').length;
   let line_height = 23;
 
+  width = width || '100%';
+  height = height || (line_height * num_lines).toString();
+
   return (<div className='code-viewer'>
     <div style={{display: editor_init ? 'block' : 'none'}}>
       <AceEditor
         mode={mode}
         value={program.source}
         markers={markers}
-        width={width || '100%'}
-        height={height || line_height * num_lines}
+        width={width}
+        height={height}
         theme='textmate'
         onLoad={(editor: any) => {
           set_editor_init(true);
@@ -194,8 +197,11 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
         {...editor_props}
       />
     </div>
-    {!editor_init ? <pre>{program.source}</pre> : null}
-    </div>);
+    {!editor_init ? <pre style={{
+      width, height,
+      fontSize: editor_props ? editor_props.fontSize : null
+    }}>{program.source}</pre> : null}
+  </div>);
 });
 
 export interface EditorProps {
