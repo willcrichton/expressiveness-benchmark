@@ -173,10 +173,11 @@ let PivotView = ({group_key, group_value, pivot_key, show_plan}) => {
     <h2>{_.capitalize(group_key)}: {group_value.name}</h2>
     <div className='column-container'>
       <div className='main-content'>
-        <div className='main-sticky'>
-          {group_key == "task" ?
-            <TaskSpec task={group_value} on_selected={set_plan_selected} /> : null}
-        </div>
+        {group_key == "task"
+          ? <div className='main-sticky'>
+            <TaskSpec task={group_value} on_selected={set_plan_selected} />
+          </div>
+          : null}
         <div className='main-scroll'>
           {group_key == "task"
             ? <>
