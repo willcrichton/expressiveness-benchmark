@@ -39,62 +39,82 @@ export default function Index() {
         {" A preliminary analysis of program size compares the relative conciseness of each language."}
       </li>
     </ol>
-    <center>
-      <strong>Click on a task name</strong>
-      <span>or</span>
-      <strong>Click on a language</strong>
-      <span>or</span>
-      <strong>Read the <Link href="/analysis">analysis</Link></strong>
-    </center>
+    <div class="desktop">
+      <center>
+        <strong>Click on a task name</strong>
+        <span>or</span>
+        <strong>Click on a language</strong>
+        <span>or</span>
+        <strong>Read the <Link href="/analysis">analysis</Link></strong>
+      </center>
+    </div>
+    <div class="mobile">
+      <strong>Note:</strong> this site is optimized for large screens. Try it when you get the chance.
+    </div>
 
-    <table className='matrix code-table'>
-      <thead>
-        <tr>
-          <th className='task-kind'>Category</th>
-          <th className='task-kind'>Task name</th>
-          {LANGUAGES.map(lang => {
-            let category = {type: "lang", id: lang.id};
-            return <th className='hoverable' key={lang.id}
-                       onMouseEnter={() => set_hover(category)}
-                       onMouseLeave={() => set_hover(null)}
-                       onClick={() => {router.push(`/lang/${lang.id}`)}}>
-              {lang.name}
-            </th>
-          })}
-        </tr>
-      </thead>
+    <div class="desktop">
+      <table className='matrix code-table'>
+        <thead>
+          <tr>
+            <th className='task-kind'>Category</th>
+            <th className='task-kind'>Task name</th>
+            {LANGUAGES.map(lang => {
+              let category = {type: "lang", id: lang.id};
+              return <th className='hoverable' key={lang.id}
+                         onMouseEnter={() => set_hover(category)}
+                         onMouseLeave={() => set_hover(null)}
+                         onClick={() => {router.push(`/lang/${lang.id}`)}}>
+                {lang.name}
+              </th>
+            })}
+          </tr>
+        </thead>
 
-      <tbody>
-        {tasks_sorted.map(([group, tasks]) =>
-          tasks.map((task, i) => {
-            let category = {type: "task", id: task.id};
-            return <tr key={task.id}>
-              {i == 0 ? <td className='task-type' rowSpan={tasks.length}>{group}</td> : null}
-              <td
-                className='task-description hoverable'
-                onMouseEnter={() => set_hover(category)}
-                onMouseLeave={() => set_hover(null)}
-                onClick={() => {router.push(`/task/${task.id}`)}}
-              >
-                {task.name}
-              </td>
-              {LANGUAGES.map(lang => {
-                let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
-                let is_hover = hover
-                  ? ((hover.type == 'lang' && hover.id == lang.id)
-                    || (hover.type == 'task' && hover.id == task.id))
-                  : false;
+        <tbody>
+          {tasks_sorted.map(([group, tasks]) =>
+            tasks.map((task, i) => {
+              let category = {type: "task", id: task.id};
+              return <tr key={task.id}>
+                {i == 0 ? <td className='task-type' rowSpan={tasks.length}>{group}</td> : null}
+                <td
+                  className='task-description hoverable'
+                  onMouseEnter={() => set_hover(category)}
+                  onMouseLeave={() => set_hover(null)}
+                  onClick={() => {router.push(`/task/${task.id}`)}}
+                >
+                  {task.name}
+                </td>
+                {LANGUAGES.map(lang => {
+                  let program = _.find(PROGRAMS, {task: task.id, language: lang.id});
+                  let is_hover = hover
+                    ? ((hover.type == 'lang' && hover.id == lang.id)
+                      || (hover.type == 'task' && hover.id == task.id))
+                    : false;
 
-                return <td className={`task-code ${is_hover ? "hover" : ""}`} key={lang.id}>
-                  {program
-                    ? <Cell program={program} task={task} />
-                    : ''}
-                </td>;
-              })}
-            </tr>
-          })
-        )}
-      </tbody>
-    </table>
+                  return <td className={`task-code ${is_hover ? "hover" : ""}`} key={lang.id}>
+                    {program
+                      ? <Cell program={program} task={task} />
+                      : ''}
+                  </td>;
+                })}
+              </tr>
+            })
+          )}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mobile">
+      {TASK_GROUP_ORDER.map(g =>
+        <div className='tasks-mobile'>
+          <h2>{g}</h2>
+          <ul>
+            {task_groups[g].map(t =>
+              <li><Link href={`/task/${t.id}`}>{t.name}</Link></li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
   </div>;
 }

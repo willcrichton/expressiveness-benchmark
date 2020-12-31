@@ -24,20 +24,21 @@ export default function App({Component, pageProps}) {
         gtag('js', new Date());
 
         gtag('config', 'UA-16662292-3');
-      `}</script>
+        `}</script>
     </Head>
     <div className='title'>
       <h1>
         <Link href="/">Expressiveness Benchmark</Link>
       </h1>
       <nav>
-        <Link href="/">Task matrix</Link>
+        <span className="desktop-inline"><Link href="/">Task matrix</Link></span>
+        <span className="mobile-inline"><Link href="/">Benchmark</Link></span>
         <Link href="/analysis">Dataset analysis</Link>
       </nav>
     </div>
     <Component {...pageProps} />
     <footer>
-      Project by <a href="https://twitter.com/wcrichton">Will Crichton</a>, Scott Kovach, and Gleb Shevchuk.
+      Project by <a href="https://twitter.com/wcrichton">Will Crichton</a>, <a href="https://github.com/kovach">Scott Kovach</a>, and <a href="http://gleb.fyi/">Gleb Shevchuk</a>.
     </footer>
   </div>;
 }

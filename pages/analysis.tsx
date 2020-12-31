@@ -219,18 +219,18 @@ export default function Analysis() {
     <h2>Dataset analysis</h2>
 
     <div className='column-container big'>
+      <div className='sidebar'>
+        <div className='sidebar-sticky'>
+          <TOC />
+        </div>
+      </div>
+
       <div className='main-content'>
         {questions.map(q =>
           <>
             <h3><a id={q.href} name={q.href}>{q.index}. {q.title}</a></h3>
             {q.body}
           </>)}
-      </div>
-
-      <div className='sidebar'>
-        <div className='sidebar-sticky'>
-          <TOC />
-        </div>
       </div>
     </div>
   </div>;

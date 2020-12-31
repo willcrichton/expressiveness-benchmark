@@ -51,6 +51,10 @@ center {
             margin-left: 15px;
             text-decoration: none;
 
+            &:first-child {
+                margin-left: 0;
+            }
+
             &:hover {
                 background-color: darken($link, 50%);
                 color: white;
@@ -281,5 +285,153 @@ footer {
 
     a {
         color: $link;
+    }
+}
+
+.mobile {
+    display: none;
+}
+
+.mobile-inline {
+    display: none;
+}
+
+.desktop {
+    display: block;
+}
+
+.desktop-inline {
+    display: inline;
+}
+
+
+@media only screen and (max-width: 1600px) {
+    body {
+        padding-bottom: 5px;
+    }
+
+    #container {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    .mobile-inline {
+        display: inline;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .desktop-inline {
+        display: none;
+    }
+
+    .title {
+        padding-top: 5px;
+
+        > * { float: none !important; }
+
+        h1 {
+            line-height: 1em;
+            margin-bottom: 15px;
+        }
+
+        nav {
+            text-align: center;
+        }
+    }
+
+    h2 {
+        line-height: 1em;
+    }
+
+    ol {
+        margin-left: -1em;
+    }
+
+    .tasks-mobile {
+        h2 {
+            margin-bottom: 0;
+        }
+
+        ul {
+            margin-left: -1em;
+            margin-bottom: 2em;
+
+            a {
+                color: darken($link, 50%);
+            }
+        }
+    }
+
+    .code-table {
+        .task-kind, .task-type {
+            width: 30px;
+        }
+
+        td, th {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    .column-container {
+        position: relative;
+
+        .main-content {
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 100%;
+            position: relative;
+
+            .sidebar-sticky {
+                font-size: 20px;
+                position: relative;
+                top: 0;
+            }
+        }
+
+        &.big {
+            .main-content { width: 100%; }
+            .sidebar { width: 100%; }
+        }
+    }
+
+    .program-container {
+        float: none;
+        width: 100%;
+        padding: 0;
+    }
+
+    .pivot-view {
+        .io {
+            .header {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .input {
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    .analysis {
+        p {
+            padding: 0 0 0 5px;
+        }
+    }
+
+    .vega-embed {
+        max-width: 100%;
+        padding: 0;
+        overflow: auto;
     }
 }

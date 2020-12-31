@@ -52,14 +52,14 @@ let JsonTable = ({table}) => {
 
 let SampleIO = ({task}) =>
   <div className='io'>
-    <strong>Example input/output:</strong>
+    <strong className='header'>Example input/output:</strong>
     <div className='data-container'>
       {_.map(task.sample_input, (table, key) =>
-        <div key={key}>
+        <div className='input' key={key}>
           <strong>Input:</strong> <code>{key}</code>
           <JsonTable table={table} />
         </div>)}
-      <div>
+      <div className='output'>
         <strong>Output:</strong> <code><Output val={task.sample_output} /></code>
       </div>
     </div>
