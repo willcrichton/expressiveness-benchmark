@@ -65,7 +65,35 @@ let SampleIO = ({task}) =>
     </div>
   </div>;
 
-let TaskSpec = ({task, on_selected}) => {
+export let ProgramView = ({program, headers, ...props}) => {
+  let task = _.find(TASKS, {id: program.task});
+  return <div className='program-container'>
+    <h3>{headers.map(k => {
+        let val = _.find(k == 'task' ? TASKS : LANGUAGES, {id: program[k]});
+        return <Link href={`/${k}/val.id`}>{val.name}</Link>
+    }).reduce((l, r) => [l, ' / ', r])}</h3>
+    <Code program={program} width={'100%'} task={task}
+          {...props} />
+  </div>;
+};
+
+let run_query = query => {
+  PROGRAMS.filter(p => {
+    let task = _.find(TASKS, {id: p.task});
+    if (!task) { return false; }
+    return _.toPairs(query).map(([k, v]) =>
+      (p.hasOwnProperty(k) ? p[k] : task[k]) == v
+    ).reduce((a, b) => a && b)}
+  )
+}
+
+export let ProgramsView = ({programs, query, ...props}) =>
+  _.chunk(programs || run_query(query), 2).map((row, i) =>
+    <div className='program-row' key={i}>
+      {row.map((program, j) => <ProgramView program={program} key={j} {...props} />)}
+    </div>);
+
+export let TaskSpec = ({task, on_selected}) => {
   let [selected, set_selected] = useState(null);
   let [hover, set_hover] = useState(null);
 
@@ -90,7 +118,10 @@ let TaskSpec = ({task, on_selected}) => {
       elts.push(
         <span
           className='goal'
-          onClick={() => set_selected(selected && selected == plan.id ? null : plan.id)}
+          onClick={e => {
+            set_selected(selected && selected == plan.id ? null : plan.id);
+            e.stopPropagation();
+          }}
           onMouseEnter={() => {
             if (!selected) { on_selected(plan.id); }
             set_hover(plan.id);
@@ -112,7 +143,7 @@ let TaskSpec = ({task, on_selected}) => {
     }
   }
 
-  return <div className='task-spec'>
+  return <div className='task-spec' onClick={() => set_selected(null)}>
     <strong>Specification: </strong>
     {elts}
   </div>;
@@ -169,20 +200,11 @@ let PivotView = ({group_key, group_value, pivot_key, show_plan}) => {
           </div>
           : null}
         <div className='main-scroll'>
-          {group_key == "task"
-            ? <>
-              <SampleIO task={group_value} />
-            </>
-            : null}
-          {_.chunk(selected_programs, 2).map((progs, i) =>
-            <div className='program-row' key={i}>
-              {progs.map((prog, j) => {
-                let val = _.find(pivot_values, {id: prog[pivot_key]});
-                return <div className='program-container' key={`${i}_${j}`}>
-                  <h3><Link href={`/${pivot_key}/${val.id}`}>{val.name}</Link></h3>
-                  <Code program={prog} width={'100%'} task={_.find(TASKS, {id: prog.task})} plan_focus={plan_selected} show_plan={show_plan} />
-                </div>})}
-            </div>)}
+          {group_key == "task" ? <SampleIO task={group_value} /> : null}
+          <ProgramsView
+            programs={selected_programs}
+            headers={[pivot_key]}
+            plan_focus={plan_selected} />
         </div>
       </div>
       <div className='sidebar'>

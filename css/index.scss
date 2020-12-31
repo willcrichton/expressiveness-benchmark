@@ -1,4 +1,5 @@
 $link: rgb(161, 201, 244);
+$bg-grey: #f2f2f2;
 
 body {
     font-family: "Helvetica Neue", Arial, sans-serif;
@@ -104,7 +105,7 @@ center {
     }
 
     .io {
-        background: #f2f2f2;
+        background: $bg-grey;
         padding: 20px;
 
         .data-container {
@@ -129,7 +130,7 @@ center {
             position: sticky;
             top: 0px;
             left: 0;
-            background: #f2f2f2;
+            background: $bg-grey;
             padding: 20px;
             border-bottom: 20px solid white;
             border-top: 20px solid white;
@@ -268,12 +269,24 @@ ol li {
 
 .analysis {
     p {
-        padding: 0 20px;
         margin: 10px 0;
     }
 
     h3 {
         margin-bottom: 10px;
+    }
+
+    .task-spec {
+        background: $bg-grey;
+        padding: 10px;
+    }
+
+    .program-container {
+        padding: 5px;
+    }
+
+    .question-body {
+        padding: 0 10px;
     }
 }
 
