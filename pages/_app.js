@@ -28,5 +28,8 @@ export default function App({Component, pageProps}) {
       </nav>
     </div>
     <Component {...pageProps} />
+    <footer>
+      Project by <a href="https://twitter.com/wcrichton">Will Crichton</a>, Scott Kovach, and Gleb Shevchuk.
+    </footer>
   </div>;
 }

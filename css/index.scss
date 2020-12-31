@@ -272,3 +272,14 @@ ol li {
         margin-bottom: 10px;
     }
 }
+
+footer {
+    margin-top: 20px;
+    padding: 10px 0 0;
+    border-top: 1px solid #ccc;
+    color: #999;
+
+    a {
+        color: $link;
+    }
+}
