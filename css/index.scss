@@ -170,9 +170,9 @@ center {
 
             a {
                 text-decoration: none;
-                color: inherit;
+                color: darken($link, 50%);
 
-                &.hl { color: darken($link, 50%); }
+                &.hl { text-decoration: underline; }
             }
         }
     }

@@ -199,7 +199,7 @@ export let CodeViewer = observer((props: CodeViewerProps) => {
     </div>
     {!editor_init ? <pre style={{
       width, height, lineHeight: '1.3em',
-      fontSize: editor_props ? editor_props.fontSize : null
+      fontSize: editor_props ? editor_props.fontSize : '16px'
     }}>{program.source}</pre> : null}
   </div>);
 });

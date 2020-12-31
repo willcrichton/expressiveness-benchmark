@@ -27,16 +27,16 @@ export default function Index() {
 
   return <div>
     <p>
-      This benchmark is a collection of programs implementing tabular data analytics tasks, similar to <a href="https://rosettacode.org/">Rosetta Code</a> or <a href="https://eugenkiss.github.io/7guis/">7GUIs</a>. This benchmark has two goals:
+      This benchmark is a work-in-progress dataset of programs implementing tabular data analytics tasks, similar to <a href="https://rosettacode.org/">Rosetta Code</a> or <a href="https://eugenkiss.github.io/7guis/">7GUIs</a>. This benchmark has two goals:
     </p>
     <ol>
       <li>
         <strong>Assist in cross-language learning.</strong>
-        {" A common problem in learning to program is tutorials assume a different background than yours. The task/language matrix can provide insight for many pairs of background/learning goal. For example, if you know Python and want to learn R, then you can look at correspondences between many examples."}
+        {" This benchmark provides an interface for easily comparing programs that do the same task in many languages."}
       </li>
       <li>
         <strong>Quantify the relationship between programs and tasks.</strong>
-        {" The dream of declarative programming is for a program to be as close as possible to its specification. Is it possible to quantify the conceptual distance between a program and task?"}
+        {" A preliminary analysis of program size compares the relative conciseness of each language."}
       </li>
     </ol>
     <center>
