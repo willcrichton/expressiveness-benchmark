@@ -70,7 +70,7 @@ export let ProgramView = ({program, headers, ...props}) => {
   return <div className='program-container'>
     <h3>{headers.map(k => {
         let val = _.find(k == 'task' ? TASKS : LANGUAGES, {id: program[k]});
-        return <Link href={`/${k}/val.id`}>{val.name}</Link>
+        return <Link href={`/${k}/${val.id}`}>{val.name}</Link>
     }).reduce((l, r) => [l, ' / ', r])}</h3>
     <Code program={program} width={'100%'} task={task}
           {...props} />
