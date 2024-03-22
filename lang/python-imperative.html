@@ -4,7 +4,7 @@
         gtag(&#x27;js&#x27;, new Date());
 
         gtag(&#x27;config&#x27;, &#x27;UA-16662292-3&#x27;);
-        </script><meta name="next-head-count" content="5"/><link rel="preload" href="/expressiveness-benchmark/_next/static/css/bb7eb15fa0f289a0fe43.css" as="style"/><link rel="stylesheet" href="/expressiveness-benchmark/_next/static/css/bb7eb15fa0f289a0fe43.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/_app-73083bb29ec45f84b02a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/48fe5443.8cbf9bb7b72041d99e6c.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.b80d2e737f6ef283cfb4.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/lang/%5Bid%5D-e6258ee591b96865bd9a.js" as="script"/></head><body><div id="__next"><div id="container"><div class="title"><h1><a href="/expressiveness-benchmark">Expressiveness Benchmark</a></h1><nav><span class="desktop-inline"><a href="/expressiveness-benchmark">Task matrix</a></span><span class="mobile-inline"><a href="/expressiveness-benchmark">Benchmark</a></span><a href="/expressiveness-benchmark/analysis">Dataset analysis</a></nav></div><div class="pivot-view"><h2>Language<!-- -->: <!-- -->Python - Imperative</h2><div class="column-container"><div class="main-content"><div class="main-scroll"><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Continent with the highest average population</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:368px"></div></div><pre style="width:100%;height:368px;line-height:1.3em">def continent_by_population(countries):
+        </script><meta name="next-head-count" content="5"/><link rel="preload" href="/expressiveness-benchmark/_next/static/css/bb7eb15fa0f289a0fe43.css" as="style"/><link rel="stylesheet" href="/expressiveness-benchmark/_next/static/css/bb7eb15fa0f289a0fe43.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/_app-73083bb29ec45f84b02a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/48fe5443.8cbf9bb7b72041d99e6c.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.9662a54cf737546376a6.js" as="script"/><link rel="preload" href="/expressiveness-benchmark/_next/static/chunks/pages/lang/%5Bid%5D-e6258ee591b96865bd9a.js" as="script"/></head><body><div id="__next"><div id="container"><div class="title"><h1><a href="/expressiveness-benchmark">Expressiveness Benchmark</a></h1><nav><span class="desktop-inline"><a href="/expressiveness-benchmark">Task matrix</a></span><span class="mobile-inline"><a href="/expressiveness-benchmark">Benchmark</a></span><a href="/expressiveness-benchmark/analysis">Dataset analysis</a></nav></div><div class="pivot-view"><h2>Language<!-- -->: <!-- -->Python - Imperative</h2><div class="column-container"><div class="main-content"><div class="main-scroll"><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/continent_by_population">Continent with the highest average population</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:368px"></div></div><pre style="width:100%;height:368px;line-height:1.3em">def continent_by_population(countries):
   continent_stats = defaultdict(lambda: [0, 0])
   for country in countries:
     continent = country[&#x27;continent&#x27;]
@@ -19,7 +19,7 @@
       max_average = average
       max_continent = continent
       
-  return max_continent</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">First element that doesn&#x27;t change mean</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:368px"></div></div><pre style="width:100%;height:368px;line-height:1.3em">
+  return max_continent</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/changing_mean">First element that doesn&#x27;t change mean</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:368px"></div></div><pre style="width:100%;height:368px;line-height:1.3em">
 
 def get_mean(ls):
   sum = 0
@@ -35,7 +35,7 @@ def changing_mean(vals):
     if abs(mean - start_mean) &lt; 0.1:
       return i
   return None
-</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Median population for each continent</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:437px"></div></div><pre style="width:100%;height:437px;line-height:1.3em">def continent_median_population(countries):
+</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/continent_median_population">Median population for each continent</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:437px"></div></div><pre style="width:100%;height:437px;line-height:1.3em">def continent_median_population(countries):
   populations = defaultdict(list)
   for country in countries:
     populations[country[&#x27;continent&#x27;]].append(country[&#x27;population&#x27;])
@@ -53,7 +53,7 @@ def changing_mean(vals):
       &quot;population&quot;: median
     })
     
-  return output</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Youngest person over 35</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:253px"></div></div><pre style="width:100%;height:253px;line-height:1.3em">def youngest_over_35(people):
+  return output</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/youngest_over_35">Youngest person over 35</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:253px"></div></div><pre style="width:100%;height:253px;line-height:1.3em">def youngest_over_35(people):
   over_35 = []
   for person in people:
     if person[&#x27;age&#x27;] &gt; 35:
@@ -63,7 +63,7 @@ def changing_mean(vals):
   for person in over_35:
     if youngest is None or person[&#x27;age&#x27;] &lt; youngest[&#x27;age&#x27;]:
       youngest = person
-  return youngest[&#x27;name&#x27;] if youngest is not None else None</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Directors of movies Tom Hanks starred in</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:230px"></div></div><pre style="width:100%;height:230px;line-height:1.3em">
+  return youngest[&#x27;name&#x27;] if youngest is not None else None</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/tom_hanks">Directors of movies Tom Hanks starred in</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:230px"></div></div><pre style="width:100%;height:230px;line-height:1.3em">
 
 def tom_hanks(actors,directors):
   r_directors = set()
@@ -73,7 +73,7 @@ def tom_hanks(actors,directors):
         if a[&#x27;movie&#x27;] == d[&#x27;movie&#x27;]:
           r_directors.add(d[&#x27;director&#x27;])
     return r_directors
-</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Row per family to row per child</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:299px"></div></div><pre style="width:100%;height:299px;line-height:1.3em">
+</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/row_per_child">Row per family to row per child</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:299px"></div></div><pre style="width:100%;height:299px;line-height:1.3em">
 
 def row_per_child(families):
   children = []
@@ -86,7 +86,7 @@ def row_per_child(families):
         &#x27;height&#x27;: family[f&#x27;height_child{i}&#x27;]
       })
   return children
-</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Convert strings with different formats to numbers</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:207px"></div></div><pre style="width:100%;height:207px;line-height:1.3em">def strings_to_numbers(numbers):
+</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/strings_to_numbers">Convert strings with different formats to numbers</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:207px"></div></div><pre style="width:100%;height:207px;line-height:1.3em">def strings_to_numbers(numbers):
   output = []
   for row in numbers:
     if row[&quot;format&quot;] == &#x27;comma_sep&#x27;:
@@ -94,7 +94,7 @@ def row_per_child(families):
     else:
       sep = &quot;_&quot;
     output.append(int(row[&quot;value&quot;].replace(sep, &quot;&quot;)))
-  return output</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Documents with infrequent words</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:483px"></div></div><pre style="width:100%;height:483px;line-height:1.3em">def documents_with_infrequent_words(documents):
+  return output</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/documents_with_infrequent_words">Documents with infrequent words</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:483px"></div></div><pre style="width:100%;height:483px;line-height:1.3em">def documents_with_infrequent_words(documents):
   words = {}
   freq = defaultdict(int)
   for doc in documents:
@@ -114,7 +114,7 @@ def row_per_child(families):
         infrequent_docs.append(doc[&quot;id&quot;])
         break
         
-  return infrequent_docs</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Filter and clean tweets</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:230px"></div></div><pre style="width:100%;height:230px;line-height:1.3em">def process_tweets(data):
+  return infrequent_docs</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/process_tweets">Filter and clean tweets</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:230px"></div></div><pre style="width:100%;height:230px;line-height:1.3em">def process_tweets(data):
   result = []
   for value in data:
     if (value[&quot;language&quot;] == &quot;en&quot; and
@@ -123,7 +123,7 @@ def row_per_child(families):
         &quot;body&quot;: value[&quot;body&quot;].lower(),
         &quot;ts&quot;: value[&quot;ts&quot;]
       })
-  return result</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">People that purchased all possible items</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:253px"></div></div><pre style="width:100%;height:253px;line-height:1.3em">def purchased_all_food(food, orders):
+  return result</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/purchased_all_food">People that purchased all possible items</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:253px"></div></div><pre style="width:100%;height:253px;line-height:1.3em">def purchased_all_food(food, orders):
   n_food = len(food)
   unique_orders = defaultdict(set)
   for order in orders:
@@ -133,7 +133,7 @@ def row_per_child(families):
   for buyer, orders in unique_orders.items():
     if len(orders) == n_food:
       buyers.append(buyer)
-  return buyers</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">People who like a unique set of beer</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:437px"></div></div><pre style="width:100%;height:437px;line-height:1.3em">def unique_beer_drinkers(likes):
+  return buyers</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/unique_beer_drinkers">People who like a unique set of beer</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:437px"></div></div><pre style="width:100%;height:437px;line-height:1.3em">def unique_beer_drinkers(likes):
   likes_per_person = defaultdict(set)
   for row in likes:
     likes_per_person[row[&#x27;name&#x27;]].add(row[&#x27;beer&#x27;])
@@ -151,7 +151,7 @@ def row_per_child(families):
     if is_unique:
       unique.append(p1)
       
-  return unique</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Rolling average</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:345px"></div></div><pre style="width:100%;height:345px;line-height:1.3em">def rolling_average(data):
+  return unique</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/rolling_average">Rolling average</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:345px"></div></div><pre style="width:100%;height:345px;line-height:1.3em">def rolling_average(data):
   data.sort(key=lambda v: v[&quot;time&quot;])
   result = []
   for i, value in enumerate(data):
@@ -165,7 +165,7 @@ def row_per_child(families):
       {&quot;end_time&quot;: end,
        &quot;average&quot;: total / count}
     )
-  return result</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Windowed average</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:414px"></div></div><pre style="width:100%;height:414px;line-height:1.3em">def average_window(data):
+  return result</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/average_window">Windowed average</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:414px"></div></div><pre style="width:100%;height:414px;line-height:1.3em">def average_window(data):
   def window(value):
     return math.floor(value[&quot;time&quot;] / 7)
   if len(data) &lt; 1:
@@ -182,7 +182,7 @@ def row_per_child(families):
     total += value[&quot;x&quot;]
     count += 1
   result.append(total / count)
-  return result</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Reflexive-transitive closure</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:414px"></div></div><pre style="width:100%;height:414px;line-height:1.3em">def reachable(graph, query):
+  return result</pre></div></div><div class="program-container"><h3><a href="/expressiveness-benchmark/task/reachable">Reflexive-transitive closure</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:414px"></div></div><pre style="width:100%;height:414px;line-height:1.3em">def reachable(graph, query):
   adjacency_list = defaultdict(list)
   for edge in graph:
     adjacency_list[edge[&quot;source&quot;]].append(edge[&quot;target&quot;])
@@ -199,7 +199,7 @@ def row_per_child(families):
       to_visit.add(neighbor)
     visited.add(current)
             
-  return list(visited)</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/val.id">Strongly-connected components</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:529px"></div></div><pre style="width:100%;height:529px;line-height:1.3em">def scc(graph, query):
+  return list(visited)</pre></div></div></div><div class="program-row"><div class="program-container"><h3><a href="/expressiveness-benchmark/task/scc">Strongly-connected components</a></h3><div class="code-viewer"><div style="display:none"><div id="ace-editor" style="width:100%;height:529px"></div></div><pre style="width:100%;height:529px;line-height:1.3em">def scc(graph, query):
   reachable = set()
   vertices = set()
   for edge in graph:
@@ -221,4 +221,4 @@ def row_per_child(families):
     if ((source, vertex) in reachable and
         (vertex, source) in reachable):
       result.append(vertex)
-  return result</pre></div></div></div></div></div><div class="sidebar"><div class="sidebar-sticky"><div class="minimap"><button class="toggle">Toggle All</button><div><input type="checkbox" checked=""/>Continent with the highest average population</div><div><input type="checkbox" checked=""/>First element that doesn&#x27;t change mean</div><div><input type="checkbox" checked=""/>Median population for each continent</div><div><input type="checkbox" checked=""/>Youngest person over 35</div><div><input type="checkbox" checked=""/>Directors of movies Tom Hanks starred in</div><div><input type="checkbox" checked=""/>Row per family to row per child</div><div><input type="checkbox" checked=""/>Convert strings with different formats to numbers</div><div><input type="checkbox" checked=""/>Documents with infrequent words</div><div><input type="checkbox" checked=""/>Filter and clean tweets</div><div><input type="checkbox" checked=""/>People that purchased all possible items</div><div><input type="checkbox" checked=""/>People who like a unique set of beer</div><div><input type="checkbox" checked=""/>Rolling average</div><div><input type="checkbox" checked=""/>Windowed average</div><div><input type="checkbox" checked=""/>Reflexive-transitive closure</div><div><input type="checkbox" checked=""/>Strongly-connected components</div></div></div></div></div></div><footer>Project by <a href="https://twitter.com/wcrichton">Will Crichton</a>, <a href="https://github.com/kovach">Scott Kovach</a>, and <a href="http://gleb.fyi/">Gleb Shevchuk</a>.</footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"lang":{"id":"python-imperative","name":"Python - Imperative"}},"__N_SSG":true},"page":"/lang/[id]","query":{"id":"python-imperative"},"buildId":"c8EZ7BhbZZdR-rYM-JiEn","assetPrefix":"/expressiveness-benchmark","nextExport":false,"isFallback":false,"gsp":true}</script><script nomodule="" src="/expressiveness-benchmark/_next/static/chunks/polyfills-d2769c16f665abc9d1ae.js"></script><script src="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/_app-73083bb29ec45f84b02a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/48fe5443.8cbf9bb7b72041d99e6c.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.b80d2e737f6ef283cfb4.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/lang/%5Bid%5D-e6258ee591b96865bd9a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/c8EZ7BhbZZdR-rYM-JiEn/_buildManifest.js" async=""></script><script src="/expressiveness-benchmark/_next/static/c8EZ7BhbZZdR-rYM-JiEn/_ssgManifest.js" async=""></script></body></html>
+  return result</pre></div></div></div></div></div><div class="sidebar"><div class="sidebar-sticky"><div class="minimap"><button class="toggle">Toggle All</button><div><input type="checkbox" checked=""/>Continent with the highest average population</div><div><input type="checkbox" checked=""/>First element that doesn&#x27;t change mean</div><div><input type="checkbox" checked=""/>Median population for each continent</div><div><input type="checkbox" checked=""/>Youngest person over 35</div><div><input type="checkbox" checked=""/>Directors of movies Tom Hanks starred in</div><div><input type="checkbox" checked=""/>Row per family to row per child</div><div><input type="checkbox" checked=""/>Convert strings with different formats to numbers</div><div><input type="checkbox" checked=""/>Documents with infrequent words</div><div><input type="checkbox" checked=""/>Filter and clean tweets</div><div><input type="checkbox" checked=""/>People that purchased all possible items</div><div><input type="checkbox" checked=""/>People who like a unique set of beer</div><div><input type="checkbox" checked=""/>Rolling average</div><div><input type="checkbox" checked=""/>Windowed average</div><div><input type="checkbox" checked=""/>Reflexive-transitive closure</div><div><input type="checkbox" checked=""/>Strongly-connected components</div></div></div></div></div></div><footer>Project by <a href="https://twitter.com/wcrichton">Will Crichton</a>, <a href="https://github.com/kovach">Scott Kovach</a>, and <a href="http://gleb.fyi/">Gleb Shevchuk</a>.</footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"lang":{"id":"python-imperative","name":"Python - Imperative"}},"__N_SSG":true},"page":"/lang/[id]","query":{"id":"python-imperative"},"buildId":"UAi9pXhyWdjqPaekVeAOd","assetPrefix":"/expressiveness-benchmark","nextExport":false,"isFallback":false,"gsp":true}</script><script nomodule="" src="/expressiveness-benchmark/_next/static/chunks/polyfills-d2769c16f665abc9d1ae.js"></script><script src="/expressiveness-benchmark/_next/static/chunks/main-f76717e2d376ecc40880.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/webpack-95c2b224bccf352ee870.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/framework.be9133c4aa54b58ca1d2.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/commons.2ac40408ef03d6c65327.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/_app-73083bb29ec45f84b02a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/48fe5443.8cbf9bb7b72041d99e6c.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/29107295.0ba1e3749ecd6faab06a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/f7f3ae4b7ca4f7fc373506a61db832ad86bd3f74.9662a54cf737546376a6.js" async=""></script><script src="/expressiveness-benchmark/_next/static/chunks/pages/lang/%5Bid%5D-e6258ee591b96865bd9a.js" async=""></script><script src="/expressiveness-benchmark/_next/static/UAi9pXhyWdjqPaekVeAOd/_buildManifest.js" async=""></script><script src="/expressiveness-benchmark/_next/static/UAi9pXhyWdjqPaekVeAOd/_ssgManifest.js" async=""></script></body></html>
