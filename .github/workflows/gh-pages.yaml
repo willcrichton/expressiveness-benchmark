@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 12.x
       - run: cd code_widget && npm install && npm run build && cd ..
       - run: npm install && npm run build
       - uses: peaceiris/actions-gh-pages@v3
